@@ -26,7 +26,7 @@ const RootLayout = ({ children }: Props) => {
 
           <div className="flex flex-1">
             <Sidebar />
-            <main className="m-8">{children}</main>
+            <main className="m-8 flex-1">{children}</main>
           </div>
         </ThemeProvider>
       </body>
