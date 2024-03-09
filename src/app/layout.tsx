@@ -1,4 +1,5 @@
 import { Header } from '@/components/header'
+import { AllSheets } from '@/components/sheets/all-sheets'
 import { Sidebar } from '@/components/sidebar'
 import { ThemeProvider } from '@/components/theme-provider'
 import { cn } from '@/lib/utils'
@@ -22,6 +23,7 @@ const RootLayout = ({ children }: Props) => {
     <html lang="en" className="h-full" suppressHydrationWarning>
       <body className={cn('h-full flex flex-col', inter.className)} suppressHydrationWarning>
         <ThemeProvider attribute="class" defaultTheme="system" enableSystem disableTransitionOnChange>
+          <AllSheets />
           <Header />
 
           <div className="flex flex-1">
