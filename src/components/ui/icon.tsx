@@ -1,10 +1,14 @@
-import { Dot, type LucideProps, Mail, MailOpen, X } from 'lucide-react'
+import { Dot, Home, Inbox, type LucideProps, Mail, MailOpen, Menu, PanelRightOpen, X } from 'lucide-react'
 
 const icons = {
   dot: Dot,
   close: X,
   mail: Mail,
   mailOpen: MailOpen,
+  home: Home,
+  inbox: Inbox,
+  panelRightOpen: PanelRightOpen,
+  menu: Menu,
 }
 
 export type IconName = keyof typeof icons

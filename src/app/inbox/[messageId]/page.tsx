@@ -1,5 +1,6 @@
+import { MessageBody } from '@/components/message-body'
+import { MessagesList } from '@/components/messages-list'
 import { messages } from '@/data'
-import { format } from 'date-fns'
 
 type Props = {
   params: {
@@ -15,12 +16,12 @@ const MessageIdPage = ({ params }: Props) => {
   }
 
   return (
-    <div>
-      <time className="text-muted text-sm" dateTime={message.date.toISOString()}>
-        {format(message.date, 'MMM d - HH:mm')}
-      </time>
-      <h2 className="font-medium text-lg">{message.subject}</h2>
-      <p className="mt-4">{message.body}</p>
+    <div className="flex h-[calc(100vh-80px)]">
+      <div className="border-r w-96 overflow-scroll scrollbar-hide p-4 hidden md:block">
+        <MessagesList />
+      </div>
+
+      <MessageBody message={message} />
     </div>
   )
 }

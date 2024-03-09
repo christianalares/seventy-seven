@@ -1,8 +1,6 @@
 import { Header } from '@/components/header'
-import { MessageListItem } from '@/components/message-list-item'
 import { Sidebar } from '@/components/sidebar'
 import { ThemeProvider } from '@/components/theme-provider'
-import { messages } from '@/data'
 import { cn } from '@/lib/utils'
 import type { Metadata } from 'next'
 import { Inter } from 'next/font/google'
@@ -25,8 +23,10 @@ const RootLayout = ({ children }: Props) => {
       <body className={cn('h-full flex flex-col', inter.className)} suppressHydrationWarning>
         <ThemeProvider attribute="class" defaultTheme="system" enableSystem disableTransitionOnChange>
           <Header />
+
           <div className="flex flex-1">
-            <Sidebar />
+            <Sidebar className="hidden md:block" />
+
             <main className="flex-1">{children}</main>
           </div>
         </ThemeProvider>
