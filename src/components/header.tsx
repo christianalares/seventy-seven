@@ -1,27 +1,13 @@
 'use client'
 
-import { useTheme } from 'next-themes'
+import { ThemeSelector } from './theme-selector'
 
 export const Header = () => {
-  const { setTheme } = useTheme()
-
   return (
-    <header className="p-4 border-b">
-      <div className="flex items-center">
-        <span>plzhelp</span>
+    <header className="p-4 border-b h-20 flex items-center">
+      <span className="flex justify-center items-center border-4 -skew-x-12 py-1 px-4 font-bold">77</span>
 
-        <div className="flex gap-2 ml-auto">
-          <button className="border p-2" type="button" onClick={() => setTheme('light')}>
-            Light
-          </button>
-          <button className="border p-2" type="button" onClick={() => setTheme('dark')}>
-            Dark
-          </button>
-          <button className="border p-2" type="button" onClick={() => setTheme('system')}>
-            System
-          </button>
-        </div>
-      </div>
+      <ThemeSelector className="ml-auto" />
     </header>
   )
 }

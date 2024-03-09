@@ -2,7 +2,7 @@ import Link from 'next/link'
 
 export const Sidebar = () => {
   return (
-    <aside className="border-r w-52 p-4">
+    <aside className="border-r w-52 p-8">
       <nav>
         <ul className="flex flex-col gap-4">
           <li>

@@ -2,7 +2,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 
 const Home = () => {
   return (
-    <div>
+    <div className="m-8">
       <Card>
         <CardHeader>
           <CardTitle>Whats new?</CardTitle>
