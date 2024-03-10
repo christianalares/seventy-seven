@@ -1,4 +1,4 @@
-import { Dot, Home, Inbox, List, type LucideProps, Mail, MailOpen, Menu, X } from 'lucide-react'
+import { Calendar, Dot, Home, Inbox, List, type LucideProps, Mail, MailOpen, Menu, X } from 'lucide-react'
 
 const icons = {
   dot: Dot,
@@ -9,6 +9,7 @@ const icons = {
   inbox: Inbox,
   list: List,
   menu: Menu,
+  calendar: Calendar,
 }
 
 export type IconName = keyof typeof icons

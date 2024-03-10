@@ -1,31 +1,30 @@
 import { Sheet, SheetContent, SheetHeader, SheetTitle } from '@/components/ui/sheet'
 import { type Message, messages } from '@/data'
+import { useSelectedMessage } from '@/hooks/useSelectedMessage'
 import { cn } from '@/lib/utils'
 import { useMessagesListSheetStore } from '@/store'
 import { format } from 'date-fns'
-import Link from 'next/link'
-import { useParams, useRouter } from 'next/navigation'
 
 type MenuItemProps = {
   message: Message
 }
 
 const MessageItem = ({ message }: MenuItemProps) => {
+  const { messageId, setMessageId } = useSelectedMessage()
+  const isActive = messageId === message.id
+
   const { close } = useMessagesListSheetStore()
 
-  const params = useParams<{ messageId: string }>()
-  const isActive = params.messageId === message.id
-  const router = useRouter()
-
   const handleOnClick = () => {
-    router.push(`/inbox/${message.id}`, { scroll: false })
+    setMessageId(message.id)
     close()
   }
 
   return (
     <li>
-      <Link
-        href={`/inbox/${message.id}`}
+      <button
+        type="button"
+        // href={`/inbox/${message.id}`}
         onClick={handleOnClick}
         className={cn('w-full text-left block p-4 border rounded-md hover:border-border-hover', {
           'bg-foreground/5': isActive,
@@ -44,7 +43,7 @@ const MessageItem = ({ message }: MenuItemProps) => {
           <span className="line-clamp-1">{message.subject}</span>
           <span className="mt-2 text-muted line-clamp-2">{message.body}</span>
         </p>
-      </Link>
+      </button>
     </li>
   )
 }
