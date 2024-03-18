@@ -1,13 +1,18 @@
 'use client'
 
 import { useMainMenuSheetStore } from '@/store'
+import type { Session } from '@supabase/supabase-js'
 import Link from 'next/link'
-import { ThemeSelector } from './theme-selector'
 import { Button } from './ui/button'
 import { Icon } from './ui/icon'
 import { Logo } from './ui/logo'
+import { UserMenuDropdown } from './user-menu-dropdown'
 
-export const Header = () => {
+type Props = {
+  user: Session['user']
+}
+
+export const Header = ({ user }: Props) => {
   const { open: openMainMenuSheet } = useMainMenuSheetStore()
 
   return (
@@ -22,7 +27,7 @@ export const Header = () => {
         </Link>
       </div>
 
-      <ThemeSelector className="ml-auto" />
+      <UserMenuDropdown className="ml-auto" user={user} />
     </header>
   )
 }
