@@ -15,9 +15,5 @@ export const SignInWithGithubButton = () => {
     })
   }
 
-  return (
-    <Button type="button" className="" onClick={signInWithGithub}>
-      Sign in with Github
-    </Button>
-  )
+  return <Button onClick={signInWithGithub}>Sign in with Github</Button>
 }

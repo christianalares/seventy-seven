@@ -3,7 +3,6 @@
 import { useMainMenuSheetStore } from '@/store'
 import type { Session } from '@supabase/supabase-js'
 import Link from 'next/link'
-// import { ThemeSelector } from './theme-selector'
 import { Button } from './ui/button'
 import { Icon } from './ui/icon'
 import { Logo } from './ui/logo'
@@ -29,7 +28,6 @@ export const Header = ({ user }: Props) => {
       </div>
 
       <UserMenuDropdown className="ml-auto" user={user} />
-      {/* <ThemeSelector className="ml-auto" /> */}
     </header>
   )
 }
