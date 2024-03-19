@@ -4,16 +4,22 @@ import { Sidebar } from '@/components/sidebar'
 import { ThemeProvider } from '@/components/theme-provider'
 import { cn } from '@/lib/utils'
 import { getSession } from '@/utils/supabase/session'
-import type { Metadata } from 'next'
+import type { Metadata, Viewport } from 'next'
 import { Inter } from 'next/font/google'
 import './globals.css'
 
 const inter = Inter({ subsets: ['latin'] })
 
+export const viewport: Viewport = {
+  width: 'device-width',
+  initialScale: 1,
+  maximumScale: 1,
+  userScalable: false,
+}
+
 export const metadata: Metadata = {
   title: 'SjuApp',
   description: 'The open source alternative to Zendesk',
-  viewport: 'width=device-width, initial-scale=1 maximum-scale=1, user-scalable=no',
 }
 
 type Props = {
