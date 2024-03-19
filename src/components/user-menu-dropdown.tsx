@@ -3,9 +3,9 @@
 import { cn } from '@/lib/utils'
 import { createClient } from '@/utils/supabase/client'
 import type { Session } from '@supabase/supabase-js'
-import { useTheme } from 'next-themes'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
+import { ThemeSwitch } from './theme-switch'
 import { Avatar, AvatarFallback, AvatarImage } from './ui/avatar'
 import {
   DropdownMenu,
@@ -15,7 +15,6 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from './ui/dropdown-menu'
-import { Icon, type IconName } from './ui/icon'
 
 type Props = {
   user: Session['user']
@@ -24,10 +23,10 @@ type Props = {
 
 export const UserMenuDropdown = ({ user, className }: Props) => {
   const router = useRouter()
-  const supabase = createClient()
+  const sb = createClient()
 
   const handleSignOut = async () => {
-    await supabase.auth.signOut()
+    await sb.auth.signOut()
     router.push('/')
     router.refresh()
   }
@@ -55,13 +54,13 @@ export const UserMenuDropdown = ({ user, className }: Props) => {
       <DropdownMenuContent className="w-56" align="end">
         <DropdownMenuLabel>
           {user.user_metadata.full_name}
-          <p className="text-dark-gray text-xs font-normal">{user.email}</p>
+          <p className="text-muted-foreground text-xs font-normal">{user.email}</p>
         </DropdownMenuLabel>
 
         <DropdownMenuSeparator />
 
-        <DropdownMenuItem>
-          <Link href="/me">Settings</Link>
+        <DropdownMenuItem asChild>
+          <Link href="/account">Account</Link>
         </DropdownMenuItem>
 
         <div className="flex flex-row justify-between items-center p-2">
@@ -72,44 +71,5 @@ export const UserMenuDropdown = ({ user, className }: Props) => {
         <DropdownMenuItem onClick={() => handleSignOut()}>Sign out</DropdownMenuItem>
       </DropdownMenuContent>
     </DropdownMenu>
-  )
-}
-
-const getThemeIcon = (theme?: string): IconName => {
-  switch (theme) {
-    case 'dark':
-      return 'moon'
-    case 'system':
-      return 'monitor'
-    default:
-      return 'sun'
-  }
-}
-
-const ThemeSwitch = () => {
-  const { theme, setTheme, themes } = useTheme()
-
-  return (
-    <div className="flex items-center relative">
-      <select
-        className="text-xs border rounded appearance-none pl-6 pr-6 py-1.5 bg-transparent outline-none capitalize"
-        defaultValue={theme}
-        onChange={(event) => setTheme(event.target.value)}
-      >
-        {themes.map((theme) => (
-          <option key={theme} value={theme}>
-            {theme}
-          </option>
-        ))}
-      </select>
-
-      <div className="absolute left-2">
-        <Icon name={getThemeIcon(theme)} className="size-3" />
-      </div>
-
-      <div className="absolute right-2">
-        <Icon name="chevronsUpDown" className="size-3" />
-      </div>
-    </div>
   )
 }

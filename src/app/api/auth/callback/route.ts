@@ -10,8 +10,8 @@ export async function GET(request: Request) {
   const origin = requestUrl.origin
 
   if (code) {
-    const supabase = createClient()
-    await supabase.auth.exchangeCodeForSession(code)
+    const sb = createClient()
+    await sb.auth.exchangeCodeForSession(code)
   }
 
   // URL to redirect to after sign up process completes

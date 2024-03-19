@@ -4,10 +4,10 @@ import { createClient } from '@/utils/supabase/client'
 import { Button } from './ui/button'
 
 export const SignInWithGithubButton = () => {
-  const supabase = createClient()
+  const sb = createClient()
 
   const signInWithGithub = async () => {
-    await supabase.auth.signInWithOAuth({
+    await sb.auth.signInWithOAuth({
       provider: 'github',
       options: {
         redirectTo: `${location.origin}/api/auth/callback`,

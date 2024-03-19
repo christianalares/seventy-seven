@@ -1,11 +1,11 @@
 import { createClient } from './server'
 
 export const getSessionOrThrow = async () => {
-  const supabase = createClient()
+  const sb = createClient()
 
   const {
     data: { session },
-  } = await supabase.auth.getSession()
+  } = await sb.auth.getSession()
 
   if (!session) {
     throw new Error('No session found')
@@ -15,11 +15,19 @@ export const getSessionOrThrow = async () => {
 }
 
 export const getSession = async () => {
-  const supabase = createClient()
+  const sb = createClient()
 
   const {
     data: { session },
-  } = await supabase.auth.getSession()
+  } = await sb.auth.getSession()
 
   return session
+}
+
+export const getUser = async () => {
+  const sb = createClient()
+  const session = await getSessionOrThrow()
+
+  const { data } = await sb.from('users').select('*').eq('id', session.user.id).single()
+  return data
 }
