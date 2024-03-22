@@ -3,13 +3,14 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
+    "postinstall": "prisma generate",
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
     "lint": "biome check .",
     "check:types": "tsc --noEmit",
     "prisma:push": "prisma db push",
-    "prisma:generate": "prisma db generate",
+    "prisma:generate": "prisma generate",
     "supabase:generate-types": "npx supabase gen types typescript --project-id nqofuchqmjrqzomjedyz --schema public > ./src/types/db.ts",
     "codegen": "pnpm run prisma:generate && pnpm run supabase:generate-types"
   },

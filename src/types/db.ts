@@ -16,6 +16,7 @@ export type Database = {
           id: string
           sent_by_user_id: string | null
           ticket_id: string
+          updated_at: string | null
         }
         Insert: {
           body: string
@@ -23,6 +24,7 @@ export type Database = {
           id?: string
           sent_by_user_id?: string | null
           ticket_id: string
+          updated_at?: string | null
         }
         Update: {
           body?: string
@@ -30,17 +32,18 @@ export type Database = {
           id?: string
           sent_by_user_id?: string | null
           ticket_id?: string
+          updated_at?: string | null
         }
         Relationships: [
           {
-            foreignKeyName: "public_messages_sent_by_user_id_fkey"
+            foreignKeyName: "messages_sent_by_user_id_fkey"
             columns: ["sent_by_user_id"]
             isOneToOne: false
             referencedRelation: "users"
             referencedColumns: ["id"]
           },
           {
-            foreignKeyName: "public_messages_ticket_id_fkey"
+            foreignKeyName: "messages_ticket_id_fkey"
             columns: ["ticket_id"]
             isOneToOne: false
             referencedRelation: "tickets"
@@ -80,7 +83,8 @@ export type Database = {
           sender_email: string
           sender_full_name: string
           subject: string
-          team_id: string | null
+          team_id: string
+          updated_at: string | null
         }
         Insert: {
           created_at?: string
@@ -89,7 +93,8 @@ export type Database = {
           sender_email: string
           sender_full_name: string
           subject: string
-          team_id?: string | null
+          team_id: string
+          updated_at?: string | null
         }
         Update: {
           created_at?: string
@@ -98,11 +103,12 @@ export type Database = {
           sender_email?: string
           sender_full_name?: string
           subject?: string
-          team_id?: string | null
+          team_id?: string
+          updated_at?: string | null
         }
         Relationships: [
           {
-            foreignKeyName: "public_tickets_team_id_fkey"
+            foreignKeyName: "tickets_team_id_fkey"
             columns: ["team_id"]
             isOneToOne: false
             referencedRelation: "teams"
@@ -113,7 +119,7 @@ export type Database = {
       users: {
         Row: {
           created_at: string
-          current_team_id: string
+          current_team_id: string | null
           email: string
           full_name: string
           id: string
@@ -122,7 +128,7 @@ export type Database = {
         }
         Insert: {
           created_at?: string
-          current_team_id: string
+          current_team_id?: string | null
           email: string
           full_name: string
           id?: string
@@ -131,7 +137,7 @@ export type Database = {
         }
         Update: {
           created_at?: string
-          current_team_id?: string
+          current_team_id?: string | null
           email?: string
           full_name?: string
           id?: string
@@ -140,7 +146,7 @@ export type Database = {
         }
         Relationships: [
           {
-            foreignKeyName: "public_users_current_team_id_fkey"
+            foreignKeyName: "users_current_team_id_fkey"
             columns: ["current_team_id"]
             isOneToOne: false
             referencedRelation: "teams"
@@ -150,30 +156,30 @@ export type Database = {
       }
       users_on_teams: {
         Row: {
-          role: Database["public"]["Enums"]["team_role_enum"]
+          role: Database["public"]["Enums"]["TEAM_ROLE_ENUM"]
           team_id: string
           user_id: string
         }
         Insert: {
-          role: Database["public"]["Enums"]["team_role_enum"]
-          team_id?: string
-          user_id?: string
+          role: Database["public"]["Enums"]["TEAM_ROLE_ENUM"]
+          team_id: string
+          user_id: string
         }
         Update: {
-          role?: Database["public"]["Enums"]["team_role_enum"]
+          role?: Database["public"]["Enums"]["TEAM_ROLE_ENUM"]
           team_id?: string
           user_id?: string
         }
         Relationships: [
           {
-            foreignKeyName: "public_users_on_teams_team_id_fkey"
+            foreignKeyName: "users_on_teams_team_id_fkey"
             columns: ["team_id"]
             isOneToOne: false
             referencedRelation: "teams"
             referencedColumns: ["id"]
           },
           {
-            foreignKeyName: "public_users_on_teams_user_id_fkey"
+            foreignKeyName: "users_on_teams_user_id_fkey"
             columns: ["user_id"]
             isOneToOne: false
             referencedRelation: "users"
@@ -186,25 +192,10 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
-      create_team: {
-        Args: {
-          name: string
-        }
-        Returns: {
-          created_at: string
-          id: string
-          image_url: string | null
-          name: string
-          updated_at: string | null
-        }
-      }
-      get_teams_for_authenticated_user: {
-        Args: Record<PropertyKey, never>
-        Returns: string[]
-      }
+      [_ in never]: never
     }
     Enums: {
-      team_role_enum: "OWNER" | "MEMBER"
+      TEAM_ROLE_ENUM: "OWNER" | "MEMBER"
     }
     CompositeTypes: {
       [_ in never]: never
