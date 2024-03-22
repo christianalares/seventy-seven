@@ -1,33 +1,26 @@
-// 'use client'
-
-// import type { Message } from '@/data'
-import { useSelectedTicket } from '@/hooks/use-selected-ticket'
 import { cn } from '@/lib/utils'
-import type { Tables } from '@/types/db'
+import type { Prisma } from '@prisma/client'
 import { format } from 'date-fns'
 import Link from 'next/link'
 import { Avatar, AvatarFallback, AvatarImage } from './ui/avatar'
 
 type Props = {
-  ticket: Tables<'tickets'>
+  ticket: Prisma.TicketGetPayload<{
+    select: {
+      id: true
+      created_at: true
+      subject: true
+      sender_full_name: true
+      sender_email: true
+    }
+  }>
 }
 
 export const TicketListItem = ({ ticket }: Props) => {
-  // const { ticketId, setTicketId } = useSelectedTicket()
-  // const isActive = ticketId === ticket.id
-
-  // const handleOnClick = () => {
-  //   setTicketId(ticket.id)
-  // }
-
   return (
     <Link
       href={`/ticket/${ticket.id}`}
-      // type="button"
-      // onClick={handleOnClick}
-      className={cn('relative w-full text-left block p-4 border rounded-md hover:border-border-hover overflow-hidden', {
-        // 'bg-foreground/5': isActive,
-      })}
+      className={cn('relative w-full text-left block p-4 border rounded-md hover:border-border-hover overflow-hidden')}
     >
       {/* {!message.read && <span className="absolute top-2 right-2 rounded-full bg-blue-500 size-2" />} */}
 
@@ -41,7 +34,7 @@ export const TicketListItem = ({ ticket }: Props) => {
           <span>{ticket.sender_full_name}</span>
         </div>
 
-        <time className="text-muted text-xs" dateTime={ticket.created_at}>
+        <time className="text-muted text-xs" dateTime={ticket.created_at.toISOString()}>
           {format(new Date(ticket.created_at), 'MMM d - HH:mm')}
         </time>
       </div>

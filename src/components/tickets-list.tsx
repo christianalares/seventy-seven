@@ -1,21 +1,23 @@
+import type { Prisma } from '@/lib/prisma'
 import { createClient } from '@/utils/supabase/server'
-import { getUser } from '@/utils/supabase/session'
+import { getSessionOrThrow, getUser } from '@/utils/supabase/session'
 import { TicketListItem } from './ticket-list-item'
 
-export const TicketsList = async () => {
-  const sb = createClient()
-  const user = await getUser()
+type Props = {
+  tickets: Array<
+    Prisma.TicketGetPayload<{
+      select: {
+        id: true
+        created_at: true
+        subject: true
+        sender_full_name: true
+        sender_email: true
+      }
+    }>
+  >
+}
 
-  if (!user) {
-    return null
-  }
-
-  const { data: tickets } = await sb.from('tickets').select('*').eq('team_id', user.current_team_id)
-
-  if (!tickets) {
-    return null
-  }
-
+export const TicketsList = ({ tickets }: Props) => {
   return (
     <ul className="flex flex-col gap-4">
       {tickets.map((ticket) => (

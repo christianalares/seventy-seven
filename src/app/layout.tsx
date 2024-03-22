@@ -44,20 +44,20 @@ const RootLayout = async ({ authed, unauthed, children }: Props) => {
               <div className="flex flex-1">
                 <Sidebar className="hidden md:block" />
 
-                <main className="flex-1">
+                <main className="flex-1 flex flex-col">
                   {authed}
                   {children}
                 </main>
               </div>
             </>
           ) : (
-            <main className="flex-1">
+            <main className="flex-1 flex flex-col">
               {unauthed}
               {children}
             </main>
           )}
 
-          <Toaster position="top-center" duration={10000000} />
+          <Toaster position="top-center" />
         </ThemeProvider>
       </body>
     </html>

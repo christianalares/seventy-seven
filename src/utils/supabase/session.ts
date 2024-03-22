@@ -1,3 +1,4 @@
+import { prisma } from '@/lib/prisma'
 import { createClient } from './server'
 
 export const getSessionOrThrow = async () => {
@@ -25,9 +26,32 @@ export const getSession = async () => {
 }
 
 export const getUser = async () => {
-  const sb = createClient()
   const session = await getSessionOrThrow()
 
-  const { data } = await sb.from('users').select('*').eq('id', session.user.id).single()
-  return data
+  const user = await prisma.user.findUniqueOrThrow({
+    where: {
+      id: session.user.id,
+    },
+    include: {
+      teams: {
+        select: {
+          role: true,
+          team: {
+            select: {
+              id: true,
+              name: true,
+              tickets: {
+                select: {
+                  id: true,
+                  subject: true,
+                },
+              },
+            },
+          },
+        },
+      },
+    },
+  })
+
+  return user
 }

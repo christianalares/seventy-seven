@@ -1,6 +1,6 @@
 'use client'
 
-import { createTeam } from '@/actions/team'
+import { createTeam } from '@/actions/teams'
 import { useAction } from 'next-safe-action/hooks'
 import { parseAsBoolean, useQueryState } from 'nuqs'
 import { useCallback } from 'react'

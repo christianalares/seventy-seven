@@ -1,74 +1,60 @@
-// 'use client'
-
-// import { MessageBody } from '@/components/message-body'
 import { TicketsList } from '@/components/tickets-list'
-import { Button } from '@/components/ui/button'
-import { Icon } from '@/components/ui/icon'
-// import { messages } from '@/data'
-import { useSelectedTicket } from '@/hooks/use-selected-ticket'
-import { cn } from '@/lib/utils'
-import { useMessagesListSheetStore } from '@/store'
-import { createClient } from '@/utils/supabase/server'
+import { prisma } from '@/lib/prisma'
+import { getSessionOrThrow } from '@/utils/supabase/session'
 
-const InboxPage = () => {
-  // const sb = createClient()
-  // const { open: openMessageListSheet } = useMessagesListSheetStore()
-  // const { ticketId } = useSelectedTicket()
+const InboxPage = async () => {
+  const session = await getSessionOrThrow()
+
+  const me = await prisma.user.findUniqueOrThrow({
+    where: { id: session.user.id },
+  })
+
+  let currentTeamId = me.current_team_id
+
+  if (!me.current_team_id) {
+    const firstUserTeam = await prisma.team.findFirst({
+      where: {
+        members: {
+          some: {
+            user_id: me.id,
+          },
+        },
+      },
+    })
+
+    currentTeamId = firstUserTeam?.id ?? null
+  }
+
+  if (!currentTeamId) {
+    throw new Error('No team found')
+  }
+
+  const tickets = await prisma.ticket.findMany({
+    where: {
+      team_id: currentTeamId,
+    },
+    select: {
+      id: true,
+      created_at: true,
+      subject: true,
+      sender_full_name: true,
+      sender_email: true,
+    },
+  })
+
+  if (tickets.length === 0) {
+    return (
+      <div className="flex flex-1 h-full m-8 justify-center items-center">
+        <p className="text-muted-foreground text-2xl">No tickets found</p>
+      </div>
+    )
+  }
 
   return (
     <div className="m-8">
-      <TicketsList />
+      <TicketsList tickets={tickets} />
     </div>
   )
-
-  // const currentMessage = messages.find((message) => message.id === ticketId)
-
-  // return (
-  //   <div>
-  //     <div className="px-4 md:px-6 border-b flex items-center gap-2 h-16 bg-background">
-  //       <Button
-  //         variant="ghost"
-  //         size="icon"
-  //         onClick={openMessageListSheet}
-  //         className={cn('text-primary/50 md:hidden', {
-  //           hidden: !ticketId,
-  //         })}
-  //       >
-  //         <Icon name="list" />
-  //       </Button>
-
-  //       <p>Filters etc...</p>
-  //     </div>
-
-  //     <div className="flex h-[calc(100vh-144px)]">
-  //       <div
-  //         className={cn('md:w-[clamp(384px,35vw,600px)] overflow-auto md:border-r p-4', {
-  //           // 'hidden md:block': !!ticketId,
-  //         })}
-  //       >
-  //         <TicketsList />
-  //       </div>
-  //       <div
-  //         className={cn('md:flex-1', {
-  //           // 'hidden md:block': !ticketId,
-  //         })}
-  //       >
-  //         {currentMessage ? (
-  //           <div>
-  //             <div className="h-12 px-4 text-sm border-b flex items-center">Controls etc...</div>
-  //             <div className="p-4">
-  //               <MessageBody message={currentMessage} />
-  //             </div>
-  //           </div>
-  //         ) : (
-  //           <p className="hidden md:flex flex-col gap-4 flex-1 h-full items-center justify-center text-2xl text-muted">
-  //             Select a message
-  //           </p>
-  //         )}
-  //       </div>
-  //     </div>
-  // </div>
-  // )
 }
 
 export default InboxPage
