@@ -1,6 +1,6 @@
 import { Sheet, SheetContent, SheetHeader, SheetTitle } from '@/components/ui/sheet'
 import { type Message, messages } from '@/data'
-import { useSelectedMessage } from '@/hooks/useSelectedMessage'
+import { useSelectedTicket } from '@/hooks/use-selected-ticket'
 import { cn } from '@/lib/utils'
 import { useMessagesListSheetStore } from '@/store'
 import { format } from 'date-fns'
@@ -10,7 +10,7 @@ type MenuItemProps = {
 }
 
 const MessageItem = ({ message }: MenuItemProps) => {
-  const { messageId, setMessageId } = useSelectedMessage()
+  const { messageId, setMessageId } = useSelectedTicket()
   const isActive = messageId === message.id
 
   const { close } = useMessagesListSheetStore()

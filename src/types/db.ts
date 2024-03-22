@@ -9,6 +9,45 @@ export type Json =
 export type Database = {
   public: {
     Tables: {
+      messages: {
+        Row: {
+          body: string
+          created_at: string
+          id: string
+          sent_by_user_id: string | null
+          ticket_id: string
+        }
+        Insert: {
+          body: string
+          created_at?: string
+          id?: string
+          sent_by_user_id?: string | null
+          ticket_id: string
+        }
+        Update: {
+          body?: string
+          created_at?: string
+          id?: string
+          sent_by_user_id?: string | null
+          ticket_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "public_messages_sent_by_user_id_fkey"
+            columns: ["sent_by_user_id"]
+            isOneToOne: false
+            referencedRelation: "users"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "public_messages_ticket_id_fkey"
+            columns: ["ticket_id"]
+            isOneToOne: false
+            referencedRelation: "tickets"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       teams: {
         Row: {
           created_at: string
@@ -33,9 +72,48 @@ export type Database = {
         }
         Relationships: []
       }
+      tickets: {
+        Row: {
+          created_at: string
+          id: string
+          meta: Json | null
+          sender_email: string
+          sender_full_name: string
+          subject: string
+          team_id: string | null
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          meta?: Json | null
+          sender_email: string
+          sender_full_name: string
+          subject: string
+          team_id?: string | null
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          meta?: Json | null
+          sender_email?: string
+          sender_full_name?: string
+          subject?: string
+          team_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "public_tickets_team_id_fkey"
+            columns: ["team_id"]
+            isOneToOne: false
+            referencedRelation: "teams"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       users: {
         Row: {
           created_at: string
+          current_team_id: string
           email: string
           full_name: string
           id: string
@@ -44,6 +122,7 @@ export type Database = {
         }
         Insert: {
           created_at?: string
+          current_team_id: string
           email: string
           full_name: string
           id?: string
@@ -52,13 +131,22 @@ export type Database = {
         }
         Update: {
           created_at?: string
+          current_team_id?: string
           email?: string
           full_name?: string
           id?: string
           image_url?: string | null
           updated_at?: string | null
         }
-        Relationships: []
+        Relationships: [
+          {
+            foreignKeyName: "public_users_current_team_id_fkey"
+            columns: ["current_team_id"]
+            isOneToOne: false
+            referencedRelation: "teams"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       users_on_teams: {
         Row: {
@@ -98,7 +186,22 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
-      [_ in never]: never
+      create_team: {
+        Args: {
+          name: string
+        }
+        Returns: {
+          created_at: string
+          id: string
+          image_url: string | null
+          name: string
+          updated_at: string | null
+        }
+      }
+      get_teams_for_authenticated_user: {
+        Args: Record<PropertyKey, never>
+        Returns: string[]
+      }
     }
     Enums: {
       team_role_enum: "OWNER" | "MEMBER"

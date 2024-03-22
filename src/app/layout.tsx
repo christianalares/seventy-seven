@@ -2,6 +2,7 @@ import { Header } from '@/components/header'
 import { AllSheets } from '@/components/sheets/all-sheets'
 import { Sidebar } from '@/components/sidebar'
 import { ThemeProvider } from '@/components/theme-provider'
+import { Toaster } from '@/components/ui/sonner'
 import { cn } from '@/lib/utils'
 import { getSession } from '@/utils/supabase/session'
 import type { Metadata, Viewport } from 'next'
@@ -55,6 +56,8 @@ const RootLayout = async ({ authed, unauthed, children }: Props) => {
               {children}
             </main>
           )}
+
+          <Toaster position="top-center" duration={10000000} />
         </ThemeProvider>
       </body>
     </html>
