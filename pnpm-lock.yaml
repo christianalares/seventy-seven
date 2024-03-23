@@ -35,6 +35,9 @@ dependencies:
   '@supabase/supabase-js':
     specifier: ^2.39.8
     version: 2.39.8
+  '@vercel/edge-config':
+    specifier: ^1.1.0
+    version: 1.1.0(typescript@5.4.2)
   class-variance-authority:
     specifier: ^0.7.0
     version: 0.7.0
@@ -1161,6 +1164,25 @@ packages:
       '@types/node': 20.11.28
     dev: false
 
+  /@vercel/edge-config-fs@0.1.0:
+    resolution: {integrity: sha512-NRIBwfcS0bUoUbRWlNGetqjvLSwgYH/BqKqDN7vK1g32p7dN96k0712COgaz6VFizAm9b0g6IG6hR6+hc0KCPg==}
+    dev: false
+
+  /@vercel/edge-config@1.1.0(typescript@5.4.2):
+    resolution: {integrity: sha512-es/4BzzKfyUilL5E1knR42MZHJqHMRfqitrnv18gVZZUha9ywrX3qNoCrPsNMJ1HS8xAAz/FJEyel7YFIDfKoQ==}
+    engines: {node: '>=14.6'}
+    peerDependencies:
+      '@opentelemetry/api': ^1.7.0
+    peerDependenciesMeta:
+      '@opentelemetry/api':
+        optional: true
+    dependencies:
+      '@vercel/edge-config-fs': 0.1.0
+      ts-essentials: 9.4.1(typescript@5.4.2)
+    transitivePeerDependencies:
+      - typescript
+    dev: false
+
   /agent-base@7.1.0:
     resolution: {integrity: sha512-o/zjMZRhJxny7OyEF+Op8X+efiELC7k7yOjMzgfzVqOzXqkBkWI79YoTdOtsuWd5BWhAGAuOY/Xa6xpiaWXiNg==}
     engines: {node: '>= 14'}
@@ -2248,6 +2270,17 @@ packages:
     resolution: {integrity: sha512-N3WMsuqV66lT30CrXNbEjx4GEwlow3v6rr4mCcv6prnfwhS01rkgyFdjPNBYd9br7LpXV1+Emh01fHnq2Gdgrw==}
     dev: false
 
+  /ts-essentials@9.4.1(typescript@5.4.2):
+    resolution: {integrity: sha512-oke0rI2EN9pzHsesdmrOrnqv1eQODmJpd/noJjwj2ZPC3Z4N2wbjrOEqnsEgmvlO2+4fBb0a794DCna2elEVIQ==}
+    peerDependencies:
+      typescript: '>=4.1.0'
+    peerDependenciesMeta:
+      typescript:
+        optional: true
+    dependencies:
+      typescript: 5.4.2
+    dev: false
+
   /ts-interface-checker@0.1.13:
     resolution: {integrity: sha512-Y/arvbn+rrz3JCKl9C4kVNfTfSm2/mEp5FSz5EsZSANGPSlQrpRI5M4PKF+mJnE52jOO90PnPSc3Ur3bTQw0gA==}
 
@@ -2259,7 +2292,6 @@ packages:
     resolution: {integrity: sha512-+2/g0Fds1ERlP6JsakQQDXjZdZMM+rqpamFZJEKh4kwTIn3iDkgKtby0CeNd5ATNZ4Ry1ax15TMx0W2V+miizQ==}
     engines: {node: '>=14.17'}
     hasBin: true
-    dev: true
 
   /undici-types@5.26.5:
     resolution: {integrity: sha512-JlCMO+ehdEIKqlFxk6IfVoAUVmgz7cU7zD/h9XZ0qzeosSHmUJVOzSQvvYSYWXkFXC+IfLKSIffhv0sVZup6pA==}
