@@ -18,7 +18,8 @@ const LinkItem = ({ href, label, icon, inDrawer }: LinkItemProps) => {
 
   const pathname = usePathname()
 
-  const isActive = (segment === null && href === '/') || pathname === href
+  const isActive =
+    (segment === null && href === '/') || pathname === href || (href === '/inbox' && segment === 'ticket')
 
   return (
     <li>

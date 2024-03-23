@@ -59,6 +59,9 @@ const TicketPage = async ({ params }: Props) => {
           },
           body: true,
         },
+        orderBy: {
+          created_at: 'asc',
+        },
       },
     },
   })

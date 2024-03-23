@@ -64,14 +64,14 @@ export const ChatResponseForm = ({ ticketId }: Props) => {
               <FormItem className="flex-1 flex flex-col gap-2">
                 <FormLabel>Write a response</FormLabel>
                 <FormControl>
-                  <Textarea className="bg-muted/20 rounded-none mt-0 flex-1" {...field} />
+                  <Textarea className="rounded-none mt-0 flex-1" {...field} />
                 </FormControl>
               </FormItem>
             )
           }}
         />
 
-        <div className="py-4 flex justify-end">
+        <div className="mt-4 flex justify-end">
           <Button size="sm" type="submit" variant="secondary">
             Send response
           </Button>
