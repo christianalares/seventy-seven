@@ -1,9 +1,11 @@
 'use client'
 
+import { createTeam } from '@/actions/teams'
+import { useAction } from 'next-safe-action/hooks'
 import { parseAsBoolean, useQueryState } from 'nuqs'
 import { useCallback } from 'react'
+import { toast } from 'sonner'
 import { CreateTeamForm } from '../forms/create-team-form'
-import { Button } from '../ui/button'
 import { ModalContent, ModalDescription, ModalFooter, ModalHeader, ModalParent, ModalTitle } from '../ui/modal'
 
 // type Props = {
@@ -42,20 +44,38 @@ export const useCreateTeamModal = () => {
 }
 
 export const CreateTeamModal = () => {
-  const { isOpen, setIsOpen } = useCreateTeamModal()
+  const { isOpen, setIsOpen, close } = useCreateTeamModal()
+  const action = useAction(createTeam, {
+    onSuccess: (createdTeam) => {
+      close()
+      toast.success(`Team "${createdTeam.name}" created successfully`)
+    },
+    onError: (err, input) => {
+      close()
+
+      toast.error(err.serverError, {
+        action: {
+          label: 'Retry',
+          onClick: () =>
+            action.execute({
+              name: input.name,
+            }),
+        },
+      })
+    },
+  })
 
   return (
     <ModalParent isOpen={isOpen} setIsOpen={setIsOpen}>
       <ModalContent>
         <ModalHeader>
           <ModalTitle>Create a team</ModalTitle>
-          <ModalDescription>The name of your team could be the name of your organization or company</ModalDescription>
+          <ModalDescription>The name of your team could be the name of your organization or company.</ModalDescription>
         </ModalHeader>
 
         <CreateTeamForm
           onSubmit={(values) => {
-            // biome-ignore lint/suspicious/noConsoleLog: <explanation>
-            console.log(values)
+            action.execute({ name: values.name })
           }}
         />
 

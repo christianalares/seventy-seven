@@ -8,7 +8,7 @@ const AccountPage = async () => {
       <Card>
         <CardHeader>
           <CardTitle>Appearance</CardTitle>
-          <CardDescription>Customize how SjuApp looks on your device</CardDescription>
+          <CardDescription>Customize how 77 looks on your device</CardDescription>
         </CardHeader>
 
         <CardContent>

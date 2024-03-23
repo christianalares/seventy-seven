@@ -2,7 +2,7 @@
 
 import { cn } from '@/lib/utils'
 import Link from 'next/link'
-import { usePathname, useSelectedLayoutSegment } from 'next/navigation'
+import { usePathname, useSelectedLayoutSegment, useSelectedLayoutSegments } from 'next/navigation'
 import { Icon, type IconName } from './ui/icon'
 import { SheetClose } from './ui/sheet'
 
@@ -14,10 +14,12 @@ type LinkItemProps = {
 }
 
 const LinkItem = ({ href, label, icon, inDrawer }: LinkItemProps) => {
-  const pathname = usePathname()
-  const segment = useSelectedLayoutSegment('authed')
+  const segment = useSelectedLayoutSegment()
 
-  const isActive = (segment === null && href === '/') || pathname === href
+  const pathname = usePathname()
+
+  const isActive =
+    (segment === null && href === '/') || pathname === href || (href === '/inbox' && segment === 'ticket')
 
   return (
     <li>
