@@ -42,6 +42,7 @@ model Team {
   members       UserOnTeam[]
   current_users User[]
   tickets       Ticket[]
+  is_personal   Boolean      @default(false)
 
   @@map("teams")
 }

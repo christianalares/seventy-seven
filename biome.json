@@ -10,7 +10,8 @@
     "rules": {
       "recommended": true,
       "correctness": {
-        "noUnusedVariables": "error"
+        "noUnusedVariables": "error",
+        "noUnusedImports": "warn"
       },
       "suspicious": {
         "noConsoleLog": "warn",

@@ -2,7 +2,7 @@
 
 import { cn } from '@/lib/utils'
 import Link from 'next/link'
-import { usePathname, useSelectedLayoutSegment, useSelectedLayoutSegments } from 'next/navigation'
+import { usePathname, useSelectedLayoutSegment } from 'next/navigation'
 import { Icon, type IconName } from './ui/icon'
 
 type LinkItemProps = {

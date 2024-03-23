@@ -3,7 +3,7 @@
 import { cn } from '@/lib/utils'
 import { motion } from 'framer-motion'
 import Link from 'next/link'
-import { usePathname, useSelectedLayoutSegment, useSelectedLayoutSegments } from 'next/navigation'
+import { usePathname, useSelectedLayoutSegment } from 'next/navigation'
 
 type SubLinkItemProps = {
   href: string

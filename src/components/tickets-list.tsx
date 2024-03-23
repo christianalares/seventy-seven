@@ -1,4 +1,3 @@
-import type { Prisma } from '@/lib/prisma'
 import type { TicketsFindMany } from '@/utils/supabase/queries/tickets'
 import { TicketListItem } from './ticket-list-item'
 

@@ -1,7 +1,6 @@
 'use client'
 
 import { createMessage } from '@/actions/messages'
-import { cn } from '@/lib/utils'
 import { useAction } from 'next-safe-action/hooks'
 import { useForm } from 'react-hook-form'
 import { toast } from 'sonner'

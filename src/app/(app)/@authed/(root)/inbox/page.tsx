@@ -1,7 +1,5 @@
 import { TicketsList } from '@/components/tickets-list'
-import { prisma } from '@/lib/prisma'
 import { ticketsQueries } from '@/utils/supabase/queries/tickets'
-import { getSession, getUser } from '@/utils/supabase/session'
 
 const InboxPage = async () => {
   const tickets = await ticketsQueries.findMany()
