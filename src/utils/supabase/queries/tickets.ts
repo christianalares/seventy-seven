@@ -1,4 +1,4 @@
-import { Prisma, prisma } from '@/lib/prisma'
+import { prisma } from '@/lib/prisma'
 import { getUser } from '../session'
 
 export type TicketsFindMany = Awaited<ReturnType<typeof findMany>>

@@ -5,12 +5,14 @@ import {
   Home,
   Inbox,
   List,
+  Loader2,
   type LucideProps,
   Mail,
   MailOpen,
   Menu,
   Monitor,
   Moon,
+  MoreVertical,
   Sun,
   X,
 } from 'lucide-react'
@@ -29,6 +31,8 @@ const icons = {
   sun: Sun,
   monitor: Monitor,
   chevronsUpDown: ChevronsUpDown,
+  loader: Loader2,
+  moreVertical: MoreVertical,
 }
 
 export type IconName = keyof typeof icons

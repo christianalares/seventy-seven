@@ -63,10 +63,18 @@ export const UserMenuDropdown = ({ user, className }: Props) => {
           <Link href="/account">Account</Link>
         </DropdownMenuItem>
 
-        <div className="flex flex-row justify-between items-center p-2">
+        <DropdownMenuItem asChild>
+          <Link href="/account/teams">Teams</Link>
+        </DropdownMenuItem>
+
+        <DropdownMenuSeparator />
+
+        <div className="flex flex-row justify-between items-center px-2 py-1">
           <p className="text-sm">Theme</p>
           <ThemeSwitch />
         </div>
+
+        <DropdownMenuSeparator />
 
         <DropdownMenuItem onClick={() => handleSignOut()}>Sign out</DropdownMenuItem>
       </DropdownMenuContent>

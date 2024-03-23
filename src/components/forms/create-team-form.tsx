@@ -1,6 +1,5 @@
 import { zodResolver } from '@hookform/resolvers/zod'
-import { Fragment } from 'react'
-import { UseFormHandleSubmit, useForm } from 'react-hook-form'
+import { useForm } from 'react-hook-form'
 import { z } from 'zod'
 import { Button } from '../ui/button'
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '../ui/form'
@@ -16,9 +15,10 @@ type CreateTeamFormValues = z.infer<typeof createTeamFormSchema>
 
 type Props = {
   onSubmit: (values: CreateTeamFormValues) => void
+  loading?: boolean
 }
 
-export const CreateTeamForm = ({ onSubmit }: Props) => {
+export const CreateTeamForm = ({ onSubmit, loading }: Props) => {
   const form = useForm<CreateTeamFormValues>({
     resolver: zodResolver(createTeamFormSchema),
   })
@@ -42,7 +42,7 @@ export const CreateTeamForm = ({ onSubmit }: Props) => {
         />
 
         <div className="mt-4 flex justify-end">
-          <Button variant="secondary" type="submit">
+          <Button loading={loading} variant="secondary" type="submit">
             Create team
           </Button>
         </div>

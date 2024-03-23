@@ -6,12 +6,7 @@ import { parseAsBoolean, useQueryState } from 'nuqs'
 import { useCallback } from 'react'
 import { toast } from 'sonner'
 import { CreateTeamForm } from '../forms/create-team-form'
-import { ModalContent, ModalDescription, ModalFooter, ModalHeader, ModalParent, ModalTitle } from '../ui/modal'
-
-// type Props = {
-//   isOpen: boolean
-//   setIsOpen: (isOpen: boolean) => void
-// }
+import { ModalContent, ModalDescription, ModalHeader, ModalParent, ModalTitle } from '../ui/modal'
 
 export const useCreateTeamModal = () => {
   const [isOpen, _setIsOpen] = useQueryState('create-team', parseAsBoolean.withDefault(false))
@@ -77,11 +72,8 @@ export const CreateTeamModal = () => {
           onSubmit={(values) => {
             action.execute({ name: values.name })
           }}
+          loading={action.status === 'executing'}
         />
-
-        {/* <ModalFooter>
-          <p>This is the footer</p>
-        </ModalFooter> */}
       </ModalContent>
     </ModalParent>
   )
