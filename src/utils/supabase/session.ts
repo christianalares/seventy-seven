@@ -1,20 +1,6 @@
 import { prisma } from '@/lib/prisma'
 import { createClient } from './server'
 
-export const getSessionOrThrow = async () => {
-  const sb = createClient()
-
-  const {
-    data: { session },
-  } = await sb.auth.getSession()
-
-  if (!session) {
-    throw new Error('No session found')
-  }
-
-  return session
-}
-
 export const getSession = async () => {
   const sb = createClient()
 
@@ -26,7 +12,11 @@ export const getSession = async () => {
 }
 
 export const getUser = async () => {
-  const session = await getSessionOrThrow()
+  const session = await getSession()
+
+  if (!session) {
+    throw new Error('No session found')
+  }
 
   const user = await prisma.user.findUniqueOrThrow({
     where: {

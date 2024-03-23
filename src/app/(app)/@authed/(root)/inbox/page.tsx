@@ -1,22 +1,24 @@
 import { TicketsList } from '@/components/tickets-list'
 import { prisma } from '@/lib/prisma'
-import { getSessionOrThrow } from '@/utils/supabase/session'
+import { getSession, getUser } from '@/utils/supabase/session'
 
 const InboxPage = async () => {
-  const session = await getSessionOrThrow()
+  const session = await getSession()
 
-  const me = await prisma.user.findUniqueOrThrow({
-    where: { id: session.user.id },
-  })
+  if (!session) {
+    return null
+  }
 
-  let currentTeamId = me.current_team_id
+  const user = await getUser()
 
-  if (!me.current_team_id) {
+  let currentTeamId = user.current_team_id
+
+  if (!user.current_team_id) {
     const firstUserTeam = await prisma.team.findFirst({
       where: {
         members: {
           some: {
-            user_id: me.id,
+            user_id: user.id,
           },
         },
       },

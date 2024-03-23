@@ -1,10 +1,14 @@
-import { getSessionOrThrow } from '@/utils/supabase/session'
+import { getSession } from '@/utils/supabase/session'
 import Link from 'next/link'
 import { Logo } from './ui/logo'
 import { UserMenuDropdown } from './user-menu-dropdown'
 
 export const Header = async () => {
-  const session = await getSessionOrThrow()
+  const session = await getSession()
+
+  if (!session) {
+    return null
+  }
 
   return (
     <header className="p-4 border-b h-20 flex items-center">

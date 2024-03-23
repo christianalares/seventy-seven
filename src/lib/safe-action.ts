@@ -1,10 +1,15 @@
-import { getSessionOrThrow } from '@/utils/supabase/session'
+import { getSession } from '@/utils/supabase/session'
 import { createSafeActionClient } from 'next-safe-action'
 
 export const authAction = createSafeActionClient({
   middleware: async () => {
-    const { user } = await getSessionOrThrow()
-    return user
+    const session = await getSession()
+
+    if (!session) {
+      throw new Error('No session found')
+    }
+
+    return session.user
   },
   handleReturnedServerError: (e) => {
     return e.message || 'Oh no, something went wrong!'

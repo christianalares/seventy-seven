@@ -1,6 +1,4 @@
 import type { Prisma } from '@/lib/prisma'
-import { createClient } from '@/utils/supabase/server'
-import { getSessionOrThrow, getUser } from '@/utils/supabase/session'
 import { TicketListItem } from './ticket-list-item'
 
 type Props = {
