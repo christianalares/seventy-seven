@@ -5,7 +5,7 @@ export async function middleware(req: NextRequest) {
   console.log('incoming ip:', req.ip)
   const allowedIps = await get<string[]>('whitelisted-ips')
 
-  if (process.env.NODE_ENV !== 'development' && allowedIps?.includes(req.ip ?? '')) {
+  if (process.env.NODE_ENV !== 'development' && !allowedIps?.includes(req.ip ?? '')) {
     return Response.redirect(new URL('/closed', req.url))
   }
 
