@@ -80,6 +80,7 @@ export type Database = {
           created_at: string
           id: string
           meta: Json | null
+          sender_avatar_url: string | null
           sender_email: string
           sender_full_name: string
           subject: string
@@ -90,6 +91,7 @@ export type Database = {
           created_at?: string
           id?: string
           meta?: Json | null
+          sender_avatar_url?: string | null
           sender_email: string
           sender_full_name: string
           subject: string
@@ -100,6 +102,7 @@ export type Database = {
           created_at?: string
           id?: string
           meta?: Json | null
+          sender_avatar_url?: string | null
           sender_email?: string
           sender_full_name?: string
           subject?: string
@@ -119,7 +122,7 @@ export type Database = {
       users: {
         Row: {
           created_at: string
-          current_team_id: string | null
+          current_team_id: string
           email: string
           full_name: string
           id: string
@@ -128,7 +131,7 @@ export type Database = {
         }
         Insert: {
           created_at?: string
-          current_team_id?: string | null
+          current_team_id: string
           email: string
           full_name: string
           id?: string
@@ -137,7 +140,7 @@ export type Database = {
         }
         Update: {
           created_at?: string
-          current_team_id?: string | null
+          current_team_id?: string
           email?: string
           full_name?: string
           id?: string

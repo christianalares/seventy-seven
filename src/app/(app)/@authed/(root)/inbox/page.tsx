@@ -1,48 +1,10 @@
 import { TicketsList } from '@/components/tickets-list'
 import { prisma } from '@/lib/prisma'
+import { ticketsQueries } from '@/utils/supabase/queries/tickets'
 import { getSession, getUser } from '@/utils/supabase/session'
 
 const InboxPage = async () => {
-  const session = await getSession()
-
-  if (!session) {
-    return null
-  }
-
-  const user = await getUser()
-
-  let currentTeamId = user.current_team_id
-
-  if (!user.current_team_id) {
-    const firstUserTeam = await prisma.team.findFirst({
-      where: {
-        members: {
-          some: {
-            user_id: user.id,
-          },
-        },
-      },
-    })
-
-    currentTeamId = firstUserTeam?.id ?? null
-  }
-
-  if (!currentTeamId) {
-    throw new Error('No team found')
-  }
-
-  const tickets = await prisma.ticket.findMany({
-    where: {
-      team_id: currentTeamId,
-    },
-    select: {
-      id: true,
-      created_at: true,
-      subject: true,
-      sender_full_name: true,
-      sender_email: true,
-    },
-  })
+  const tickets = await ticketsQueries.findMany()
 
   if (tickets.length === 0) {
     return (

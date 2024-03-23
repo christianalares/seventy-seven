@@ -25,8 +25,8 @@ model User {
   email           String       @unique @db.VarChar
   full_name       String
   image_url       String?
-  current_team_id String?      @db.Uuid
-  current_team    Team?        @relation(fields: [current_team_id], references: [id])
+  current_team_id String       @db.Uuid
+  current_team    Team         @relation(fields: [current_team_id], references: [id])
   teams           UserOnTeam[]
   messages        Message[]
 
@@ -59,16 +59,17 @@ model UserOnTeam {
 }
 
 model Ticket {
-  id               String    @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
-  created_at       DateTime  @default(now()) @db.Timestamptz(6)
-  updated_at       DateTime? @db.Timestamptz(6)
-  team_id          String    @db.Uuid
-  team             Team      @relation(fields: [team_id], references: [id])
-  subject          String
-  sender_full_name String
-  sender_email     String
-  meta             Json?
-  messages         Message[]
+  id                String    @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  created_at        DateTime  @default(now()) @db.Timestamptz(6)
+  updated_at        DateTime? @db.Timestamptz(6)
+  team_id           String    @db.Uuid
+  team              Team      @relation(fields: [team_id], references: [id])
+  subject           String
+  sender_full_name  String
+  sender_email      String
+  sender_avatar_url String?
+  meta              Json?
+  messages          Message[]
 
   @@map("tickets")
 }

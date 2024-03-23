@@ -1,18 +1,9 @@
 import type { Prisma } from '@/lib/prisma'
+import type { TicketsFindMany } from '@/utils/supabase/queries/tickets'
 import { TicketListItem } from './ticket-list-item'
 
 type Props = {
-  tickets: Array<
-    Prisma.TicketGetPayload<{
-      select: {
-        id: true
-        created_at: true
-        subject: true
-        sender_full_name: true
-        sender_email: true
-      }
-    }>
-  >
+  tickets: TicketsFindMany
 }
 
 export const TicketsList = ({ tickets }: Props) => {

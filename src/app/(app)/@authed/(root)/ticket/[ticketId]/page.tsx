@@ -1,11 +1,6 @@
-import { Avatar } from '@/components/avatar'
-import { ChatMessageHandler } from '@/components/chat-message-handler'
-import { ChatMessageUser } from '@/components/chat-message-user'
 import { ChatResponseForm } from '@/components/forms/chat-response-form'
 import { TicketChat } from '@/components/ticket-chat'
-import { prisma } from '@/lib/prisma'
-import { getUser } from '@/utils/supabase/session'
-import { format } from 'date-fns'
+import { ticketsQueries } from '@/utils/supabase/queries/tickets'
 
 type Props = {
   params: {
@@ -14,57 +9,7 @@ type Props = {
 }
 
 const TicketPage = async ({ params }: Props) => {
-  const user = await getUser()
-
-  let currentTeamId = user.current_team_id
-
-  if (!user.current_team_id) {
-    const firstUserTeam = await prisma.team.findFirst({
-      where: {
-        members: {
-          some: {
-            user_id: user.id,
-          },
-        },
-      },
-    })
-
-    currentTeamId = firstUserTeam?.id ?? null
-  }
-
-  if (!currentTeamId) {
-    throw new Error('No team found')
-  }
-
-  const ticket = await prisma.ticket.findFirst({
-    where: {
-      team_id: currentTeamId,
-      id: params.ticketId,
-    },
-    select: {
-      id: true,
-      subject: true,
-      sender_full_name: true,
-      sender_email: true,
-      messages: {
-        select: {
-          created_at: true,
-          id: true,
-          sent_by_user: {
-            select: {
-              id: true,
-              full_name: true,
-              image_url: true,
-            },
-          },
-          body: true,
-        },
-        orderBy: {
-          created_at: 'asc',
-        },
-      },
-    },
-  })
+  const ticket = await ticketsQueries.findById(params.ticketId)
 
   if (!ticket) {
     throw new Error('No ticket found')
@@ -82,8 +27,6 @@ const TicketPage = async ({ params }: Props) => {
       <div className="flex-1 overflow-auto">
         <TicketChat ticket={ticket} />
       </div>
-
-      {/* <div className="bg-red-500 h-8" /> */}
 
       <div className="min-h-60 h-[15vh] border-t">
         <ChatResponseForm ticketId={ticket.id} />

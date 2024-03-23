@@ -1,22 +1,16 @@
 import { cn } from '@/lib/utils'
-import type { Prisma } from '@prisma/client'
+import type { TicketsFindMany } from '@/utils/supabase/queries/tickets'
 import { format } from 'date-fns'
 import Link from 'next/link'
-import { Avatar, AvatarFallback, AvatarImage } from './ui/avatar'
+import { Avatar } from './avatar'
 
 type Props = {
-  ticket: Prisma.TicketGetPayload<{
-    select: {
-      id: true
-      created_at: true
-      subject: true
-      sender_full_name: true
-      sender_email: true
-    }
-  }>
+  ticket: TicketsFindMany[number]
 }
 
 export const TicketListItem = ({ ticket }: Props) => {
+  const firstMessage = ticket.messages.at(0)
+
   return (
     <Link
       href={`/ticket/${ticket.id}`}
@@ -26,10 +20,8 @@ export const TicketListItem = ({ ticket }: Props) => {
 
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-2">
-          <Avatar className="size-8">
-            <AvatarImage src="https://github.com/christianalares.png" alt="@christianalares" />
-            <AvatarFallback>CN</AvatarFallback>
-          </Avatar>
+          {/* TODO: Get real avatar */}
+          <Avatar imageUrl={ticket.sender_avatar_url ?? undefined} name={ticket.sender_full_name} />
 
           <span>{ticket.sender_full_name}</span>
         </div>
@@ -41,7 +33,7 @@ export const TicketListItem = ({ ticket }: Props) => {
 
       <p className="mt-2">
         <span className="line-clamp-1">{ticket.subject}</span>
-        <span className="mt-2 text-muted line-clamp-2">{ticket.sender_email}</span>
+        {firstMessage && <span className="mt-2 text-muted line-clamp-2">{firstMessage.body}</span>}
       </p>
     </Link>
   )
