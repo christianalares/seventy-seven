@@ -55,31 +55,23 @@ export const ChatResponseForm = ({ ticketId }: Props) => {
 
   return (
     <Form {...form}>
-      {/* <button
-        type="button"
-        onClick={() => {
-          form.reset()
-        }}
-      >
-        Click
-      </button> */}
-      <form className="relative border rounded-md" onSubmit={onSubmit}>
+      <form onSubmit={onSubmit} className="p-4 flex flex-col h-full">
         <FormField
           control={form.control}
           name="message"
           render={({ field }) => {
             return (
-              <FormItem className="space-y-0">
-                <FormLabel className="p-4 block">Write a response</FormLabel>
+              <FormItem className="flex-1 flex flex-col gap-2">
+                <FormLabel>Write a response</FormLabel>
                 <FormControl>
-                  <Textarea className="min-h-[15vh] border-0 rounded-none mt-0" {...field} />
+                  <Textarea className="bg-muted/20 rounded-none mt-0 flex-1" {...field} />
                 </FormControl>
               </FormItem>
             )
           }}
         />
 
-        <div className="p-2 flex items-center justify-end">
+        <div className="py-4 flex justify-end">
           <Button size="sm" type="submit" variant="secondary">
             Send response
           </Button>

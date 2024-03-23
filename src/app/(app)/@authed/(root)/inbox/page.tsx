@@ -44,17 +44,13 @@ const InboxPage = async () => {
 
   if (tickets.length === 0) {
     return (
-      <div className="flex flex-1 h-full m-8 justify-center items-center">
+      <div className="flex flex-1 h-full justify-center items-center">
         <p className="text-muted-foreground text-2xl">No tickets found</p>
       </div>
     )
   }
 
-  return (
-    <div className="m-8">
-      <TicketsList tickets={tickets} />
-    </div>
-  )
+  return <TicketsList tickets={tickets} />
 }
 
 export default InboxPage

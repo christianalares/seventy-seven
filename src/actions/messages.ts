@@ -12,9 +12,9 @@ export const createMessage = authAction(
     body: z.string().min(1).max(1000),
   }),
   async (values, user) => {
-    const uuser = await getUser()
+    const dbUser = await getUser()
 
-    const usersTeamsHasThisTicket = uuser.teams.some((team) =>
+    const usersTeamsHasThisTicket = dbUser.teams.some((team) =>
       team.team.tickets.some((ticket) => ticket.id === values.ticketId),
     )
 
