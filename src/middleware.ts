@@ -2,7 +2,6 @@ import { get } from '@vercel/edge-config'
 import { type NextRequest, NextResponse } from 'next/server'
 
 export async function middleware(req: NextRequest) {
-  console.log('incoming ip:', req.ip)
   const allowedIps = await get<string[]>('whitelisted-ips')
 
   if (process.env.NODE_ENV !== 'development' && !allowedIps?.includes(req.ip ?? '')) {
@@ -13,5 +12,5 @@ export async function middleware(req: NextRequest) {
 }
 
 export const config = {
-  matcher: ['/((?!api|_next/static|favicon.ico|closed).*)'],
+  matcher: ['/((?!_next/static|favicon.ico|closed).*)'],
 }
