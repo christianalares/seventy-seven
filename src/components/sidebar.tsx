@@ -30,7 +30,7 @@ const LinkItem = ({ href, label, icon }: LinkItemProps) => {
           },
         )}
       >
-        {icon && <Icon className="size-4" name={icon} />}
+        {icon && <Icon className="size-5 md:size-4" name={icon} />}
         <span className="sr-only md:not-sr-only">{label}</span>
       </Link>
     </li>
@@ -48,7 +48,7 @@ export const Sidebar = ({ className }: Props) => {
         <ul className="flex flex-col gap-2">
           <LinkItem href="/" icon="home" label="Overview" />
           <LinkItem href="/inbox" icon="inbox" label="Inbox" />
-          <LinkItem href="/settings" icon="cog" label="Settings" />
+          <LinkItem href="/settings" icon="settings" label="Settings" />
         </ul>
       </nav>
     </aside>

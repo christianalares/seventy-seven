@@ -1,7 +1,9 @@
 import {
   Calendar,
+  Check,
   ChevronsUpDown,
-  Cog,
+  ClipboardCheck,
+  ClipboardCopy,
   Dot,
   Home,
   Inbox,
@@ -14,6 +16,7 @@ import {
   Monitor,
   Moon,
   MoreVertical,
+  Settings,
   Sun,
   X,
 } from 'lucide-react'
@@ -34,7 +37,10 @@ const icons = {
   chevronsUpDown: ChevronsUpDown,
   loader: Loader2,
   moreVertical: MoreVertical,
-  cog: Cog,
+  settings: Settings,
+  clipboardCopy: ClipboardCopy,
+  clipboardCheck: ClipboardCheck,
+  check: Check,
 }
 
 export type IconName = keyof typeof icons

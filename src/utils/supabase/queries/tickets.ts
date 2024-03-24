@@ -1,11 +1,11 @@
 import { prisma } from '@/lib/prisma'
-import { getUser } from '../session'
+import { usersQueries } from './users'
 
 export type TicketsFindMany = Awaited<ReturnType<typeof findMany>>
 export type TicketsFindById = Awaited<ReturnType<typeof findById>>
 
 const findMany = async () => {
-  const user = await getUser()
+  const user = await usersQueries.me()
 
   const tickets = await prisma.ticket.findMany({
     where: {
@@ -31,7 +31,7 @@ const findMany = async () => {
 }
 
 const findById = async (id: string) => {
-  const user = await getUser()
+  const user = await usersQueries.me()
 
   const ticket = await prisma.ticket.findFirst({
     where: {

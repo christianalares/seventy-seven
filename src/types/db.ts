@@ -53,6 +53,7 @@ export type Database = {
       }
       teams: {
         Row: {
+          auth_token: string | null
           created_at: string
           id: string
           image_url: string | null
@@ -61,6 +62,7 @@ export type Database = {
           updated_at: string | null
         }
         Insert: {
+          auth_token?: string | null
           created_at?: string
           id?: string
           image_url?: string | null
@@ -69,6 +71,7 @@ export type Database = {
           updated_at?: string | null
         }
         Update: {
+          auth_token?: string | null
           created_at?: string
           id?: string
           image_url?: string | null

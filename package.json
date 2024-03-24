@@ -42,6 +42,7 @@
     "tailwind-merge": "^2.2.1",
     "tailwind-scrollbar-hide": "^1.1.7",
     "tailwindcss-animate": "^1.0.7",
+    "uuidv4": "^6.2.13",
     "vaul": "^0.9.0",
     "zod": "^3.22.4",
     "zustand": "^4.5.2"

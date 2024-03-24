@@ -2,7 +2,7 @@
 
 import { prisma } from '@/lib/prisma'
 import { authAction } from '@/lib/safe-action'
-import { getUser } from '@/utils/supabase/session'
+import { usersQueries } from '@/utils/supabase/queries/users'
 import { revalidatePath } from 'next/cache'
 import { z } from 'zod'
 
@@ -12,7 +12,7 @@ export const createMessage = authAction(
     body: z.string().min(1).max(1000),
   }),
   async (values, user) => {
-    const dbUser = await getUser()
+    const dbUser = await usersQueries.me()
 
     const usersTeamsHasThisTicket = dbUser.teams.some((team) =>
       team.team.tickets.some((ticket) => ticket.id === values.ticketId),
