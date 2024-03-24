@@ -159,3 +159,33 @@ export const leaveTeam = authAction(
     return leftTeam
   },
 )
+
+export const updateTeamName = authAction(
+  z.object({
+    teamId: z.string().uuid(),
+    name: z.string().min(1).max(100),
+  }),
+  async (values, user) => {
+    const updatedTeam = prisma.team.update({
+      where: {
+        id: values.teamId,
+        // Make sure the user is an owner of the team
+        members: {
+          some: {
+            user_id: user.id,
+            role: 'OWNER',
+          },
+        },
+      },
+      data: {
+        name: values.name,
+      },
+    })
+
+    if (!updatedTeam) {
+      throw new Error('Could not update team name')
+    }
+
+    return updatedTeam
+  },
+)

@@ -1,6 +1,7 @@
 import {
   Calendar,
   ChevronsUpDown,
+  Cog,
   Dot,
   Home,
   Inbox,
@@ -33,6 +34,7 @@ const icons = {
   chevronsUpDown: ChevronsUpDown,
   loader: Loader2,
   moreVertical: MoreVertical,
+  cog: Cog,
 }
 
 export type IconName = keyof typeof icons

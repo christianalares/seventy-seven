@@ -1,17 +1,7 @@
-import { zodResolver } from '@hookform/resolvers/zod'
-import { useForm } from 'react-hook-form'
-import { z } from 'zod'
 import { Button } from '../ui/button'
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '../ui/form'
 import { Input } from '../ui/input'
-
-const createTeamFormSchema = z.object({
-  name: z.string({ required_error: 'Team name is required' }).min(1, {
-    message: 'Team name is required',
-  }),
-})
-
-type CreateTeamFormValues = z.infer<typeof createTeamFormSchema>
+import { type CreateTeamFormValues, useTeamForm } from './hooks/use-team-form'
 
 type Props = {
   onSubmit: (values: CreateTeamFormValues) => void
@@ -19,9 +9,7 @@ type Props = {
 }
 
 export const CreateTeamForm = ({ onSubmit, loading }: Props) => {
-  const form = useForm<CreateTeamFormValues>({
-    resolver: zodResolver(createTeamFormSchema),
-  })
+  const form = useTeamForm()
 
   return (
     <Form {...form}>

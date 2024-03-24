@@ -23,6 +23,13 @@ export const getUser = async () => {
       id: session.user.id,
     },
     include: {
+      current_team: {
+        select: {
+          id: true,
+          name: true,
+          image_url: true,
+        },
+      },
       teams: {
         select: {
           role: true,
