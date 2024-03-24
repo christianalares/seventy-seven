@@ -2,6 +2,7 @@
 
 import { leaveTeam, setCurrentTeam } from '@/actions/teams'
 import { useAction } from 'next-safe-action/hooks'
+import Link from 'next/link'
 import { toast } from 'sonner'
 import { Button } from './button'
 import {
@@ -56,6 +57,12 @@ export const TeamActionsMenu = ({ teamId, isCurrent }: Props) => {
         >
           Set as current
         </DropdownMenuItem>
+
+        {isCurrent && (
+          <DropdownMenuItem asChild>
+            <Link href="/settings">Manage team</Link>
+          </DropdownMenuItem>
+        )}
 
         <DropdownMenuSeparator />
 
