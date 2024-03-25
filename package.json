@@ -7,12 +7,14 @@
   },
   "scripts": {
     "build": "turbo build",
-    "dev": "turbo dev",
+    "dev": "dotenv -- turbo dev",
     "lint": "turbo lint",
-    "format": "echo biome format"
+    "check:types": "turbo check:types"
   },
   "devDependencies": {
+    "@biomejs/biome": "^1.6.2",
     "@repo/typescript-config": "workspace:*",
+    "dotenv-cli": "^7.4.1",
     "turbo": "latest"
   }
 }
