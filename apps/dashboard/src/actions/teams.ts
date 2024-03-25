@@ -1,8 +1,10 @@
 'use server'
 
 import { authAction } from '@/lib/safe-action'
+import { usersQueries } from '@/queries/users'
 import { prisma } from '@seventy-seven/orm/prisma'
 import { revalidatePath } from 'next/cache'
+import { uuid } from 'uuidv4'
 import { z } from 'zod'
 
 export const createTeam = authAction(
@@ -189,3 +191,38 @@ export const updateTeamName = authAction(
     return updatedTeam
   },
 )
+
+export const generateAuthToken = authAction(z.undefined().optional(), async (_values, user) => {
+  const usresCurrentTeam = await usersQueries.myCurrentTeam()
+
+  const randomToken = Buffer.from(`${uuid()}_${uuid()}`).toString('base64')
+
+  await prisma.team
+    .update({
+      where: {
+        id: usresCurrentTeam.current_team.id,
+        // Make sure the user is an owner of the team
+        members: {
+          some: {
+            user_id: user.id,
+            role: 'OWNER',
+          },
+        },
+      },
+      data: {
+        auth_token: randomToken,
+      },
+      select: {
+        auth_token: true,
+      },
+    })
+    .catch((_error) => {
+      throw new Error('Could not generate auth token')
+    })
+
+  revalidatePath('/settings/security')
+
+  return {
+    isNew: !usresCurrentTeam.current_team.auth_token,
+  }
+})

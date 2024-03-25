@@ -43,6 +43,7 @@ model Team {
   current_users User[]
   tickets       Ticket[]
   is_personal   Boolean      @default(false)
+  auth_token    String?
 
   @@map("teams")
 }

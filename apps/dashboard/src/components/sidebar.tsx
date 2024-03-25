@@ -48,7 +48,7 @@ export const Sidebar = ({ className }: Props) => {
         <ul className="flex flex-col gap-2">
           <LinkItem href="/" icon="home" label="Overview" />
           <LinkItem href="/inbox" icon="inbox" label="Inbox" />
-          <LinkItem href="/settings" icon="cog" label="Settings" />
+          <LinkItem href="/settings" icon="settings" label="Settings" />
         </ul>
       </nav>
     </aside>
