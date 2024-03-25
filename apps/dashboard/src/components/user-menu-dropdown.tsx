@@ -1,7 +1,6 @@
 'use client'
 
 import { Avatar } from '@/components/avatar'
-import { cn } from '@/lib/utils'
 import type { UsersFindMe } from '@/queries/users'
 import { createClient } from '@seventy-seven/supabase/clients/client'
 import {
@@ -12,6 +11,7 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from '@seventy-seven/ui/dropdown-menu'
+import { cn } from '@seventy-seven/ui/utils'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
 import { ThemeSwitch } from './theme-switch'

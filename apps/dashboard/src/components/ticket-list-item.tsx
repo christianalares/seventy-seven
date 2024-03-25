@@ -1,5 +1,5 @@
-import { cn } from '@/lib/utils'
 import type { TicketsFindMany } from '@/queries/tickets'
+import { cn } from '@seventy-seven/ui/utils'
 import { format } from 'date-fns'
 import Link from 'next/link'
 import { Avatar } from './avatar'

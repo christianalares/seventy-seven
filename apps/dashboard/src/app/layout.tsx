@@ -1,5 +1,5 @@
 import { ThemeProvider } from '@/components/theme-provider'
-import { cn } from '@/lib/utils'
+import { cn } from '@seventy-seven/ui/utils'
 import type { Metadata, Viewport } from 'next'
 import { Inter } from 'next/font/google'
 import './globals.css'

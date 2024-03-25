@@ -1,7 +1,7 @@
 'use client'
 
-import { cn } from '@/lib/utils'
 import { Icon, type IconName } from '@seventy-seven/ui/icon'
+import { cn } from '@seventy-seven/ui/utils'
 import { useTheme } from 'next-themes'
 
 const getThemeIcon = (theme?: string): IconName => {
