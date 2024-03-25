@@ -11,7 +11,7 @@
   "scripts": {
     "lint": "biome check .",
     "check:types": "tsc --noEmit",
-    "codegen": "supabase gen types typescript --project-id nqofuchqmjrqzomjedyz --schema public > ./src/types/db.ts"
+    "codegen": "npx supabase gen types typescript --project-id nqofuchqmjrqzomjedyz --schema public > ./src/types/db.ts"
   },
   "dependencies": {
     "@seventy-seven/orm": "workspace:*",
