@@ -12,6 +12,7 @@
     "@biomejs/biome": "^1.6.2",
     "@seventy-seven/typescript-config": "workspace:*",
     "dotenv-cli": "^7.4.1",
-    "turbo": "latest"
+    "turbo": "latest",
+    "typescript": "^5.4.3"
   }
 }

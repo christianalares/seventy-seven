@@ -20,6 +20,9 @@ importers:
       turbo:
         specifier: latest
         version: 1.13.0
+      typescript:
+        specifier: ^5.4.3
+        version: 5.4.3
 
   apps/dashboard:
     dependencies:
