@@ -8,7 +8,7 @@
   "scripts": {
     "lint": "biome check .",
     "check:types": "tsc --noEmit",
-    "codegen": "cd ../../ && prisma generate --schema=./packages/orm/src/prisma/schema.prisma"
+    "prisma:generate": "prisma generate --schema=./src/prisma/schema.prisma"
   },
   "dependencies": {
     "@prisma/client": "^5.11.0"

@@ -12,9 +12,8 @@
       "cache": false,
       "persistent": true
     },
-    "codegen": {
-      "cache": false,
-      "persistent": true
+    "prisma:generate": {
+      "cache": false
     },
     "check:types": {
       "persistent": true
