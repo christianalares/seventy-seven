@@ -1,8 +1,9 @@
 {
-  "name": "web",
+  "name": "@seventy-seven/dashboard",
   "version": "1.0.0",
   "private": true,
   "scripts": {
+    "postinstall": "prisma generate",
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
