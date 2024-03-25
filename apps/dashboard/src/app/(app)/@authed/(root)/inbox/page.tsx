@@ -1,5 +1,5 @@
 import { TicketsList } from '@/components/tickets-list'
-import { ticketsQueries } from '@/utils/supabase/queries/tickets'
+import { ticketsQueries } from '@/queries/tickets'
 
 const InboxPage = async () => {
   const tickets = await ticketsQueries.findMany()

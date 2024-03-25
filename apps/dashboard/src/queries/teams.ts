@@ -1,10 +1,10 @@
-import { prisma } from '@/lib/prisma'
-import { getUser } from '../session'
+import { prisma } from '@seventy-seven/orm/prisma'
+import { usersQueries } from './users'
 
 export type TeamsFindMany = Awaited<ReturnType<typeof findMany>>
 
 const findMany = async () => {
-  const user = await getUser()
+  const user = await usersQueries.findMe()
 
   const userTeams = await prisma.userOnTeam.findMany({
     where: {

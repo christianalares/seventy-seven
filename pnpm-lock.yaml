@@ -47,6 +47,12 @@ importers:
       '@radix-ui/react-slot':
         specifier: ^1.0.2
         version: 1.0.2(@types/react@18.2.69)(react@18.2.0)
+      '@seventy-seven/orm':
+        specifier: workspace:*
+        version: link:../../packages/orm
+      '@seventy-seven/supabase':
+        specifier: workspace:*
+        version: link:../../packages/supabase
       '@supabase/ssr':
         specifier: ^0.1.0
         version: 0.1.0(@supabase/supabase-js@2.39.8)
@@ -141,6 +147,41 @@ importers:
       tailwindcss:
         specifier: ^3.4.1
         version: 3.4.1
+      typescript:
+        specifier: ^5.4.3
+        version: 5.4.3
+
+  packages/orm:
+    dependencies:
+      '@prisma/client':
+        specifier: ^5.11.0
+        version: 5.11.0(prisma@5.11.0)
+    devDependencies:
+      '@types/node':
+        specifier: ^20.11.30
+        version: 20.11.30
+      prisma:
+        specifier: ^5.11.0
+        version: 5.11.0
+
+  packages/supabase:
+    dependencies:
+      '@seventy-seven/orm':
+        specifier: workspace:*
+        version: link:../orm
+      '@supabase/ssr':
+        specifier: ^0.1.0
+        version: 0.1.0(@supabase/supabase-js@2.39.8)
+      '@supabase/supabase-js':
+        specifier: ^2.39.8
+        version: 2.39.8
+      next:
+        specifier: ^14.1.4
+        version: 14.1.4(react-dom@18.2.0)(react@18.2.0)
+    devDependencies:
+      supabase:
+        specifier: ^1.150.0
+        version: 1.150.0
       typescript:
         specifier: ^5.4.3
         version: 5.4.3

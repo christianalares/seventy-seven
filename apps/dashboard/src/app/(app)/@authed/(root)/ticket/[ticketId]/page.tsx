@@ -1,6 +1,6 @@
 import { ChatResponseForm } from '@/components/forms/chat-response-form'
 import { TicketChat } from '@/components/ticket-chat'
-import { ticketsQueries } from '@/utils/supabase/queries/tickets'
+import { ticketsQueries } from '@/queries/tickets'
 
 type Props = {
   params: {

@@ -1,6 +1,6 @@
 'use client'
 
-import type { TeamsFindMany } from '@/utils/supabase/queries/teams'
+import type { TeamsFindMany } from '@/queries/teams'
 import { teamRoleEnumToWord } from '@/utils/teamRoleEnumToWord'
 import { TeamActionsMenu } from './ui/team-actions-menu'
 

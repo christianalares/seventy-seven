@@ -1,0 +1,26 @@
+{
+  "name": "@seventy-seven/supabase",
+  "version": "0.0.0",
+  "private": true,
+  "exports": {
+    "./clients/server": "./src/clients/server.ts",
+    "./clients/middleware": "./src/clients/middleware.ts",
+    "./clients/client": "./src/clients/client.ts",
+    "./session": "./src/session.ts"
+  },
+  "scripts": {
+    "lint": "biome check .",
+    "check:types": "tsc --noEmit",
+    "codegen": "supabase gen types typescript --project-id nqofuchqmjrqzomjedyz --schema public > ./src/types/db.ts"
+  },
+  "dependencies": {
+    "@seventy-seven/orm": "workspace:*",
+    "@supabase/ssr": "^0.1.0",
+    "@supabase/supabase-js": "^2.39.8",
+    "next": "^14.1.4"
+  },
+  "devDependencies": {
+    "supabase": "^1.150.0",
+    "typescript": "^5.4.3"
+  }
+}

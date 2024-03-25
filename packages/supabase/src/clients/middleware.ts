@@ -1,6 +1,6 @@
-import type { Database } from '@/types/db'
 import { type CookieOptions, createServerClient } from '@supabase/ssr'
 import { type NextRequest, NextResponse } from 'next/server'
+import type { Database } from '../types/db'
 
 export const createClient = (request: NextRequest) => {
   const NEXT_PUBLIC_SUPABASE_URL = process.env.NEXT_PUBLIC_SUPABASE_URL

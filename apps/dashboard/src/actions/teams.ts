@@ -1,7 +1,7 @@
 'use server'
 
-import { prisma } from '@/lib/prisma'
 import { authAction } from '@/lib/safe-action'
+import { prisma } from '@seventy-seven/orm/prisma'
 import { revalidatePath } from 'next/cache'
 import { z } from 'zod'
 

@@ -1,4 +1,4 @@
-import { getSession } from '@/utils/supabase/session'
+import { getSession } from '@seventy-seven/supabase/session'
 import Link from 'next/link'
 import { Logo } from './ui/logo'
 import { UserMenuDropdown } from './user-menu-dropdown'

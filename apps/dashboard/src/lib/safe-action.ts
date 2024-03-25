@@ -1,4 +1,4 @@
-import { getSession } from '@/utils/supabase/session'
+import { getSession } from '@seventy-seven/supabase/session'
 import { createSafeActionClient } from 'next-safe-action'
 
 export const authAction = createSafeActionClient({

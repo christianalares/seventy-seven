@@ -6,7 +6,8 @@
     "build": "turbo build",
     "dev": "dotenv -- turbo dev",
     "lint": "turbo lint",
-    "check:types": "turbo check:types"
+    "check:types": "turbo check:types",
+    "codegen": "turbo codegen"
   },
   "devDependencies": {
     "@biomejs/biome": "^1.6.2",

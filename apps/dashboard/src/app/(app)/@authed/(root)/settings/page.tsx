@@ -1,9 +1,9 @@
 import { UpdateTeamNameForm } from '@/components/forms/update-team-name.form'
 import { PageWrapper } from '@/components/page-wrapper'
-import { getUser } from '@/utils/supabase/session'
+import { usersQueries } from '@/queries/users'
 
 const SettingsPage = async () => {
-  const user = await getUser()
+  const user = await usersQueries.findMe()
 
   return (
     <PageWrapper>

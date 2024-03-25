@@ -1,24 +1,16 @@
-import { prisma } from '@/lib/prisma'
-import { createClient } from './server'
+import { prisma } from '@seventy-seven/orm/prisma'
+import { getSession } from '@seventy-seven/supabase/session'
 
-export const getSession = async () => {
-  const sb = createClient()
+export type UsersFindMe = Awaited<ReturnType<typeof findMe>>
 
-  const {
-    data: { session },
-  } = await sb.auth.getSession()
-
-  return session
-}
-
-export const getUser = async () => {
+const findMe = async () => {
   const session = await getSession()
 
   if (!session) {
     throw new Error('No session found')
   }
 
-  const user = await prisma.user.findUniqueOrThrow({
+  const me = await prisma.user.findUnique({
     where: {
       id: session.user.id,
     },
@@ -50,5 +42,13 @@ export const getUser = async () => {
     },
   })
 
-  return user
+  if (!me) {
+    throw new Error('User not found')
+  }
+
+  return me
+}
+
+export const usersQueries = {
+  findMe,
 }

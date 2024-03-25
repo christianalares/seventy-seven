@@ -9,11 +9,12 @@
     "start": "next start",
     "lint": "biome check .",
     "check:types": "tsc --noEmit",
-    "prisma:generate": "prisma generate",
-    "supabase:generate-types": "npx supabase gen types typescript --project-id nqofuchqmjrqzomjedyz --schema public > ./src/types/db.ts",
-    "codegen": "pnpm run prisma:generate && pnpm run supabase:generate-types"
+    "_prisma:generate": "prisma generate",
+    "_supabase:generate-types": "npx supabase gen types typescript --project-id nqofuchqmjrqzomjedyz --schema public > ./src/types/db.ts"
   },
   "dependencies": {
+    "@seventy-seven/orm": "workspace:*",
+    "@seventy-seven/supabase": "workspace:*",
     "@hookform/resolvers": "^3.3.4",
     "@prisma/client": "^5.11.0",
     "@radix-ui/react-avatar": "^1.0.4",

@@ -1,4 +1,4 @@
-import type { TicketsFindMany } from '@/utils/supabase/queries/tickets'
+import type { TicketsFindMany } from '@/queries/tickets'
 import { TicketListItem } from './ticket-list-item'
 
 type Props = {

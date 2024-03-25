@@ -1,5 +1,5 @@
 import { cn } from '@/lib/utils'
-import type { TicketsFindMany } from '@/utils/supabase/queries/tickets'
+import type { TicketsFindMany } from '@/queries/tickets'
 import { format } from 'date-fns'
 import Link from 'next/link'
 import { Avatar } from './avatar'

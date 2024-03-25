@@ -1,6 +1,6 @@
-import type { Database } from '@/types/db'
 import { type CookieOptions, createServerClient } from '@supabase/ssr'
-import { cookies /* , headers */ } from 'next/headers'
+import { cookies } from 'next/headers'
+import type { Database } from '../types/db'
 
 type CreateClientOptions = {
   admin?: boolean
@@ -50,12 +50,6 @@ export const createClient = (options?: CreateClientOptions) => {
           // user sessions.
         }
       },
-    },
-    global: {
-      // headers: {
-      //   // Pass user agent from browser
-      //   'user-agent': headers().get('user-agent') as string,
-      // },
     },
   })
 }

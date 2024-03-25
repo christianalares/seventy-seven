@@ -1,0 +1,20 @@
+{
+  "name": "@seventy-seven/orm",
+  "version": "0.0.0",
+  "private": true,
+  "exports": {
+    "./prisma": "./src/prisma.ts"
+  },
+  "scripts": {
+    "lint": "biome check .",
+    "check:types": "tsc --noEmit",
+    "codegen": "cd ../../ && prisma generate --schema=./packages/orm/src/prisma/schema.prisma"
+  },
+  "dependencies": {
+    "@prisma/client": "^5.11.0"
+  },
+  "devDependencies": {
+    "@types/node": "^20.11.30",
+    "prisma": "^5.11.0"
+  }
+}

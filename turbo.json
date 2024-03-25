@@ -12,8 +12,11 @@
       "cache": false,
       "persistent": true
     },
-    "check:types": {
+    "codegen": {
       "cache": false,
+      "persistent": true
+    },
+    "check:types": {
       "persistent": true
     }
   }

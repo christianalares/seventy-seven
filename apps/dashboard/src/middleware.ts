@@ -1,6 +1,6 @@
+import { createClient } from '@seventy-seven/supabase/clients/middleware'
 import { get } from '@vercel/edge-config'
 import { type NextRequest, NextResponse } from 'next/server'
-import { createClient } from './utils/supabase/middleware'
 
 const OPEN_PATHS = ['/', '/closed']
 
