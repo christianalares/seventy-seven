@@ -10,7 +10,7 @@
   },
   "devDependencies": {
     "@biomejs/biome": "^1.6.2",
-    "@repo/typescript-config": "workspace:*",
+    "@seventy-seven/typescript-config": "workspace:*",
     "dotenv-cli": "^7.4.1",
     "turbo": "latest"
   }
