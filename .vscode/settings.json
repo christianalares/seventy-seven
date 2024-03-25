@@ -1,4 +1,5 @@
 {
+  "prettier.enable": false,
   "files.associations": {
     "*.css": "tailwindcss"
   },
@@ -15,7 +16,11 @@
   "[typescriptreact]": {
     "editor.defaultFormatter": "biomejs.biome"
   },
+  "[json]": {
+    "editor.defaultFormatter": "biomejs.biome"
+  },
   "editor.formatOnSave": true,
+  "tailwindCSS.experimental.configFile": "./packages/ui/tailwind.config.ts",
   "tailwindCSS.experimental.classRegex": [
     ["cva\\(([^)]*)\\)", "[\"'`]([^\"'`]*).*?[\"'`]"],
     ["cx\\(([^)]*)\\)", "(?:'|\"|`)([^']*)(?:'|\"|`)"]

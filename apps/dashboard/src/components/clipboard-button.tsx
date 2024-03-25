@@ -1,10 +1,10 @@
 'use client'
 
-import { cn } from '@/lib/utils'
+import { Button } from '@seventy-seven/ui/button'
+import { Icon } from '@seventy-seven/ui/icon'
+import { cn } from '@seventy-seven/ui/utils'
 import { AnimatePresence, motion } from 'framer-motion'
 import { useState } from 'react'
-import { Button } from './ui/button'
-import { Icon } from './ui/icon'
 
 type Props = {
   text: string

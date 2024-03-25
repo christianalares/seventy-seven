@@ -1,6 +1,6 @@
 import { PageWrapper } from '@/components/page-wrapper'
 import { ThemeSwitch } from '@/components/theme-switch'
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@seventy-seven/ui/card'
 
 const AccountPage = async () => {
   return (

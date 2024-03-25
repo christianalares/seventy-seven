@@ -1,12 +1,12 @@
 'use client'
 
 import { updateTeamName } from '@/actions/teams'
+import { Button } from '@seventy-seven/ui/button'
+import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@seventy-seven/ui/card'
+import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@seventy-seven/ui/form'
+import { Input } from '@seventy-seven/ui/input'
 import { useAction } from 'next-safe-action/hooks'
 import { toast } from 'sonner'
-import { Button } from '../ui/button'
-import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '../ui/card'
-import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '../ui/form'
-import { Input } from '../ui/input'
 import { type UseTeamFormArgs, useTeamForm } from './hooks/use-team-form'
 
 type Props = {

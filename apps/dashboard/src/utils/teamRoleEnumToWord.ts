@@ -1,4 +1,4 @@
-import type { TEAM_ROLE_ENUM } from '@prisma/client'
+import type { TEAM_ROLE_ENUM } from '@seventy-seven/orm/prisma'
 import { assertUnreachable } from './assertUnreachable'
 
 export const teamRoleEnumToWord = (teamRole: TEAM_ROLE_ENUM) => {

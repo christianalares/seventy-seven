@@ -2,12 +2,12 @@
 
 import { generateAuthToken } from '@/actions/teams'
 import type { UsersGetMyCurrentTeam } from '@/queries/users'
+import { Button } from '@seventy-seven/ui/button'
+import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@seventy-seven/ui/card'
+import { Input } from '@seventy-seven/ui/input'
 import { useAction } from 'next-safe-action/hooks'
 import { toast } from 'sonner'
 import { ClipboardButton } from './clipboard-button'
-import { Button } from './ui/button'
-import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from './ui/card'
-import { Input } from './ui/input'
 
 type Props = {
   authToken: UsersGetMyCurrentTeam['current_team']['auth_token']

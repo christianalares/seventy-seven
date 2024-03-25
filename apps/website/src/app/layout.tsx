@@ -1,8 +1,9 @@
+import { Header } from '@/components/header'
 import { ThemeProvider } from '@/components/theme-provider'
 import { cn } from '@/lib/utils'
+import '@seventy-seven/ui/globals.css'
 import type { Metadata, Viewport } from 'next'
 import { Inter } from 'next/font/google'
-import './globals.css'
 
 const inter = Inter({ subsets: ['latin'] })
 
@@ -27,8 +28,9 @@ const RootLayout = async ({ children }: Props) => {
     <html lang="en" className="h-full" suppressHydrationWarning>
       <body className={cn('h-full flex flex-col', inter.className)} suppressHydrationWarning>
         <ThemeProvider attribute="class" defaultTheme="system" enableSystem disableTransitionOnChange>
-          <p className="text-red-400">layout</p>
-          {children}
+          <Header />
+
+          <main className="py-8">{children}</main>
         </ThemeProvider>
       </body>
     </html>

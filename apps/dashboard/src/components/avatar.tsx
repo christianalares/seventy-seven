@@ -1,5 +1,5 @@
-import { AvatarFallback, AvatarImage, Avatar as AvatarPrimitive } from '@/components/ui/avatar'
 import { cn } from '@/lib/utils'
+import { AvatarFallback, AvatarImage, Avatar as AvatarPrimitive } from '@seventy-seven/ui/avatar'
 
 type Props = {
   imageUrl?: string

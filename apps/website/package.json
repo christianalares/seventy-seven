@@ -10,6 +10,7 @@
     "check:types": "tsc --noEmit"
   },
   "dependencies": {
+    "@seventy-seven/ui": "workspace:*",
     "@hookform/resolvers": "^3.3.4",
     "@seventy-seven/orm": "workspace:*",
     "class-variance-authority": "^0.7.0",

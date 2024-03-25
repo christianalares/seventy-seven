@@ -1,4 +1,4 @@
-import type { Prisma } from '@prisma/client'
+import type { Prisma } from '@seventy-seven/orm/prisma'
 import { ChatMessageHandler } from './chat-message-handler'
 import { ChatMessageUser } from './chat-message-user'
 

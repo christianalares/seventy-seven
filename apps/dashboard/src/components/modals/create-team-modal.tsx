@@ -1,12 +1,12 @@
 'use client'
 
 import { createTeam } from '@/actions/teams'
+import { ModalContent, ModalDescription, ModalHeader, ModalParent, ModalTitle } from '@seventy-seven/ui/modal'
 import { useAction } from 'next-safe-action/hooks'
 import { parseAsBoolean, useQueryState } from 'nuqs'
 import { useCallback } from 'react'
 import { toast } from 'sonner'
 import { CreateTeamForm } from '../forms/create-team-form'
-import { ModalContent, ModalDescription, ModalHeader, ModalParent, ModalTitle } from '../ui/modal'
 
 export const useCreateTeamModal = () => {
   const [isOpen, _setIsOpen] = useQueryState('create-team', parseAsBoolean.withDefault(false))

@@ -1,14 +1,10 @@
-import { getSession } from '@seventy-seven/supabase/session'
+import { usersQueries } from '@/queries/users'
 import Link from 'next/link'
-import { Logo } from './ui/logo'
+import { Logo } from './logo'
 import { UserMenuDropdown } from './user-menu-dropdown'
 
 export const Header = async () => {
-  const session = await getSession()
-
-  if (!session) {
-    return null
-  }
+  const user = await usersQueries.findMe()
 
   return (
     <header className="p-4 border-b h-20 flex items-center">
@@ -18,7 +14,7 @@ export const Header = async () => {
         </Link>
       </div>
 
-      <UserMenuDropdown className="ml-auto" user={session.user} />
+      <UserMenuDropdown className="ml-auto" user={user} />
     </header>
   )
 }

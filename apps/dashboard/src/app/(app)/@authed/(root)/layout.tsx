@@ -2,7 +2,7 @@ import { Header } from '@/components/header'
 import { AllModals } from '@/components/modals/all-modals'
 import { AllSheets } from '@/components/sheets/all-sheets'
 import { Sidebar } from '@/components/sidebar'
-import { Toaster } from '@/components/ui/sonner'
+import { Toaster } from '@seventy-seven/ui/sonner'
 
 type Props = {
   children: React.ReactNode

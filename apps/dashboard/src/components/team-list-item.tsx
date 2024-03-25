@@ -2,7 +2,7 @@
 
 import type { TeamsFindMany } from '@/queries/teams'
 import { teamRoleEnumToWord } from '@/utils/teamRoleEnumToWord'
-import { TeamActionsMenu } from './ui/team-actions-menu'
+import { TeamActionsMenu } from './team-actions-menu'
 
 type Props = {
   userTeam: TeamsFindMany[number]

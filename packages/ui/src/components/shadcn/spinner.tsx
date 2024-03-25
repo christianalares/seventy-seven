@@ -1,4 +1,4 @@
-import { cn } from '@/lib/utils'
+import { cn } from '../../utils'
 import { Icon } from './icon'
 
 type Props = {

@@ -1,13 +1,13 @@
 'use client'
 
 import { createMessage } from '@/actions/messages'
+import { Button } from '@seventy-seven/ui/button'
+import { Form, FormControl, FormField, FormItem, FormLabel } from '@seventy-seven/ui/form'
+import { Textarea } from '@seventy-seven/ui/textarea'
 import { useAction } from 'next-safe-action/hooks'
 import { useForm } from 'react-hook-form'
 import { toast } from 'sonner'
 import { z } from 'zod'
-import { Button } from '../ui/button'
-import { Form, FormControl, FormField, FormItem, FormLabel } from '../ui/form'
-import { Textarea } from '../ui/textarea'
 
 const chatResponseFormSchema = z.object({
   message: z.string().min(1).max(1000),

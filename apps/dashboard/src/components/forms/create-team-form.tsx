@@ -1,6 +1,6 @@
-import { Button } from '../ui/button'
-import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '../ui/form'
-import { Input } from '../ui/input'
+import { Button } from '@seventy-seven/ui/button'
+import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@seventy-seven/ui/form'
+import { Input } from '@seventy-seven/ui/input'
 import { type CreateTeamFormValues, useTeamForm } from './hooks/use-team-form'
 
 type Props = {

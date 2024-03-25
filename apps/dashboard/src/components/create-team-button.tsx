@@ -1,8 +1,8 @@
 'use client'
 
-import { cn } from '@/lib/utils'
+import { Button } from '@seventy-seven/ui/button'
+import { cn } from '@seventy-seven/ui/utils'
 import { useCreateTeamModal } from './modals/create-team-modal'
-import { Button } from './ui/button'
 
 type Props = {
   className?: string

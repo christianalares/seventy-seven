@@ -1,7 +1,8 @@
 import type { Message } from '@/data'
-import { AvatarImage } from '@radix-ui/react-avatar'
+// import { AvatarImage } from '@radix-ui/react-avatar'
 import { format } from 'date-fns'
-import { Avatar, AvatarFallback } from './ui/avatar'
+import { Avatar } from './avatar'
+// import { Avatar, AvatarFallback } from './ui/avatar'
 
 type Props = {
   message: Message
@@ -11,10 +12,7 @@ export const MessageBody = ({ message }: Props) => {
   return (
     <div>
       <div className="flex items-center gap-2">
-        <Avatar>
-          <AvatarImage src="https://github.com/christianalares.png" alt="@christianalares" />
-          <AvatarFallback>CN</AvatarFallback>
-        </Avatar>
+        <Avatar imageUrl="https://github.com/christianalares.png" name="Christian Alares" />
 
         <h1 className="flex items-center justify-between gap-4 font-medium text-lg">{message.from.name}</h1>
 

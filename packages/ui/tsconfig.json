@@ -1,0 +1,5 @@
+{
+  "extends": "@seventy-seven/typescript-config/react-library.json",
+  "include": ["src"],
+  "exclude": ["node_modules"]
+}

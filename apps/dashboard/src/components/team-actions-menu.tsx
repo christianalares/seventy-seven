@@ -1,18 +1,18 @@
 'use client'
 
 import { leaveTeam, setCurrentTeam } from '@/actions/teams'
-import { useAction } from 'next-safe-action/hooks'
-import Link from 'next/link'
-import { toast } from 'sonner'
-import { Button } from './button'
+import { Button } from '@seventy-seven/ui/button'
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
-} from './dropdown-menu'
-import { Icon } from './icon'
+} from '@seventy-seven/ui/dropdown-menu'
+import { Icon } from '@seventy-seven/ui/icon'
+import { useAction } from 'next-safe-action/hooks'
+import Link from 'next/link'
+import { toast } from 'sonner'
 
 type Props = {
   teamId: string

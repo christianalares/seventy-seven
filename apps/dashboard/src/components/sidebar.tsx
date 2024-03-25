@@ -1,9 +1,9 @@
 'use client'
 
 import { cn } from '@/lib/utils'
+import { Icon, type IconName } from '@seventy-seven/ui/icon'
 import Link from 'next/link'
 import { usePathname, useSelectedLayoutSegment } from 'next/navigation'
-import { Icon, type IconName } from './ui/icon'
 
 type LinkItemProps = {
   href: string

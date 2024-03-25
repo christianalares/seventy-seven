@@ -1,7 +1,7 @@
 'use client'
 
 import { createClient } from '@seventy-seven/supabase/clients/client'
-import { Button } from './ui/button'
+import { Button } from '@seventy-seven/ui/button'
 
 export const SignInWithGithubButton = () => {
   const sb = createClient()

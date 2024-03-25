@@ -1,12 +1,9 @@
 'use client'
 
+import { Avatar } from '@/components/avatar'
 import { cn } from '@/lib/utils'
+import type { UsersFindMe } from '@/queries/users'
 import { createClient } from '@seventy-seven/supabase/clients/client'
-import type { Session } from '@supabase/supabase-js'
-import Link from 'next/link'
-import { useRouter } from 'next/navigation'
-import { ThemeSwitch } from './theme-switch'
-import { Avatar, AvatarFallback, AvatarImage } from './ui/avatar'
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -14,10 +11,13 @@ import {
   DropdownMenuLabel,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
-} from './ui/dropdown-menu'
+} from '@seventy-seven/ui/dropdown-menu'
+import Link from 'next/link'
+import { useRouter } from 'next/navigation'
+import { ThemeSwitch } from './theme-switch'
 
 type Props = {
-  user: Session['user']
+  user: UsersFindMe
   className?: string
 }
 
@@ -31,29 +31,29 @@ export const UserMenuDropdown = ({ user, className }: Props) => {
     router.refresh()
   }
 
-  const fullnameParts = user.user_metadata.full_name.split(' ')
+  const fullnameParts = user.full_name.split(' ')
+  // @ts-ignore
   let initials = fullnameParts[0].charAt(0).toUpperCase()
 
   if (fullnameParts.length >= 2) {
+    // @ts-ignore
     initials = (fullnameParts[0].charAt(0) + fullnameParts[fullnameParts.length - 1].charAt(0)).toUpperCase()
   }
 
   if (fullnameParts.length === 1) {
+    // @ts-ignore
     initials = `${fullnameParts[0].charAt(0).toUpperCase()}${fullnameParts[0].charAt(1).toUpperCase()}`
   }
 
   return (
     <DropdownMenu>
       <DropdownMenuTrigger className={cn('rounded-full', className)}>
-        <Avatar>
-          <AvatarImage src={user.user_metadata.avatar_url} />
-          <AvatarFallback>{initials}</AvatarFallback>
-        </Avatar>
+        <Avatar name={initials} imageUrl={user.image_url ?? undefined} />
       </DropdownMenuTrigger>
 
       <DropdownMenuContent className="w-56" align="end">
         <DropdownMenuLabel>
-          {user.user_metadata.full_name}
+          {user.full_name}
           <p className="text-muted-foreground text-xs font-normal">{user.email}</p>
         </DropdownMenuLabel>
 
