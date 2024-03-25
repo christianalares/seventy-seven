@@ -2,9 +2,6 @@
   "name": "seventy-seven",
   "private": true,
   "packageManager": "pnpm@8.9.0",
-  "engines": {
-    "node": ">=18"
-  },
   "scripts": {
     "build": "turbo build",
     "dev": "dotenv -- turbo dev",

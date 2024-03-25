@@ -5,12 +5,17 @@ node_modules
 .pnp
 .pnp.js
 
-# Local env files
+# env
 .env
 .env.local
 .env.development.local
 .env.test.local
 .env.production.local
+
+# next.js
+.next/
+out/
+next-env.d.ts
 
 # Testing
 coverage
@@ -22,7 +27,6 @@ coverage
 .vercel
 
 # Build Outputs
-.next/
 out/
 build
 dist
