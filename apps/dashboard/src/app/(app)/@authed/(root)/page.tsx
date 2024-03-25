@@ -3,7 +3,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@seve
 const AuthorizedPage = () => {
   return (
     <div className="m-8">
-      <Card>
+      <Card className="">
         <CardHeader>
           <CardTitle>Whats new?</CardTitle>
           <CardDescription>You have 3 incoming tickets</CardDescription>
