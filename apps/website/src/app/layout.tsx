@@ -47,7 +47,7 @@ const RootLayout = async ({ children }: Props) => {
         className={cn('h-full flex flex-col', mavenPro.variable, abel.variable, roboto.variable)}
         suppressHydrationWarning
       >
-        <ThemeProvider attribute="class" defaultTheme="system" enableSystem disableTransitionOnChange>
+        <ThemeProvider attribute="class" defaultTheme="light" enableSystem disableTransitionOnChange>
           <ConfettiRain />
           <Header />
 
