@@ -88,3 +88,11 @@ model Message {
 
   @@map("messages")
 }
+
+model Waitlist {
+  id         String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  created_at DateTime @default(now()) @db.Timestamptz(6)
+  email      String   @unique
+
+  @@map("waitlist")
+}

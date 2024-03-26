@@ -1,11 +1,27 @@
+import { ConfettiRain } from '@/components/confetti-rain'
 import { Header } from '@/components/header'
 import { ThemeProvider } from '@/components/theme-provider'
 import '@seventy-seven/ui/globals.css'
 import { cn } from '@seventy-seven/ui/utils'
 import type { Metadata, Viewport } from 'next'
-import { Inter } from 'next/font/google'
+import { Abel, Maven_Pro, Roboto } from 'next/font/google'
+import '../app/globals.css'
 
-const inter = Inter({ subsets: ['latin'] })
+const roboto = Roboto({
+  subsets: ['latin'],
+  weight: '400',
+  variable: '--roboto',
+})
+
+const mavenPro = Maven_Pro({
+  subsets: ['latin'],
+  variable: '--maven-pro',
+})
+const abel = Abel({
+  subsets: ['latin'],
+  weight: '400',
+  variable: '--abel',
+})
 
 export const viewport: Viewport = {
   width: 'device-width',
@@ -26,8 +42,12 @@ type Props = {
 const RootLayout = async ({ children }: Props) => {
   return (
     <html lang="en" className="h-full" suppressHydrationWarning>
-      <body className={cn('h-full flex flex-col', inter.className)} suppressHydrationWarning>
+      <body
+        className={cn('h-full flex flex-col', mavenPro.variable, abel.variable, roboto.variable)}
+        suppressHydrationWarning
+      >
         <ThemeProvider attribute="class" defaultTheme="system" enableSystem disableTransitionOnChange>
+          <ConfettiRain />
           <Header />
 
           <main className="py-8">{children}</main>

@@ -48,18 +48,20 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
     const Comp = asChild ? Slot : 'button'
     return (
       <Comp
-        className={cn('bg-lime-400', buttonVariants({ variant, size, loading }), className)}
+        className={cn(buttonVariants({ variant, size, loading }), className)}
         ref={ref}
         disabled={disabled || !!loading}
         {...props}
       >
-        {loading && (
-          <span className="absolute inset-0 bg-background/75 rounded-md flex items-center justify-center text-muted-foreground">
-            <Spinner className="size-5" />
-            <span className="sr-only">Loading</span>
-          </span>
-        )}
-        {children}
+        <span>
+          {loading && (
+            <span className="absolute inset-0 bg-background/75 rounded-md flex items-center justify-center text-muted-foreground">
+              <Spinner className="size-5" />
+              <span className="sr-only">Loading</span>
+            </span>
+          )}
+          {children}
+        </span>
       </Comp>
     )
   },

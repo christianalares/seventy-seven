@@ -1,6 +1,6 @@
 import { usersQueries } from '@/queries/users'
+import { Logo } from '@seventy-seven/ui/logo'
 import Link from 'next/link'
-import { Logo } from './logo'
 import { UserMenuDropdown } from './user-menu-dropdown'
 
 export const Header = async () => {
@@ -9,7 +9,7 @@ export const Header = async () => {
   return (
     <header className="p-4 border-b h-20 flex items-center">
       <div className="flex items-center gap-4">
-        <Link href="/" className="hover:skew-x-12 transition-transform duration-300">
+        <Link href="/" className="hover:scale-105 transition-transform duration-300">
           <Logo />
         </Link>
       </div>

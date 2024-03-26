@@ -16,6 +16,7 @@ import {
   Monitor,
   Moon,
   MoreVertical,
+  Send,
   Settings,
   Sun,
   X,
@@ -41,6 +42,7 @@ const icons = {
   clipboardCopy: ClipboardCopy,
   clipboardCheck: ClipboardCheck,
   check: Check,
+  send: Send,
 }
 
 export type IconName = keyof typeof icons
