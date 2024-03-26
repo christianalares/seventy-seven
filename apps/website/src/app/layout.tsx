@@ -9,7 +9,8 @@ import '../app/globals.css'
 
 const roboto = Roboto({
   subsets: ['latin'],
-  weight: '400',
+  // light, normal, medium, bold
+  weight: ['300', '400', '500', '700'],
   variable: '--roboto',
 })
 
