@@ -26,13 +26,13 @@ export const Header = () => {
   }
 
   return (
-    <header className="p-4 border-b h-20 flex items-center">
-      <div className="w-full grid grid-cols-[1fr_1fr_1fr] items-center">
+    <header className="p-4 h-20 flex items-center">
+      <div className="w-full grid grid-cols-[repeat(2,1fr)] items-center">
         <Link href="/" className="hover:scale-105 transition-transform duration-300">
           <Logo />
         </Link>
 
-        <nav className="justify-self-center">
+        {/* <nav className="justify-self-center">
           <ul className="flex items-center gap-4">
             <li>
               <Link href="/">Pricing</Link>
@@ -44,7 +44,7 @@ export const Header = () => {
               <Link href="/">Docs</Link>
             </li>
           </ul>
-        </nav>
+        </nav> */}
 
         <div className="justify-self-end flex items-center gap-4">
           {isClient && (
