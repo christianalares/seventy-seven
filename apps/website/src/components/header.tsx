@@ -27,14 +27,14 @@ export const Header = () => {
 
   return (
     <header className="p-4 h-20 flex items-center">
-      <div className="w-full grid grid-cols-[repeat(3,1fr)] items-center">
+      <div className="w-full grid grid-cols-[repeat(2,1fr)] items-center">
         <div>
           <Link href="/">
             <Logo />
           </Link>
         </div>
 
-        <nav className="justify-self-center">
+        {/* <nav className="justify-self-center">
           <ul className="flex items-center gap-4">
             <li>
               <Link href="/">Pricing</Link>
@@ -46,7 +46,7 @@ export const Header = () => {
               <Link href="/">Docs</Link>
             </li>
           </ul>
-        </nav>
+        </nav> */}
 
         <div className="justify-self-end flex items-center gap-4">
           {isClient && (
