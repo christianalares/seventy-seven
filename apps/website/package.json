@@ -10,9 +10,10 @@
     "check:types": "tsc --noEmit"
   },
   "dependencies": {
-    "@hookform/resolvers": "^3.3.4",
     "@seventy-seven/orm": "workspace:*",
     "@seventy-seven/ui": "workspace:*",
+    "@seventy-seven/email": "workspace:*",
+    "@hookform/resolvers": "^3.3.4",
     "class-variance-authority": "^0.7.0",
     "framer-motion": "^11.0.20",
     "lucide-react": "^0.363.0",

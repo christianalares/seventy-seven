@@ -1,0 +1,28 @@
+{
+  "name": "@seventy-seven/email",
+  "version": "0.0.0",
+  "private": true,
+  "exports": {
+    ".": "./index.ts",
+    "./emails/waitlist-confirmation": "./emails/waitlist-confirmation.tsx"
+  },
+  "scripts": {
+    "lint": "biome check .",
+    "check:types": "tsc --noEmit",
+    "dev": "email dev --port 3002"
+  },
+  "dependencies": {
+    "@seventy-seven/ui": "workspace:*",
+    "@react-email/components": "0.0.15",
+    "@react-email/render": "0.0.12",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "react-email": "2.1.0",
+    "resend": "^3.2.0"
+  },
+  "devDependencies": {
+    "@types/node": "^20.11.30",
+    "@types/react": "^18.2.69",
+    "@types/react-dom": "^18.2.22"
+  }
+}

@@ -1,6 +1,7 @@
 import { joinWaitlist } from '@/actions/waitlist'
 import { useStore } from '@/store'
 import { zodResolver } from '@hookform/resolvers/zod'
+import { Button } from '@seventy-seven/ui/button'
 import { cn } from '@seventy-seven/ui/utils'
 import { AnimatePresence, motion } from 'framer-motion'
 import { useAction } from 'next-safe-action/hooks'
@@ -82,9 +83,13 @@ export const WaitlistForm = ({ className }: Props) => {
             />
           )}
         />
-        <button type="submit" className="bg-black dark:bg-white text-background px-4 text-sm sm:text-base">
+        <Button
+          type="submit"
+          loading={action.status === 'executing'}
+          className="bg-black dark:bg-white text-background px-4 text-sm sm:text-base rounded-none h-full font-normal"
+        >
           Join the wait list
-        </button>
+        </Button>
       </form>
 
       <AnimatePresence>

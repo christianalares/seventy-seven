@@ -53,10 +53,10 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
         disabled={disabled || !!loading}
         {...props}
       >
-        <span>
+        <span className="overflow-hidden">
           {loading && (
-            <span className="absolute inset-0 bg-background/75 rounded-md flex items-center justify-center text-muted-foreground">
-              <Spinner className="size-5" />
+            <span className="absolute inset-0 bg-foreground/60 flex items-center justify-center text-muted-foreground">
+              <Spinner className="size-5 text-background" />
               <span className="sr-only">Loading</span>
             </span>
           )}

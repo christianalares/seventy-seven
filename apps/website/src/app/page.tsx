@@ -28,7 +28,7 @@ const IndexPage = () => {
           <Balancer>A modern and simple platform to make customer support extremely easy</Balancer>
         </h2>
 
-        <div className="flex justify-center mt-[clamp(24px,15vw,100px)]">
+        <div className="flex justify-center mt-[clamp(24px,15vw,140px)]">
           <WaitlistForm />
         </div>
 
