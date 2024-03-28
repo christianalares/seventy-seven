@@ -2,6 +2,7 @@
 
 import { useStore } from '@/store'
 import dynamic from 'next/dynamic'
+
 const Confetti = dynamic(() => import('react-confetti'), {
   ssr: false,
 })

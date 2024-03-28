@@ -60,20 +60,20 @@ const WaitlistConfirmation = () => {
               Welcome to 77!
             </Heading>
 
-            <Text className="text-base">I'm super happy that you are onboard, it means a lot to me! 🙏</Text>
+            <Text className="text-base">We're super happy that you are onboard, it means a lot to us! 🙏</Text>
             <Text className="text-base">
-              The app is still under development but I'll let you know as soon as possible when there is something there
-              that you can try out.
+              The app is still under development but we'll let you know as soon as there is something that you can try
+              out.
             </Text>
 
             <Text className="text-base">
               Until then, feel free to follow me on 𝕏 to keep you informed about the progress:{' '}
-              <Link href="https://twitter.com/c_alares">@c_alares</Link>, I'll frequently post updates about the
+              <Link href="https://twitter.com/c_alares">@c_alares</Link>, I'll frequently post updates about our
               progress.
             </Text>
 
             <Text className="text-base">
-              Also, everything I build is open source:{' '}
+              Also, everything we build is open source:{' '}
               <Link href="https://git.new/seventy-seven">git.new/seventy-seven</Link>
             </Text>
 
@@ -82,7 +82,7 @@ const WaitlistConfirmation = () => {
             <Text className="text-base">
               Kind regards!
               <br />
-              Christian Alares
+              Christian Alares @ 77
             </Text>
           </Container>
         </Body>

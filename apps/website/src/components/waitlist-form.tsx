@@ -115,7 +115,7 @@ export const WaitlistForm = ({ className }: Props) => {
             exit={{ opacity: 0, transition: { duration: 0.2 } }}
             transition={{ duration: 0.4 }}
           >
-            Welcome onboard! I'll let you know when it's time!
+            Welcome onboard! We'll let you know when it's time!
           </motion.p>
         )}
       </AnimatePresence>
