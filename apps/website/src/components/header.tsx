@@ -27,8 +27,8 @@ export const Header = () => {
 
   return (
     <header className="p-4 h-20 flex items-center">
-      <div className="w-full grid grid-cols-[repeat(2,1fr)] items-center">
-        <div>
+      <div className="w-full grid grid-cols-[repeat(2,1fr)] items-center h-full">
+        <div className="h-full overflow-hidden aspect-square">
           <Link href="/">
             <Logo />
           </Link>
