@@ -18,7 +18,8 @@
         "noExplicitAny": "off"
       },
       "style": {
-        "useImportType": "error"
+        "useImportType": "error",
+        "noNonNullAssertion": "off"
       },
       "complexity": {
         "noForEach": "off"
