@@ -1,5 +1,4 @@
 import debounce from 'lodash.debounce'
-// import { ClassicalNoise } from '@/utils/ClassicalNoise'
 import { type ElementRef, useEffect, useRef } from 'react'
 
 class Dot {
