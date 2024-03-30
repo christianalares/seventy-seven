@@ -1,32 +1,9 @@
-import type { Prisma } from '@seventy-seven/orm/prisma'
+import type { TicketsFindById } from '@/queries/tickets'
 import { ChatMessageHandler } from './chat-message-handler'
 import { ChatMessageUser } from './chat-message-user'
 
-type Ticket = Prisma.TicketGetPayload<{
-  select: {
-    id: true
-    subject: true
-    sender_full_name: true
-    sender_email: true
-    messages: {
-      select: {
-        created_at: true
-        id: true
-        sent_by_user: {
-          select: {
-            id: true
-            full_name: true
-            image_url: true
-          }
-        }
-        body: true
-      }
-    }
-  }
-}>
-
 type Props = {
-  ticket: Ticket
+  ticket: TicketsFindById
 }
 
 export const TicketChat = ({ ticket }: Props) => {
@@ -38,8 +15,8 @@ export const TicketChat = ({ ticket }: Props) => {
             <ChatMessageHandler
               key={message.id}
               date={message.created_at}
-              body={message.body}
               name={message.sent_by_user.full_name}
+              body={message.body}
               avatar={message.sent_by_user.image_url ?? undefined}
             />
           )
@@ -50,6 +27,7 @@ export const TicketChat = ({ ticket }: Props) => {
             date={message.created_at}
             name={ticket.sender_full_name}
             body={message.body}
+            avatar={ticket.sender_avatar_url ?? undefined}
           />
         )
       })}

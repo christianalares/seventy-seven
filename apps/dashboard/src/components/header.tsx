@@ -8,8 +8,8 @@ export const Header = async () => {
 
   return (
     <header className="p-4 border-b h-20 flex items-center">
-      <div className="flex items-center gap-4">
-        <Link href="/" className="hover:scale-105 transition-transform duration-300">
+      <div className="h-full">
+        <Link href="/">
           <Logo />
         </Link>
       </div>

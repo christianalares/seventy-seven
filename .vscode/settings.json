@@ -4,8 +4,7 @@
     "*.css": "tailwindcss"
   },
   "editor.codeActionsOnSave": {
-    "source.organizeImports.biome": "explicit",
-    "source.fixAll": "explicit"
+    "source.organizeImports.biome": "explicit"
   },
   "[prisma]": {
     "editor.defaultFormatter": "Prisma.prisma"

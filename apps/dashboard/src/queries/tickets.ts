@@ -2,7 +2,7 @@ import { prisma } from '@seventy-seven/orm/prisma'
 import { usersQueries } from './users'
 
 export type TicketsFindMany = Awaited<ReturnType<typeof findMany>>
-export type TicketsFindById = Awaited<ReturnType<typeof findById>>
+export type TicketsFindById = NonNullable<Awaited<ReturnType<typeof findById>>>
 
 const findMany = async () => {
   const user = await usersQueries.findMe()
@@ -50,6 +50,7 @@ const findById = async (id: string) => {
       subject: true,
       sender_full_name: true,
       sender_email: true,
+      sender_avatar_url: true,
       messages: {
         select: {
           created_at: true,
