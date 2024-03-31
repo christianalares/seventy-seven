@@ -1,4 +1,5 @@
 import debounce from 'lodash.debounce'
+import { useTheme } from 'next-themes'
 import { type ElementRef, useEffect, useRef } from 'react'
 
 class Dot {
@@ -8,18 +9,28 @@ class Dot {
   size: number
   canvas: HTMLCanvasElement
   ctx: CanvasRenderingContext2D
+  theme: string
 
-  constructor({ x, y, size, canvas }: { x: number; y: number; size: number; canvas: HTMLCanvasElement }) {
+  constructor({
+    x,
+    y,
+    size,
+    canvas,
+    theme,
+  }: { x: number; y: number; size: number; canvas: HTMLCanvasElement; theme: string }) {
     this.x = x
     this.y = y
     this.initialY = y
     this.size = size
     this.canvas = canvas
     this.ctx = canvas.getContext('2d')!
+    this.theme = theme
   }
 
   draw() {
-    this.ctx.fillStyle = 'rgba(0, 0, 0, .2)'
+    const fillStyle = this.theme === 'dark' ? 'rgba(255, 255, 255, .3)' : 'rgba(0, 0, 0, .2)'
+
+    this.ctx.fillStyle = fillStyle
     this.ctx.beginPath()
     this.ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2)
     this.ctx.fill()
@@ -35,11 +46,13 @@ class WavesClass {
   ctx: CanvasRenderingContext2D
   dots: Dot[] = []
   gap: number
+  theme: string
 
-  constructor(canvas: HTMLCanvasElement) {
+  constructor({ canvas, theme }: { canvas: HTMLCanvasElement; theme: string }) {
     this.canvas = canvas
     this.ctx = canvas.getContext('2d')!
     this.gap = 15
+    this.theme = theme
     this.setDims()
     this.createDots()
     this.bindEvents()
@@ -63,6 +76,7 @@ class WavesClass {
             y: y * this.gap + dotSize,
             size: dotSize,
             canvas: this.canvas,
+            theme: this.theme,
           }),
         )
       }
@@ -115,17 +129,18 @@ class WavesClass {
 
 export const Waves = () => {
   const ref = useRef<ElementRef<'canvas'>>(null)
+  const { resolvedTheme } = useTheme()
 
   useEffect(() => {
     if (ref.current) {
-      const waves = new WavesClass(ref.current)
+      const waves = new WavesClass({ canvas: ref.current, theme: resolvedTheme ?? 'light' })
       waves.init()
     }
-  }, [])
+  }, [resolvedTheme])
 
   return (
     <div className="w-full h-full relative">
-      <div className="z-10 absolute inset-0 bg-gradient-to-b from-white via-transparent to-white" />
+      <div className="z-10 absolute inset-0 bg-gradient-to-b from-background via-transparent to-background" />
       <canvas ref={ref} className="w-full h-full absolute inset-0" />
     </div>
   )
