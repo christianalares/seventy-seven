@@ -109,7 +109,7 @@ export const WaitlistForm = ({ className }: Props) => {
       <AnimatePresence>
         {showSuccessMessage && (
           <motion.p
-            className="absolute text-center bg-background -top-20 border-2 border-foreground py-1 px-3 rounded-md shadow-[-2px_4px_0_2px_theme(colors.foreground)]"
+            className="text-sm sm:text-base absolute text-center bg-background -top-16 sm:-top-20 border-2 border-foreground py-1 px-3 rounded-md shadow-[-2px_4px_0_2px_theme(colors.foreground)]"
             initial={{ opacity: 0, y: 20, scale: 0.8 }}
             animate={{ opacity: 1, y: 0, scale: 1, rotate: -2 }}
             exit={{ opacity: 0, transition: { duration: 0.2 } }}
