@@ -41,7 +41,11 @@ class WavesClass {
     this.ctx = canvas.getContext('2d')!
     this.gap = 15
     this.setDims()
+    this.createDots()
+    this.bindEvents()
+  }
 
+  createDots() {
     const numberOfDotsX = Math.ceil(this.canvas.width / this.gap)
     const numberOfDotsY = Math.ceil(this.canvas.height / this.gap)
 
@@ -67,8 +71,17 @@ class WavesClass {
 
   bindEvents() {
     const setDimsDebounced = debounce(this.setDims.bind(this), 100)
+    const createDotsDebounced = debounce(() => {
+      this.dots = []
+      this.createDots()
+    }, 100)
 
-    window.addEventListener('resize', setDimsDebounced)
+    const onRezie = () => {
+      setDimsDebounced()
+      createDotsDebounced()
+    }
+
+    window.addEventListener('resize', onRezie)
   }
 
   setDims() {
@@ -78,8 +91,8 @@ class WavesClass {
   }
 
   draw() {
-    const speed = 0.0003
-    const amplitude = 20
+    const speed = 0.0005
+    const amplitude = 25
 
     this.dots.forEach((dot) => {
       dot.update()
