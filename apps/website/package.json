@@ -11,6 +11,7 @@
   },
   "dependencies": {
     "@hookform/resolvers": "^3.3.4",
+    "@openpanel/nextjs": "0.0.8-beta",
     "@seventy-seven/email": "workspace:*",
     "@seventy-seven/orm": "workspace:*",
     "@seventy-seven/ui": "workspace:*",
