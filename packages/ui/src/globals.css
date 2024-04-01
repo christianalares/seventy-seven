@@ -38,6 +38,10 @@
 
   .dark {
     --background: 224 71.4% 4.1%;
+    
+    /* TODO: Chagne to a more natural dark */
+    /* --background: 220 16% 4%; */
+    
     --foreground: 210 20% 90%;
 
     --card: 224 71.4% 4.1%;
