@@ -1,4 +1,5 @@
 'use server'
+import { opServerClient } from '@/utils/openpanel'
 import { action } from '@/utils/safe-action'
 import { componentToPlainText, createResendClient } from '@seventy-seven/email'
 import WaitlistConfirmation from '@seventy-seven/email/emails/waitlist-confirmation'
@@ -56,6 +57,8 @@ export const joinWaitlist = action(
           email_id: data.id,
         },
       })
+
+      opServerClient.event('waitlist_signup', { email: createdWaitlistEntry.email })
     }
 
     return true

@@ -123,6 +123,9 @@ importers:
       '@hookform/resolvers':
         specifier: ^3.3.4
         version: 3.3.4(react-hook-form@7.51.1)
+      '@openpanel/nextjs':
+        specifier: 0.0.8-beta
+        version: 0.0.8-beta(next@14.1.4)(react-dom@18.2.0)(react@18.2.0)
       '@seventy-seven/email':
         specifier: workspace:*
         version: link:../../packages/email
@@ -1083,6 +1086,29 @@ packages:
 
   /@one-ini/wasm@0.1.1:
     resolution: {integrity: sha512-XuySG1E38YScSJoMlqovLru4KTUNSjgVTIjyh7qMX6aNN5HY5Ct5LhRJdxO79JtTzKfzV/bnWpz+zquYrISsvw==}
+    dev: false
+
+  /@openpanel/nextjs@0.0.8-beta(next@14.1.4)(react-dom@18.2.0)(react@18.2.0):
+    resolution: {integrity: sha512-rSPTKtBOEJ6ewYcJuLdAlGv9YO7FfY6dR8kfJ9k9mMtIJjmwRbtGqXMHRhrGhviQ7p2sRPADG/BaNwEoZKi3Cw==}
+    peerDependencies:
+      next: ^12.0.0 || ^13.0.0 || ^14.0.0
+      react: ^16.8.0 || ^17.0.0 || ^18.0.0
+      react-dom: ^16.8.0 || ^17.0.0 || ^18.0.0
+    dependencies:
+      '@openpanel/web': 0.0.8-beta
+      next: 14.1.4(react-dom@18.2.0)(react@18.2.0)
+      react: 18.2.0
+      react-dom: 18.2.0(react@18.2.0)
+    dev: false
+
+  /@openpanel/sdk@0.0.8-beta:
+    resolution: {integrity: sha512-Cs23tPoQqZLiG3A9C3CTPzyhurX+Q/mScaaK79/Kuvcv4vZjqUztLtLqxRx/zxeXYVbanzwR3blJCeTmABexKQ==}
+    dev: false
+
+  /@openpanel/web@0.0.8-beta:
+    resolution: {integrity: sha512-7xwG4QhXBan4r6SH+q7MrVZPS87r6UvUGHsu7dCIWDhTex+lW3CeA0NEHRvUSfH6Z+oeQ7xstVczEb0h/VikdA==}
+    dependencies:
+      '@openpanel/sdk': 0.0.8-beta
     dev: false
 
   /@pkgjs/parseargs@0.11.0:
