@@ -1,10 +1,12 @@
 'use client'
 
 import { Container } from '@/components/container'
+import { HeroHeading } from '@/components/hero-heading'
 import { WaitlistForm } from '@/components/waitlist-form'
 import { Waves } from '@/components/waves'
 import Image from 'next/image'
 import Balancer from 'react-wrap-balancer'
+import productDark from '../../public/img/77-dark.png'
 import productLight from '../../public/img/77-light.png'
 
 const IndexPage = () => {
@@ -15,13 +17,8 @@ const IndexPage = () => {
       </div>
 
       <Container>
-        <h1 className="leading-none [font-size:clamp(1.875rem,7vw,4.5rem)] text-center mt-16 font-maven-pro font-semibold">
-          <Balancer>
-            The open-source
-            <br />
-            alternative to Zendesk
-          </Balancer>
-        </h1>
+        <HeroHeading />
+
         <h2 className="leading-normal [font-size:clamp(1.125rem,4vw,1.5rem)] font-abel text-center mt-[min(5vw,3rem)]">
           <Balancer>A modern and simple platform to make customer support extremely easy</Balancer>
         </h2>
@@ -36,7 +33,14 @@ const IndexPage = () => {
             src={productLight}
             quality={100}
             alt="Example of dashboard"
-            className="border-2 rounded-lg shadow-[0_4px_40px_0_rgba(0,0,0,0.05)]"
+            className="border-2 rounded-lg shadow-[0_4px_40px_0_rgba(0,0,0,0.05)] dark:hidden"
+          />
+          <Image
+            priority
+            src={productDark}
+            quality={100}
+            alt="Example of dashboard"
+            className="border-2 rounded-lg shadow-[0_4px_40px_0_rgba(0,0,0,0.05)] hidden dark:block"
           />
         </div>
       </Container>
