@@ -29,6 +29,9 @@ importers:
       '@hookform/resolvers':
         specifier: ^3.3.4
         version: 3.3.4(react-hook-form@7.51.1)
+      '@seventy-seven/email':
+        specifier: workspace:*
+        version: link:../../packages/email
       '@seventy-seven/orm':
         specifier: workspace:*
         version: link:../../packages/orm

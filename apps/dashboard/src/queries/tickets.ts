@@ -55,7 +55,7 @@ const findById = async (id: string) => {
         select: {
           created_at: true,
           id: true,
-          sent_by_user: {
+          handler: {
             select: {
               id: true,
               full_name: true,

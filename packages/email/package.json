@@ -4,7 +4,8 @@
   "private": true,
   "exports": {
     ".": "./index.ts",
-    "./emails/waitlist-confirmation": "./emails/waitlist-confirmation.tsx"
+    "./emails/waitlist-confirmation": "./emails/waitlist-confirmation.tsx",
+    "./emails/ticket-message-response": "./emails/ticket-message-response.tsx"
   },
   "scripts": {
     "lint": "biome check .",

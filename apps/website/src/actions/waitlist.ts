@@ -41,6 +41,7 @@ export const joinWaitlist = action(
       subject: 'Welcome to 77!',
       react: template,
       text: componentToPlainText(template),
+      tags: [{ name: 'waitlist_id', value: createdWaitlistEntry.id }],
     })
 
     if (error) {
