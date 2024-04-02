@@ -13,31 +13,31 @@ export type Database = {
         Row: {
           body: string
           created_at: string
+          handler_id: string | null
           id: string
-          sent_by_user_id: string | null
           ticket_id: string
           updated_at: string | null
         }
         Insert: {
           body: string
           created_at?: string
+          handler_id?: string | null
           id?: string
-          sent_by_user_id?: string | null
           ticket_id: string
           updated_at?: string | null
         }
         Update: {
           body?: string
           created_at?: string
+          handler_id?: string | null
           id?: string
-          sent_by_user_id?: string | null
           ticket_id?: string
           updated_at?: string | null
         }
         Relationships: [
           {
-            foreignKeyName: "messages_sent_by_user_id_fkey"
-            columns: ["sent_by_user_id"]
+            foreignKeyName: "messages_handler_id_fkey"
+            columns: ["handler_id"]
             isOneToOne: false
             referencedRelation: "users"
             referencedColumns: ["id"]
@@ -195,6 +195,27 @@ export type Database = {
             referencedColumns: ["id"]
           },
         ]
+      }
+      waitlist: {
+        Row: {
+          created_at: string
+          email: string
+          email_id: string | null
+          id: string
+        }
+        Insert: {
+          created_at?: string
+          email: string
+          email_id?: string | null
+          id?: string
+        }
+        Update: {
+          created_at?: string
+          email?: string
+          email_id?: string | null
+          id?: string
+        }
+        Relationships: []
       }
     }
     Views: {

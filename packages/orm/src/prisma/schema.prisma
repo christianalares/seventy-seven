@@ -77,14 +77,15 @@ model Ticket {
 }
 
 model Message {
-  id              String    @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
-  created_at      DateTime  @default(now()) @db.Timestamptz(6)
-  updated_at      DateTime? @db.Timestamptz(6)
-  ticket_id       String    @db.Uuid
-  ticket          Ticket    @relation(fields: [ticket_id], references: [id])
-  sent_by_user_id String?   @db.Uuid
-  sent_by_user    User?     @relation(fields: [sent_by_user_id], references: [id])
-  body            String
+  id         String    @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  created_at DateTime  @default(now()) @db.Timestamptz(6)
+  updated_at DateTime? @db.Timestamptz(6)
+  ticket_id  String    @db.Uuid
+  ticket     Ticket    @relation(fields: [ticket_id], references: [id])
+  handler_id String?   @db.Uuid
+  handler    User?     @relation(fields: [handler_id], references: [id])
+  body       String
+  email_id   String?
 
   @@map("messages")
 }

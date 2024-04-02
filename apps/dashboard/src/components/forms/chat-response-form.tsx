@@ -71,7 +71,7 @@ export const ChatResponseForm = ({ ticketId }: Props) => {
         />
 
         <div className="mt-4 flex justify-end">
-          <Button size="sm" type="submit" variant="secondary">
+          <Button loading={action.status === 'executing'} size="sm" type="submit" variant="secondary">
             Send response
           </Button>
         </div>

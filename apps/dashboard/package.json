@@ -14,6 +14,7 @@
     "@seventy-seven/orm": "workspace:*",
     "@seventy-seven/supabase": "workspace:*",
     "@seventy-seven/ui": "workspace:*",
+    "@seventy-seven/email": "workspace:*",
     "@vercel/edge-config": "^1.1.0",
     "class-variance-authority": "^0.7.0",
     "date-fns": "^3.6.0",

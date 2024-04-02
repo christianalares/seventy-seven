@@ -10,14 +10,14 @@ export const TicketChat = ({ ticket }: Props) => {
   return (
     <ul className="flex flex-col gap-4 m-8">
       {ticket.messages.map((message) => {
-        if (message.sent_by_user) {
+        if (message.handler) {
           return (
             <ChatMessageHandler
               key={message.id}
               date={message.created_at}
-              name={message.sent_by_user.full_name}
+              name={message.handler.full_name}
               body={message.body}
-              avatar={message.sent_by_user.image_url ?? undefined}
+              avatar={message.handler.image_url ?? undefined}
             />
           )
         }
