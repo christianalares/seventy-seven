@@ -43,6 +43,7 @@ export const createMessage = authAction(
         ticket: {
           select: {
             id: true,
+            short_id: true,
             subject: true,
             sender_email: true,
             sender_full_name: true,
@@ -107,8 +108,7 @@ export const createMessage = authAction(
           : `${createdMessage.handler.full_name} from ${createdMessage.ticket.team.name}`
 
       const { data, error } = await resend.emails.send({
-        // TODO: Add dynamic reply to email
-        from: `${from} <TODO_dynamic_repy_to@seventy-seven.dev>`,
+        from: `${from} <${createdMessage.ticket.short_id}@ticket.seventy-seven.dev>`,
         to: [createdMessage.ticket.sender_email],
         subject: `Re: ${createdMessage.ticket.subject}`,
         react: template,
