@@ -1,3 +1,4 @@
+import { shortId } from '@/utils/shortId'
 import { prisma } from '@seventy-seven/orm/prisma'
 import { NextResponse } from 'next/server'
 import { z } from 'zod'
@@ -26,14 +27,23 @@ export async function POST(req: Request) {
     return NextResponse.json({ error: 'Missing header X-Api-Key' }, { status: 400 })
   }
 
-  const [_bearer, apiKey] = authHeader.split(' ')
+  const [_bearer, apiToken] = authHeader.split(' ')
 
-  if (!apiKey) {
+  if (!apiToken) {
     return NextResponse.json({ error: 'Invalid API key' }, { status: 403 })
   }
 
-  // TODO: Query DB for retrieving the api key
-  if (apiKey !== 'supersecret') {
+  const foundTeam = await prisma.team.findFirst({
+    where: {
+      auth_token: apiToken,
+    },
+    select: {
+      id: true,
+      auth_token: true,
+    },
+  })
+
+  if (!foundTeam || apiToken !== foundTeam.auth_token) {
     return NextResponse.json({ error: 'Invalid API key' }, { status: 403 })
   }
 
@@ -48,11 +58,10 @@ export async function POST(req: Request) {
     return NextResponse.json({ error: 'Invalid request body', errors }, { status: 400 })
   }
 
-  const teamId = '44310b7f-ccdd-4f2b-8b45-cdf01bc19ff9'
-
   const createdTicket = await prisma.ticket.create({
     data: {
-      team_id: teamId,
+      team_id: foundTeam.id,
+      short_id: shortId(),
       subject: parsedBody.data.subject,
       sender_full_name: parsedBody.data.senderFullName,
       sender_email: parsedBody.data.senderEmail,
