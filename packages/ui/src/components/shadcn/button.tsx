@@ -3,7 +3,7 @@ import { type VariantProps, cva } from 'class-variance-authority'
 import * as React from 'react'
 
 import { cn } from '../../utils'
-import { Spinner } from './spinner'
+// import { Spinner } from './spinner'
 
 const buttonVariants = cva(
   'relative inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed',
@@ -53,7 +53,7 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
         disabled={disabled || !!loading}
         {...props}
       >
-        <span className="overflow-hidden">
+        {/* <span className="overflow-hidden">
           {loading && (
             <span className="absolute inset-0 bg-foreground/60 flex items-center justify-center text-muted-foreground">
               <Spinner className="size-5 text-background" />
@@ -61,7 +61,8 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
             </span>
           )}
           {children}
-        </span>
+        </span> */}
+        {children}
       </Comp>
     )
   },
