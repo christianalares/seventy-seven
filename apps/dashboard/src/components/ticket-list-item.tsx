@@ -10,7 +10,7 @@ type Props = {
   ticket: TicketsFindMany[number]
 }
 
-export const TicketListItemV2 = ({ ticket }: Props) => {
+export const TicketListItem = ({ ticket }: Props) => {
   const { ticketId } = useParams<{ ticketId?: string }>()
 
   const isActive = ticket.id === ticketId
