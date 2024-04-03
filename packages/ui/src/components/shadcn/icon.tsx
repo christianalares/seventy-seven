@@ -1,10 +1,15 @@
 import {
+  AlarmClock,
   Calendar,
   Check,
+  CheckCircle,
+  CheckCircle2,
   ChevronsUpDown,
   ClipboardCheck,
   ClipboardCopy,
   Dot,
+  FolderClosed,
+  FolderOpen,
   Home,
   Inbox,
   List,
@@ -16,9 +21,11 @@ import {
   Monitor,
   Moon,
   MoreVertical,
+  ScrollText,
   Send,
   Settings,
   Sun,
+  Trash2,
   X,
 } from 'lucide-react'
 
@@ -42,7 +49,14 @@ const icons = {
   clipboardCopy: ClipboardCopy,
   clipboardCheck: ClipboardCheck,
   check: Check,
+  checkCircle: CheckCircle,
+  checkCircle2: CheckCircle2,
   send: Send,
+  folderOpen: FolderOpen,
+  folderClosed: FolderClosed,
+  alarmClock: AlarmClock,
+  scrollText: ScrollText,
+  trash: Trash2,
 }
 
 export type IconName = keyof typeof icons

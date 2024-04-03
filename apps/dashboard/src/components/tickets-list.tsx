@@ -1,18 +1,14 @@
-import type { TicketsFindMany } from '@/queries/tickets'
-import { TicketListItem } from './ticket-list-item'
+import { ticketsQueries } from '@/queries/tickets'
+import { TicketListItemV2 } from './ticket-list-item'
 
-type Props = {
-  tickets: TicketsFindMany
-}
+export const TicketsListV2 = async () => {
+  const tickets = await ticketsQueries.findMany()
 
-export const TicketsList = ({ tickets }: Props) => {
   return (
-    <ul className="flex flex-col gap-4">
+    <div className="flex flex-col gap-4">
       {tickets.map((ticket) => (
-        <li key={ticket.id}>
-          <TicketListItem ticket={ticket} />
-        </li>
+        <TicketListItemV2 key={ticket.id} ticket={ticket} />
       ))}
-    </ul>
+    </div>
   )
 }

@@ -1,40 +1,34 @@
+'use client'
+
 import type { TicketsFindMany } from '@/queries/tickets'
 import { cn } from '@seventy-seven/ui/utils'
-import { format } from 'date-fns'
 import Link from 'next/link'
+import { useParams } from 'next/navigation'
 import { Avatar } from './avatar'
 
 type Props = {
   ticket: TicketsFindMany[number]
 }
 
-export const TicketListItem = ({ ticket }: Props) => {
-  const firstMessage = ticket.messages.at(0)
+export const TicketListItemV2 = ({ ticket }: Props) => {
+  const { ticketId } = useParams<{ ticketId?: string }>()
+
+  const isActive = ticket.id === ticketId
 
   return (
     <Link
-      href={`/ticket/${ticket.id}`}
-      className={cn('relative w-full text-left block p-4 border rounded-md hover:border-border-hover overflow-hidden')}
+      href={`/inbox/${ticket.id}`}
+      className={cn('hover:bg-muted/5 dark:hover:bg-muted/30 p-4 rounded-md', {
+        'bg-muted/5 dark:bg-muted/30': isActive,
+      })}
     >
-      {/* {!message.read && <span className="absolute top-2 right-2 rounded-full bg-blue-500 size-2" />} */}
-
-      <div className="flex items-center justify-between">
-        <div className="flex items-center gap-2">
-          {/* TODO: Get real avatar */}
-          <Avatar imageUrl={ticket.sender_avatar_url ?? undefined} name={ticket.sender_full_name} />
-
-          <span>{ticket.sender_full_name}</span>
-        </div>
-
-        <time className="text-muted text-xs" dateTime={ticket.created_at.toISOString()}>
-          {format(new Date(ticket.created_at), 'MMM d - HH:mm')}
-        </time>
-      </div>
-
-      <p className="mt-2">
-        <span className="line-clamp-1">{ticket.subject}</span>
-        {firstMessage && <span className="mt-2 text-muted line-clamp-2">{firstMessage.body}</span>}
+      <p className="flex items-center gap-2">
+        <Avatar name={ticket.sender_full_name} imageUrl={ticket.sender_avatar_url ?? undefined} className="size-7" />
+        <span className="font-medium">{ticket.sender_full_name}</span>
       </p>
+
+      <p className="mt-2">{ticket.subject}</p>
+      <p className="mt-2 text-muted truncate text-sm">{ticket.messages.at(-1)?.body}</p>
     </Link>
   )
 }
