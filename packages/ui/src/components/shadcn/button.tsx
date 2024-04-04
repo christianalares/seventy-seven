@@ -3,6 +3,8 @@ import { type VariantProps, cva } from 'class-variance-authority'
 import * as React from 'react'
 
 import { cn } from '../../utils'
+import { Icon } from './icon'
+import { Spinner } from './spinner'
 // import { Spinner } from './spinner'
 
 const buttonVariants = cva(
@@ -46,6 +48,26 @@ export interface ButtonProps
 const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
   ({ className, variant, size, loading, asChild = false, children, disabled, ...props }, ref) => {
     const Comp = asChild ? Slot : 'button'
+
+    if (loading) {
+      return (
+        <button
+          type="button"
+          className={cn('overflow-hidden', buttonVariants({ variant, size, loading }), className)}
+          ref={ref}
+          disabled
+          {...props}
+        >
+          <span className="absolute inset-0 bg-background/60 flex items-center justify-center text-muted-foreground">
+            <Spinner className="size-5 text-foreground" />
+            <span className="sr-only">Loading</span>
+          </span>
+
+          {children}
+        </button>
+      )
+    }
+
     return (
       <Comp
         className={cn(buttonVariants({ variant, size, loading }), className)}
@@ -53,15 +75,6 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
         disabled={disabled || !!loading}
         {...props}
       >
-        {/* <span className="overflow-hidden">
-          {loading && (
-            <span className="absolute inset-0 bg-foreground/60 flex items-center justify-center text-muted-foreground">
-              <Spinner className="size-5 text-background" />
-              <span className="sr-only">Loading</span>
-            </span>
-          )}
-          {children}
-        </span> */}
         {children}
       </Comp>
     )

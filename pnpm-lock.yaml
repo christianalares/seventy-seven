@@ -71,6 +71,9 @@ importers:
       nuqs:
         specifier: ^1.17.1
         version: 1.17.1(next@14.1.4)
+      pushmodal:
+        specifier: ^0.0.5
+        version: 0.0.5(@radix-ui/react-dialog@1.0.5)(class-variance-authority@0.7.0)(clsx@2.1.0)(react-dom@18.2.0)(react@18.2.0)(tailwind-merge@2.2.2)(tailwindcss-animate@1.0.7)
       react:
         specifier: ^18.2.0
         version: 18.2.0
@@ -312,6 +315,9 @@ importers:
       next-themes:
         specifier: ^0.3.0
         version: 0.3.0(react-dom@18.2.0)(react@18.2.0)
+      pushmodal:
+        specifier: ^0.0.5
+        version: 0.0.5(@radix-ui/react-dialog@1.0.5)(class-variance-authority@0.7.0)(clsx@2.1.0)(react-dom@18.2.0)(react@18.2.0)(tailwind-merge@2.2.2)(tailwindcss-animate@1.0.7)
       react:
         specifier: ^18.2.0
         version: 18.2.0
@@ -4679,6 +4685,27 @@ packages:
   /punycode@2.3.1:
     resolution: {integrity: sha512-vYt7UD1U9Wg6138shLtLOvdAu+8DsC/ilFtEVHcH+wydcSpNE20AfSOduf6MkRFahL5FY7X1oU7nKVZFtfq8Fg==}
     engines: {node: '>=6'}
+    dev: false
+
+  /pushmodal@0.0.5(@radix-ui/react-dialog@1.0.5)(class-variance-authority@0.7.0)(clsx@2.1.0)(react-dom@18.2.0)(react@18.2.0)(tailwind-merge@2.2.2)(tailwindcss-animate@1.0.7):
+    resolution: {integrity: sha512-CxpDzXVNtgsTUf0d3HNrd6bJH6nAlwc5eBr0qXz4Z71ghT9JY7YzyIJFevaeZyzU504W4rR+R7+Moqq3wqa2aw==}
+    peerDependencies:
+      '@radix-ui/react-dialog': ^1.0.0
+      class-variance-authority: ^0.7.0
+      clsx: ^2.0.0
+      react: ^16.12.0 || ^17.0.0 || ^18.0.0 || ^19.0.0 || ^20.0.0 || ^21.0.0
+      react-dom: ^16.12.0 || ^17.0.0 || ^18.0.0 || ^19.0.0 || ^20.0.0 || ^21.0.0
+      tailwind-merge: ^1.0.0 || ^2.0.0
+      tailwindcss-animate: ^1.0.7
+    dependencies:
+      '@radix-ui/react-dialog': 1.0.5(@types/react-dom@18.2.22)(@types/react@18.2.70)(react-dom@18.2.0)(react@18.2.0)
+      class-variance-authority: 0.7.0
+      clsx: 2.1.0
+      mitt: 3.0.1
+      react: 18.2.0
+      react-dom: 18.2.0(react@18.2.0)
+      tailwind-merge: 2.2.2
+      tailwindcss-animate: 1.0.7(tailwindcss@3.4.1)
     dev: false
 
   /queue-microtask@1.2.3:

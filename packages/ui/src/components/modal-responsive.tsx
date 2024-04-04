@@ -1,6 +1,6 @@
-import { useMediaQuery } from '../hooks/use-media-query'
-import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from './dialog'
-import { Drawer, DrawerContent, DrawerDescription, DrawerFooter, DrawerHeader, DrawerTitle } from './drawer'
+import { useMediaQuery } from './hooks/use-media-query'
+import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from './shadcn/dialog'
+import { Drawer, DrawerContent, DrawerDescription, DrawerFooter, DrawerHeader, DrawerTitle } from './shadcn/drawer'
 
 type Props = {
   children: React.ReactNode

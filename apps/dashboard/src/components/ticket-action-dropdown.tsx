@@ -1,3 +1,6 @@
+'use client'
+
+import { pushModal } from '@/components/modals'
 import { getIconStyle } from '@/utils/get-icon-style'
 import { Button } from '@seventy-seven/ui/button'
 import {
@@ -19,7 +22,7 @@ export const TicketActionDropdown = () => {
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent align="end">
-        <DropdownMenuItem className="gap-2">
+        <DropdownMenuItem className="gap-2" onSelect={() => pushModal('snoozeTicketModal')}>
           <Icon name={getIconStyle('snoozed').name} className={cn('size-4', getIconStyle('snoozed').className)} />
           Snooze
         </DropdownMenuItem>
