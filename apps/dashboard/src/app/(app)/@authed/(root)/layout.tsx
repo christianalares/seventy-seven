@@ -1,6 +1,7 @@
 import { Header } from '@/components/header'
-import { AllModals } from '@/components/modals/all-modals'
-import { AllSheets } from '@/components/sheets/all-sheets'
+import { ModalProvider } from '@/components/modals'
+// import { AllModals } from '@/components/modals-OLD/all-modals'
+// import { AllSheets } from '@/components/sheets/all-sheets'
 import { Sidebar } from '@/components/sidebar'
 import { Toaster } from '@seventy-seven/ui/sonner'
 
@@ -12,8 +13,9 @@ const AuthedLayout = ({ children }: Props) => {
   return (
     <>
       <Toaster position="top-center" />
-      <AllModals />
-      <AllSheets />
+      {/* <AllModals />
+      <AllSheets /> */}
+      <ModalProvider />
 
       <div className="flex-1 flex flex-col">
         <Header />

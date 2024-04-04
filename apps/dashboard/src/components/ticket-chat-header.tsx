@@ -1,6 +1,7 @@
 import type { TicketsFindById } from '@/queries/tickets'
 import { Button } from '@seventy-seven/ui/button'
 import { Icon } from '@seventy-seven/ui/icon'
+import { TicketActionDropdown } from './ticket-action-dropdown'
 
 type Props = {
   ticket: TicketsFindById
@@ -17,10 +18,11 @@ export const TicketChatHeader = ({ ticket }: Props) => {
       </div>
 
       <div className="ml-auto">
-        <Button size="xs" className="gap-2">
+        <TicketActionDropdown />
+        {/* <Button size="xs" className="gap-2">
           <Icon name="check" className="size-4" />
           Close ticket
-        </Button>
+        </Button> */}
       </div>
     </header>
   )
