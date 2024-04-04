@@ -1,3 +1,4 @@
+import { SnoozeTicketForm } from '@/components/forms/snooze-ticket-form'
 import { ModalDescription, ModalHeader, ModalTitle } from '@seventy-seven/ui/modal'
 
 export const SnoozeTicketModal = () => {
@@ -8,7 +9,7 @@ export const SnoozeTicketModal = () => {
         <ModalDescription>When the time has expired this will automatically be put back in your inbox</ModalDescription>
       </ModalHeader>
 
-      <p>TODO: Date/Time picker</p>
+      <SnoozeTicketForm />
     </div>
   )
 }

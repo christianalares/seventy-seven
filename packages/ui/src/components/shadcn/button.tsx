@@ -3,12 +3,10 @@ import { type VariantProps, cva } from 'class-variance-authority'
 import * as React from 'react'
 
 import { cn } from '../../utils'
-import { Icon } from './icon'
 import { Spinner } from './spinner'
-// import { Spinner } from './spinner'
 
 const buttonVariants = cva(
-  'relative inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed',
+  'inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed',
   {
     variants: {
       variant: {
