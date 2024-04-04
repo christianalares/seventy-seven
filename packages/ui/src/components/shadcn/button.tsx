@@ -51,12 +51,12 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
       return (
         <button
           type="button"
-          className={cn('overflow-hidden', buttonVariants({ variant, size, loading }), className)}
+          className={cn('relative overflow-hidden', buttonVariants({ variant, size, loading }), className)}
           ref={ref}
           disabled
           {...props}
         >
-          <span className="absolute inset-0 bg-background/60 flex items-center justify-center text-muted-foreground">
+          <span className="absolute inset-0 bg-background/70 flex items-center justify-center text-muted-foreground">
             <Spinner className="size-5 text-foreground" />
             <span className="sr-only">Loading</span>
           </span>

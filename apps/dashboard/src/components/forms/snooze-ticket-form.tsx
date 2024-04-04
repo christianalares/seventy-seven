@@ -6,7 +6,6 @@ import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '
 import { Icon } from '@seventy-seven/ui/icon'
 import { cn } from '@seventy-seven/ui/utils'
 import { format } from 'date-fns'
-import { useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { z } from 'zod'
 
@@ -22,6 +21,7 @@ export const SnoozeTicketForm = () => {
   })
 
   const onSubmit = form.handleSubmit((values) => {
+    // biome-ignore lint/suspicious/noConsoleLog: TODO: Create server action for snoozing ticket
     console.log(values)
   })
 
@@ -34,7 +34,6 @@ export const SnoozeTicketForm = () => {
           control={form.control}
           name="date"
           render={({ field }) => {
-            // console.log('date', field.value)
             return (
               <FormItem>
                 <FormLabel className="sr-only">Choose date and time</FormLabel>
@@ -52,12 +51,6 @@ export const SnoozeTicketForm = () => {
           <Button type="submit" className="gap-2 ml-auto">
             <Icon name={iconStyle.name} className={cn('size-5', iconStyle.className)} />
             {form.formState.isValid ? `Snooze to ${format(form.getValues('date'), 'MMM dd (HH:mm)')}` : 'Snooze'}
-            {/* {form.formState.isValid
-              ? `Snooze to ${new Intl.DateTimeFormat('sv-SE', {
-                  dateStyle: 'short',
-                  timeStyle: 'short',
-                }).format(form.getValues('date'))}`
-              : 'Snooze'} */}
           </Button>
         </div>
       </form>
