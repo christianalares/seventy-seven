@@ -16,7 +16,7 @@ export const TicketChatHeader = ({ ticket }: Props) => {
       </div>
 
       <div className="ml-auto">
-        <TicketActionDropdown />
+        <TicketActionDropdown ticketId={ticket.id} />
       </div>
     </header>
   )

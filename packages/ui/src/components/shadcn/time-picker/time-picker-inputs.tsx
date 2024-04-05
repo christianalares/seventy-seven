@@ -14,7 +14,7 @@ interface Props {
 export function TimePickerInputs({ date, setDate, className }: Props) {
   const minuteRef = React.useRef<HTMLInputElement>(null)
   const hourRef = React.useRef<HTMLInputElement>(null)
-  const secondRef = React.useRef<HTMLInputElement>(null)
+  // const secondRef = React.useRef<HTMLInputElement>(null)
 
   return (
     <div className={cn('flex items-end gap-2', className)}>
@@ -40,10 +40,10 @@ export function TimePickerInputs({ date, setDate, className }: Props) {
           setDate={setDate}
           ref={minuteRef}
           onLeftFocus={() => hourRef.current?.focus()}
-          onRightFocus={() => secondRef.current?.focus()}
+          // onRightFocus={() => secondRef.current?.focus()}
         />
       </div>
-      <div className="grid gap-1 text-center">
+      {/* <div className="grid gap-1 text-center">
         <Label htmlFor="seconds" className="text-xs">
           Second
         </Label>
@@ -54,7 +54,7 @@ export function TimePickerInputs({ date, setDate, className }: Props) {
           ref={secondRef}
           onLeftFocus={() => minuteRef.current?.focus()}
         />
-      </div>
+      </div> */}
     </div>
   )
 }

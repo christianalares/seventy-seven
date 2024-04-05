@@ -1,15 +1,26 @@
 import { prisma } from '@seventy-seven/orm/prisma'
 import { usersQueries } from './users'
 
+export const FOLDERS = ['snoozed', 'drafts', 'responded', 'closed'] as const
+export type Folder = (typeof FOLDERS)[number]
+
 export type TicketsFindMany = Awaited<ReturnType<typeof findMany>>
 export type TicketsFindById = NonNullable<Awaited<ReturnType<typeof findById>>>
 
-const findMany = async () => {
+const findMany = async (folder?: Folder) => {
   const user = await usersQueries.findMe()
 
   const tickets = await prisma.ticket.findMany({
     where: {
       team_id: user.current_team_id,
+      // If the folder is snoozed, only return tickets that have a snoozed_until date
+      ...(folder === 'snoozed'
+        ? {
+            NOT: {
+              snoozed_until: null,
+            },
+          }
+        : {}),
     },
     select: {
       id: true,
@@ -18,6 +29,7 @@ const findMany = async () => {
       sender_full_name: true,
       sender_email: true,
       sender_avatar_url: true,
+      snoozed_until: true,
       messages: {
         take: 1,
         orderBy: {

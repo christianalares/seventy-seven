@@ -1,5 +1,6 @@
 'use client'
 
+import { Button } from '@seventy-seven/ui/button'
 import { Icon, type IconName } from '@seventy-seven/ui/icon'
 import { cn } from '@seventy-seven/ui/utils'
 import Link from 'next/link'
@@ -17,18 +18,19 @@ const LinkItem = ({ href, label, icon }: LinkItemProps) => {
 
   return (
     <li>
-      <Link
-        href={href}
-        className={cn(
-          'flex items-center gap-2 rounded-md px-3 py-2 hover:bg-foreground/5 border border-transparent hover:border-border text-foreground/60 text-sm',
-          {
-            'bg-foreground/5 border-border text-foreground': isActive,
-          },
-        )}
+      <Button
+        variant="ghost"
+        size="sm"
+        asChild
+        className={cn('gap-2 text-muted-foreground flex justify-start', {
+          'text-foreground bg-accent': isActive,
+        })}
       >
-        {icon && <Icon className="size-4" name={icon} />}
-        <span className="sr-only md:not-sr-only">{label}</span>
-      </Link>
+        <Link href={href}>
+          {icon && <Icon className="size-4" name={icon} />}
+          <span className="sr-only md:not-sr-only">{label}</span>
+        </Link>
+      </Button>
     </li>
   )
 }

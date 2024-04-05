@@ -4,7 +4,7 @@ export type FolderType = 'snoozed' | 'drafts' | 'responded' | 'closed' | 'folder
 
 const r = (name: IconName, className: string) => ({ name, className })
 
-export const getIconStyle = (type: FolderType): ReturnType<typeof r> => {
+export const getIconStyle = (type?: FolderType): ReturnType<typeof r> => {
   switch (type) {
     case 'snoozed':
       return r('alarmClock', 'text-orange-500')

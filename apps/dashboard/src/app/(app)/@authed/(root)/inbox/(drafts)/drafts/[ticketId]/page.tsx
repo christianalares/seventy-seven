@@ -10,7 +10,7 @@ type Props = {
   }
 }
 
-const TicketPage = async ({ params }: Props) => {
+const DraftsTicketPage = async ({ params }: Props) => {
   const ticket = await ticketsQueries.findById(params.ticketId)
 
   if (!ticket) {
@@ -29,4 +29,4 @@ const TicketPage = async ({ params }: Props) => {
   )
 }
 
-export default TicketPage
+export default DraftsTicketPage
