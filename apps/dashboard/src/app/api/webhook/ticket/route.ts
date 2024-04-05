@@ -67,7 +67,7 @@ export async function POST(req: Request) {
       },
     })
 
-    revalidatePath(`/tickets/${updatedTicket.id}`)
+    revalidatePath(`/inbox/${updatedTicket.id}`)
 
     return NextResponse.json({ success: true }, { status: 201 })
   } catch (err) {
