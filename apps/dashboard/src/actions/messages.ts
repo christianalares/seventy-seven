@@ -134,7 +134,7 @@ export const createMessage = authAction(
       }
     }
 
-    revalidatePath(`/ticket/${createdMessage.ticket.id}`)
+    revalidatePath(`/inbox/${createdMessage.ticket.id}`)
 
     return createdMessage
   },

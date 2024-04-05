@@ -1,15 +1,19 @@
 import { SnoozeTicketForm } from '@/components/forms/snooze-ticket-form'
-import { ModalDescription, ModalHeader, ModalTitle } from '@seventy-seven/ui/modal'
+import { Modal, ModalDescription, ModalHeader, ModalTitle } from '@seventy-seven/ui/modal'
 
-export const SnoozeTicketModal = () => {
+type Props = {
+  ticketId: string
+}
+
+export const SnoozeTicketModal = ({ ticketId }: Props) => {
   return (
-    <div className="">
+    <Modal>
       <ModalHeader>
         <ModalTitle>Snooze Ticket</ModalTitle>
         <ModalDescription>When the time has expired this will automatically be put back in your inbox</ModalDescription>
       </ModalHeader>
 
-      <SnoozeTicketForm />
-    </div>
+      <SnoozeTicketForm ticketId={ticketId} />
+    </Modal>
   )
 }

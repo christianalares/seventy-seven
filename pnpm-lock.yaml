@@ -322,8 +322,8 @@ importers:
         specifier: ^0.3.0
         version: 0.3.0(react-dom@18.2.0)(react@18.2.0)
       pushmodal:
-        specifier: ^0.0.5
-        version: 0.0.5(@radix-ui/react-dialog@1.0.5)(class-variance-authority@0.7.0)(clsx@2.1.0)(react-dom@18.2.0)(react@18.2.0)(tailwind-merge@2.2.2)(tailwindcss-animate@1.0.7)
+        specifier: ^0.0.6
+        version: 0.0.6(@radix-ui/react-dialog@1.0.5)(react-dom@18.2.0)(react@18.2.0)
       react:
         specifier: ^18.2.0
         version: 18.2.0
@@ -4750,6 +4750,19 @@ packages:
       react-dom: 18.2.0(react@18.2.0)
       tailwind-merge: 2.2.2
       tailwindcss-animate: 1.0.7(tailwindcss@3.4.1)
+    dev: false
+
+  /pushmodal@0.0.6(@radix-ui/react-dialog@1.0.5)(react-dom@18.2.0)(react@18.2.0):
+    resolution: {integrity: sha512-HhhKInPekHFykstTPbPKRxbtI+S6I20OyI4Q4luQFy/k9+oHL/phWBUDdyWQcVocl1T1KHydwdUaC4eSjYtRHQ==}
+    peerDependencies:
+      '@radix-ui/react-dialog': ^1.0.0
+      react: ^16.12.0 || ^17.0.0 || ^18.0.0 || ^19.0.0 || ^20.0.0 || ^21.0.0
+      react-dom: ^16.12.0 || ^17.0.0 || ^18.0.0 || ^19.0.0 || ^20.0.0 || ^21.0.0
+    dependencies:
+      '@radix-ui/react-dialog': 1.0.5(@types/react-dom@18.2.22)(@types/react@18.2.70)(react-dom@18.2.0)(react@18.2.0)
+      mitt: 3.0.1
+      react: 18.2.0
+      react-dom: 18.2.0(react@18.2.0)
     dev: false
 
   /queue-microtask@1.2.3:

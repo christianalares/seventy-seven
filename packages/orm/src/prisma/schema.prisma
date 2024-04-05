@@ -73,6 +73,8 @@ model Ticket {
   sender_avatar_url String?
   meta              Json?
   messages          Message[]
+  snoozed_until     DateTime?
+  is_closed         Boolean   @default(false)
 
   @@map("tickets")
 }

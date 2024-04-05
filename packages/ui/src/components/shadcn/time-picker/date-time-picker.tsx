@@ -2,22 +2,20 @@
 
 import { addHours, startOfHour, startOfMonth, startOfToday } from 'date-fns'
 import { useState } from 'react'
-import { Calendar } from '../calendar'
+import { Calendar, type CalendarProps } from '../calendar'
 import { TimePickerInputs } from './time-picker-inputs'
 
-type Props = {
-  stretch?: boolean
+type Props = Pick<CalendarProps, 'disabled' | 'stretch'> & {
   date: Date | undefined
   setDate: (date: Date | undefined) => void
 }
 
-export function DateTimePicker({ stretch, date, setDate }: Props) {
+export function DateTimePicker({ date, setDate, ...restProps }: Props) {
   const [month, setMonth] = useState(startOfMonth(new Date()))
 
   return (
     <div>
       <Calendar
-        stretch={stretch}
         mode="single"
         selected={date}
         onSelect={setDate}
@@ -29,6 +27,7 @@ export function DateTimePicker({ stretch, date, setDate }: Props) {
         }}
         initialFocus
         fixedWeeks
+        {...restProps}
       />
       <TimePickerInputs className="border-t p-4 justify-start gap-4" setDate={setDate} date={date} />
     </div>

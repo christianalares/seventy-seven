@@ -1,26 +1,16 @@
-import type { BaseWrapperProps } from 'pushmodal'
-import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from './shadcn/dialog'
+import type { ComponentProps } from 'react'
+import { cn } from '../utils'
+import { DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from './shadcn/dialog'
 
 export { createPushModal } from 'pushmodal'
 
-export const DynamicModalWrapper = ({
-  children,
-  onInteractOutside,
-  onEscapeKeyDown,
-  onPointerDownOutside,
-  ...restProps
-}: BaseWrapperProps) => {
+type Props = ComponentProps<typeof DialogContent>
+
+export const Modal = ({ children, className, ...restProps }: Props) => {
   return (
-    <Dialog {...restProps}>
-      <DialogContent
-        className="w-[95vw] max-w-lg rounded-md"
-        onInteractOutside={onInteractOutside}
-        onEscapeKeyDown={onEscapeKeyDown}
-        onPointerDownOutside={onPointerDownOutside}
-      >
-        {children}
-      </DialogContent>
-    </Dialog>
+    <DialogContent className={cn('w-[95vw] max-w-lg rounded-md', className)} {...restProps}>
+      {children}
+    </DialogContent>
   )
 }
 

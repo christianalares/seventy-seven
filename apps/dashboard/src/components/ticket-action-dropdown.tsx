@@ -12,7 +12,11 @@ import {
 import { Icon } from '@seventy-seven/ui/icon'
 import { cn } from '@seventy-seven/ui/utils'
 
-export const TicketActionDropdown = () => {
+type Props = {
+  ticketId: string
+}
+
+export const TicketActionDropdown = ({ ticketId }: Props) => {
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
@@ -22,7 +26,14 @@ export const TicketActionDropdown = () => {
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent align="end">
-        <DropdownMenuItem className="gap-2" onSelect={() => pushModal('snoozeTicketModal')}>
+        <DropdownMenuItem
+          className="gap-2"
+          onSelect={() =>
+            pushModal('snoozeTicketModal', {
+              ticketId,
+            })
+          }
+        >
           <Icon name={getIconStyle('snoozed').name} className={cn('size-4', getIconStyle('snoozed').className)} />
           Snooze
         </DropdownMenuItem>

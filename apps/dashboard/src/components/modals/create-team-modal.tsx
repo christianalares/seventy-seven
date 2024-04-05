@@ -1,7 +1,7 @@
 'use client'
 
 import { createTeam } from '@/actions/teams'
-import { ModalDescription, ModalHeader, ModalTitle } from '@seventy-seven/ui/modal'
+import { Modal, ModalDescription, ModalHeader, ModalTitle } from '@seventy-seven/ui/modal'
 import { useAction } from 'next-safe-action/hooks'
 import { toast } from 'sonner'
 import { popModal } from '.'
@@ -29,7 +29,7 @@ export const CreateTeamModal = () => {
   })
 
   return (
-    <div>
+    <Modal>
       <ModalHeader>
         <ModalTitle>Create a team</ModalTitle>
         <ModalDescription>The name of your team could be the name of your organization or company.</ModalDescription>
@@ -40,6 +40,6 @@ export const CreateTeamModal = () => {
         }}
         loading={action.status === 'executing'}
       />{' '}
-    </div>
+    </Modal>
   )
 }
