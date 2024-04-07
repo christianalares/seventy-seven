@@ -20,7 +20,7 @@ const RootTicketPage = async ({ params }: Props) => {
   return (
     <div className="flex flex-col h-[calc(100vh-theme(spacing.20))] overflow-hidden">
       <TicketChatHeader ticket={ticket} />
-      <TicketChat ticket={ticket} />
+      <TicketChat messages={ticket.messages} />
 
       <div className="min-h-60 h-[15vh] border-t">
         <ChatResponseForm ticketId={ticket.id} />

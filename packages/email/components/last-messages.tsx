@@ -1,31 +1,16 @@
 import { Column, Hr, Img, Row, Section, Text } from '@react-email/components'
 import { cn } from '@seventy-seven/ui/utils'
+import type { Message } from '../types'
 
 type Props = {
-  messages: Array<{
-    handler: {
-      image_url: string | null
-      full_name: string
-    } | null
-    body: string
-    id: string
-    created_at: Date
-  }>
-  handler: {
-    name: string
-    avatar?: string
-  }
-  user: {
-    avatar?: string
-    name: string
-  }
+  messages: Message[]
 }
 
-export const LastMessages = ({ messages, handler, user }: Props) => {
+export const LastMessages = ({ messages }: Props) => {
   return (
     <>
       {messages.map((message, i) => {
-        const name = message.handler ? message.handler.full_name : user.name
+        const name = message.handler ? message.handler.full_name : message.sent_from_full_name ?? ''
 
         let initials = name.substring(0, 2).toUpperCase()
 
@@ -56,7 +41,7 @@ export const LastMessages = ({ messages, handler, user }: Props) => {
                     </Text>
                   )}
                 </Column>
-                <Column className="font-bold">{handler.name}</Column>
+                <Column className="font-bold">{message.handler.full_name}</Column>
                 <Column className="text-xs" align="right">
                   {message.created_at.toLocaleDateString()} - {message.created_at.toLocaleTimeString()}
                 </Column>
@@ -64,15 +49,15 @@ export const LastMessages = ({ messages, handler, user }: Props) => {
             ) : (
               <Row>
                 <Column width={48}>
-                  {user.avatar ? (
-                    <Img src={user.avatar} className="w-10 h-10 rounded-full" />
+                  {message.sent_from_avatar_url ? (
+                    <Img src={message.sent_from_avatar_url} className="w-10 h-10 rounded-full" />
                   ) : (
                     <Text className="bg-gray-400 rounded-full w-10 h-10 flex items-center justify-center font-bold">
                       {initials}
                     </Text>
                   )}
                 </Column>
-                <Column className="font-bold">{user.name}</Column>
+                <Column className="font-bold">{message.sent_from_full_name}</Column>
                 <Column className="text-xs" align="right">
                   {message.created_at.toLocaleDateString()} - {message.created_at.toLocaleTimeString()}
                 </Column>

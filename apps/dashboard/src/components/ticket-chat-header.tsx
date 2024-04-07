@@ -6,12 +6,16 @@ type Props = {
 }
 
 export const TicketChatHeader = ({ ticket }: Props) => {
+  const lastMessageFromUser = ticket.messages.find((msg) => !!msg.sent_from_full_name)
+  const senderFullName = lastMessageFromUser?.sent_from_full_name ?? ''
+  const senderEmail = lastMessageFromUser?.sent_from_email ?? ''
+
   return (
     <header className="border-b p-4 flex items-center">
       <div>
         <h1 className="text-xl">{ticket.subject}</h1>
         <span className="text-sm text-muted-foreground">
-          {ticket.sender_full_name} - {ticket.sender_email}
+          {senderFullName} - {senderEmail}
         </span>
       </div>
 

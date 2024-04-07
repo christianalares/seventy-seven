@@ -52,6 +52,9 @@ jobsClient.defineJob({
             id: true,
             body: true,
             created_at: true,
+            sent_from_full_name: true,
+            sent_from_email: true,
+            sent_from_avatar_url: true,
             handler: {
               select: {
                 full_name: true,
@@ -71,14 +74,6 @@ jobsClient.defineJob({
       shortId: updatedTicket.short_id,
       subject: updatedTicket.subject,
       thread: updatedTicket.messages,
-      handler: {
-        name: 'TODO handler.name',
-        avatar: undefined, //TODO
-      },
-      user: {
-        name: 'TODO user.name',
-        avatar: undefined, //TODO
-      },
       ticketUrl:
         process.env.VERCEL_ENV === 'production'
           ? `https://seventy-seven.dev/inbox/${updatedTicket.id}`

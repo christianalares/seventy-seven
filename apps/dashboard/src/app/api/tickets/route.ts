@@ -63,12 +63,12 @@ export async function POST(req: Request) {
       team_id: foundTeam.id,
       short_id: shortId(),
       subject: parsedBody.data.subject,
-      sender_full_name: parsedBody.data.senderFullName,
-      sender_email: parsedBody.data.senderEmail,
-      sender_avatar_url: parsedBody.data.senderAvatarUrl,
       messages: {
         create: {
           body: parsedBody.data.body,
+          sent_from_full_name: parsedBody.data.senderFullName,
+          sent_from_email: parsedBody.data.senderEmail,
+          sent_from_avatar_url: parsedBody.data.senderAvatarUrl,
         },
       },
     },

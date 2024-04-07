@@ -45,9 +45,6 @@ export const createMessage = authAction(
             id: true,
             short_id: true,
             subject: true,
-            sender_email: true,
-            sender_full_name: true,
-            sender_avatar_url: true,
 
             team: {
               select: {
@@ -56,12 +53,14 @@ export const createMessage = authAction(
                 is_personal: true,
               },
             },
-
             messages: {
               select: {
                 id: true,
                 body: true,
                 created_at: true,
+                sent_from_full_name: true,
+                sent_from_email: true,
+                sent_from_avatar_url: true,
                 handler: {
                   select: {
                     full_name: true,
@@ -80,9 +79,8 @@ export const createMessage = authAction(
 
     if (createdMessage.handler) {
       // Send email to the user that created the ticket
-      const resend = createResendClient()
-
       const thread = createdMessage.ticket.messages
+      const resend = createResendClient()
 
       const template = TicketMessageResponse({
         handler: {
@@ -93,12 +91,14 @@ export const createMessage = authAction(
             image_url: createdMessage.ticket.team.image_url ?? undefined,
           },
         },
-        user: {
-          name: createdMessage.ticket.sender_full_name,
-          avatar: createdMessage.ticket.sender_avatar_url ?? undefined,
-        },
         thread,
       })
+
+      const lastMessageFromUser = thread.find((message) => !!message.sent_from_email)
+
+      if (!lastMessageFromUser || !lastMessageFromUser.sent_from_email) {
+        throw new Error('No last message from user found')
+      }
 
       // If the team is personal or if the handlers name is the same as the team name, then the `from` field should be the handlers name
       // otherwise show [name] from [team_name]
@@ -110,8 +110,8 @@ export const createMessage = authAction(
       const { data, error } = await resend.emails.send({
         from: `${from} <seventy-seven@seventy-seven.dev>`,
         reply_to: `${from} <${createdMessage.ticket.short_id}@ticket.seventy-seven.dev>`,
-        to: [createdMessage.ticket.sender_email],
-        subject: `Re: ${createdMessage.ticket.subject}`,
+        to: [lastMessageFromUser.sent_from_email],
+        subject: `Re: ${createdMessage.ticket.subject} (#${createdMessage.ticket.short_id})`,
         react: template,
         text: componentToPlainText(template),
         tags: [
@@ -122,7 +122,7 @@ export const createMessage = authAction(
 
       if (error) {
         // biome-ignore lint/suspicious/noConsoleLog: <explanation>
-        console.log(`Error sending email to ${createdMessage.ticket.sender_email}`, error)
+        console.log(`Error sending email to ${lastMessageFromUser.sent_from_email}`, error)
       }
 
       if (data) {

@@ -235,6 +235,9 @@ importers:
       '@react-email/render':
         specifier: 0.0.12
         version: 0.0.12
+      '@seventy-seven/orm':
+        specifier: workspace:*
+        version: link:../orm
       '@seventy-seven/ui':
         specifier: workspace:*
         version: link:../ui
