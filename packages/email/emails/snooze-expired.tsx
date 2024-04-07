@@ -1,4 +1,17 @@
-import { Body, Container, Font, Head, Heading, Html, Img, Preview, Tailwind } from '@react-email/components'
+import {
+  Body,
+  Button,
+  Container,
+  Font,
+  Head,
+  Heading,
+  Html,
+  Img,
+  Preview,
+  Row,
+  Section,
+  Tailwind,
+} from '@react-email/components'
 import { Footer } from '../components/footer'
 import { LastMessages } from '../components/last-messages'
 import type { LastMessage } from '../types'
@@ -7,25 +20,35 @@ const baseUrl =
   process.env.VERCEL_ENV === 'production' ? 'https://seventy-seven.dev/email/' : 'http://localhost:3001/email'
 
 type Props = {
+  shortId: string
+  subject: string
+  thread: LastMessage[]
+  ticketUrl: string
   handler: {
     name: string
-    company: {
-      name: string
-      image_url?: string
-    }
     avatar?: string
   }
   user: {
-    name: string
     avatar?: string
+    name: string
   }
-  thread: LastMessage[]
 }
 
-const TicketMessageResponse = ({ handler, user, thread }: Props) => {
+const TicketMessageResponse = ({ shortId, subject, thread, ticketUrl, handler, user }: Props) => {
   return (
     <Html>
       <Head>
+        <Font
+          fontFamily="MavenPro"
+          fallbackFontFamily="sans-serif"
+          webFont={{
+            url: 'https://fonts.gstatic.com/s/mavenpro/v33/7Auup_AqnyWWAxW2Wk3swUz56MS91Eww8fvx5nA.ttf',
+            format: 'truetype',
+          }}
+          fontWeight={400}
+          fontStyle="normal"
+        />
+
         <Font
           fontFamily="Roboto"
           fallbackFontFamily="Verdana"
@@ -38,9 +61,9 @@ const TicketMessageResponse = ({ handler, user, thread }: Props) => {
         />
       </Head>
 
-      <Preview>{`${handler.name} from ${handler.company.name} has sent you a response`}</Preview>
+      <Preview>Snoozed ticket alert! #{shortId}</Preview>
 
-      <title>{`${handler.name} from ${handler.company} has sent you a response`}</title>
+      <title>Snoozed ticket alert! #{shortId}</title>
 
       <Tailwind
         config={{
@@ -54,19 +77,25 @@ const TicketMessageResponse = ({ handler, user, thread }: Props) => {
       >
         <Body className="bg-[#f3f4f6]">
           <Container className="p-4 max-w-4xl bg-white rounded-md">
-            {handler.company.image_url ? (
-              <Img src={handler.company.image_url} alt="Acme" className="h-16" />
-            ) : (
-              <Heading as="h1">{handler.company.name}</Heading>
-            )}
+            <Img src={`${baseUrl}/77-logo.png`} alt="77" className="w-12" />
 
-            <Heading as="h2" className="font-maven-pro text-lg flex items-center gap-4 mt-8">
-              {handler.name === handler.company.name
-                ? `${handler.name} has sent you a response`
-                : `${handler.name} from ${handler.company.name} has sent you a response`}
+            <Heading as="h1" className="font-maven-pro text-2xl">
+              Snoozed ticket was due
             </Heading>
 
-            <LastMessages messages={thread.slice(0, 5)} handler={handler} user={user} />
+            <Heading as="h2" className="font-maven-pro text-lg flex items-center gap-4 mb-0 mt-8">
+              {subject}
+            </Heading>
+
+            <Section className="mb-12">
+              <Row>
+                <Button href={ticketUrl} className="border border-solid rounded-md text-black py-2 px-3 mt-4">
+                  Go to ticket
+                </Button>
+              </Row>
+            </Section>
+
+            <LastMessages messages={thread} user={user} handler={handler} />
 
             <Footer />
           </Container>
@@ -77,18 +106,9 @@ const TicketMessageResponse = ({ handler, user, thread }: Props) => {
 }
 
 TicketMessageResponse.PreviewProps = {
-  handler: {
-    name: 'Edgar Douglas',
-    company: {
-      name: 'Acme',
-      image_url: `${baseUrl}/acme.png`,
-    },
-    avatar: `${baseUrl}/avatar.jpg`,
-  },
-  user: {
-    name: 'Donald Duck',
-    avatar: 'https://avatars.githubusercontent.com/u/97747758?v=4',
-  },
+  shortId: 'g11on82o65',
+  subject: 'This is the subject of the email',
+  ticketUrl: 'https://seventy-seven.dev/inbox/5f1634a6-358e-42dd-8875-e38b383b35da',
   thread: [
     {
       id: 'e17e73b6-9dd4-4efd-85f9-6c58846c4827',
@@ -132,6 +152,14 @@ TicketMessageResponse.PreviewProps = {
       handler: null,
     },
   ],
+  handler: {
+    name: 'Edgar Douglas',
+    avatar: `${baseUrl}/avatar.jpg`,
+  },
+  user: {
+    name: 'Donald Duck',
+    avatar: 'https://avatars.githubusercontent.com/u/97747758?v=4',
+  },
 } satisfies Props
 
 export default TicketMessageResponse

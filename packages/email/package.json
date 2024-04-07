@@ -5,7 +5,8 @@
   "exports": {
     ".": "./index.ts",
     "./emails/waitlist-confirmation": "./emails/waitlist-confirmation.tsx",
-    "./emails/ticket-message-response": "./emails/ticket-message-response.tsx"
+    "./emails/ticket-message-response": "./emails/ticket-message-response.tsx",
+    "./emails/snooze-expired": "./emails/snooze-expired.tsx"
   },
   "scripts": {
     "lint": "biome check .",

@@ -6,6 +6,7 @@
     "postinstall": "turbo prisma:generate",
     "build": "turbo build",
     "dev": "dotenv -- turbo dev",
+    "dev:trigger": "dotenv -- @trigger.dev/cli@latest dev",
     "lint": "turbo lint",
     "check:types": "turbo check:types",
     "prisma:generate": "turbo prisma:generate"

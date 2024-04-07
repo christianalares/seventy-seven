@@ -1,14 +1,19 @@
 'use server'
 
 import { authAction } from '@/lib/safe-action'
+import { Events } from '@seventy-seven/jobs/constants'
+import { jobsClient } from '@seventy-seven/jobs/jobsClient'
 import { prisma } from '@seventy-seven/orm/prisma'
+import { isFuture } from 'date-fns'
 import { revalidatePath } from 'next/cache'
 import { z } from 'zod'
 
 export const snoozeTicket = authAction(
   z.object({
     ticketId: z.string().uuid(),
-    snoozedUntil: z.date({ required_error: 'Snoozed date is required' }),
+    snoozedUntil: z
+      .date({ required_error: 'Snoozed date is required' })
+      .refine(isFuture, { message: 'Snoozed date must be in the future' }),
   }),
   async (values, user) => {
     const updatedTicket = await prisma.ticket.update({
@@ -29,6 +34,38 @@ export const snoozeTicket = authAction(
       select: {
         snoozed_until: true,
         id: true,
+        event_id: true,
+      },
+    })
+
+    if (!updatedTicket.snoozed_until) {
+      throw new Error('Failed to snooze ticket, something went wrong 😢')
+    }
+
+    // If a user snoozes a ticket when it's already snoozed, we need to cancel the previous event
+    if (updatedTicket.event_id) {
+      await jobsClient.cancelEvent(updatedTicket.event_id)
+    }
+
+    const event = await jobsClient.sendEvent(
+      {
+        name: Events.UNSNOOZE_TICKET,
+        payload: {
+          ticketId: updatedTicket.id,
+          userId: user.id,
+          userEmail: user.email,
+        },
+      },
+      {
+        deliverAt: updatedTicket.snoozed_until,
+      },
+    )
+
+    // Update the ticket with the event id
+    await prisma.ticket.update({
+      where: { id: updatedTicket.id },
+      data: {
+        event_id: event.id,
       },
     })
 
@@ -39,6 +76,7 @@ export const snoozeTicket = authAction(
     revalidatePath('/inbox')
     revalidatePath(`/inbox/${updatedTicket.id}`)
     revalidatePath(`/inbox/snoozed/${updatedTicket.id}`)
+
     return updatedTicket
   },
 )

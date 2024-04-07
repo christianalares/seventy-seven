@@ -1,6 +1,6 @@
 'use client'
 
-import { addHours, startOfHour, startOfMonth, startOfToday } from 'date-fns'
+import { addHours, startOfMonth, startOfToday } from 'date-fns'
 import { useState } from 'react'
 import { Calendar, type CalendarProps } from '../calendar'
 import { TimePickerInputs } from './time-picker-inputs'
@@ -23,7 +23,7 @@ export function DateTimePicker({ date, setDate, ...restProps }: Props) {
         onMonthChange={setMonth}
         setToday={() => {
           setMonth(startOfToday())
-          setDate(addHours(startOfHour(new Date()), 1))
+          setDate(addHours(new Date(), 1))
         }}
         initialFocus
         fixedWeeks

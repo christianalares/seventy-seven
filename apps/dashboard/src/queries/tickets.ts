@@ -37,6 +37,7 @@ const findMany = async (folder?: Folder) => {
         },
       },
     },
+    orderBy: { created_at: 'desc' },
   })
 
   return tickets

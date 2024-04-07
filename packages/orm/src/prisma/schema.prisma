@@ -75,6 +75,7 @@ model Ticket {
   messages          Message[]
   snoozed_until     DateTime?
   is_closed         Boolean   @default(false)
+  event_id          String?
 
   @@map("tickets")
 }

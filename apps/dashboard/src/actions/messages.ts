@@ -108,7 +108,8 @@ export const createMessage = authAction(
           : `${createdMessage.handler.full_name} from ${createdMessage.ticket.team.name}`
 
       const { data, error } = await resend.emails.send({
-        from: `${from} <${createdMessage.ticket.short_id}@ticket.seventy-seven.dev>`,
+        from: `${from} <seventy-seven@seventy-seven.dev>`,
+        reply_to: `${from} <${createdMessage.ticket.short_id}@ticket.seventy-seven.dev>`,
         to: [createdMessage.ticket.sender_email],
         subject: `Re: ${createdMessage.ticket.subject}`,
         react: template,

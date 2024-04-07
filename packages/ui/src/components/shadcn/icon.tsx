@@ -9,6 +9,7 @@ import {
   ClipboardCheck,
   ClipboardCopy,
   Dot,
+  ExternalLink,
   FolderClosed,
   FolderOpen,
   Home,
@@ -61,6 +62,7 @@ const icons = {
   alarmClock: AlarmClock,
   scrollText: ScrollText,
   trash: Trash2,
+  externalLink: ExternalLink,
 }
 
 export type IconName = keyof typeof icons
