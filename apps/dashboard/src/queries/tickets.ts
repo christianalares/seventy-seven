@@ -26,14 +26,24 @@ const findMany = async (folder?: Folder) => {
       id: true,
       created_at: true,
       subject: true,
-      sender_full_name: true,
-      sender_email: true,
-      sender_avatar_url: true,
       snoozed_until: true,
       messages: {
         take: 1,
         orderBy: {
-          created_at: 'asc',
+          created_at: 'desc',
+        },
+        select: {
+          sent_from_full_name: true,
+          sent_from_email: true,
+          sent_from_avatar_url: true,
+          body: true,
+          handler: {
+            select: {
+              id: true,
+              full_name: true,
+              image_url: true,
+            },
+          },
         },
       },
     },
@@ -61,9 +71,6 @@ const findById = async (id: string) => {
     select: {
       id: true,
       subject: true,
-      sender_full_name: true,
-      sender_email: true,
-      sender_avatar_url: true,
       messages: {
         select: {
           created_at: true,
@@ -75,6 +82,9 @@ const findById = async (id: string) => {
               image_url: true,
             },
           },
+          sent_from_full_name: true,
+          sent_from_email: true,
+          sent_from_avatar_url: true,
           body: true,
         },
         orderBy: {

@@ -61,35 +61,35 @@ model UserOnTeam {
 }
 
 model Ticket {
-  id                String    @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
-  short_id          String    @unique
-  created_at        DateTime  @default(now()) @db.Timestamptz(6)
-  updated_at        DateTime? @db.Timestamptz(6)
-  team_id           String    @db.Uuid
-  team              Team      @relation(fields: [team_id], references: [id])
-  subject           String
-  sender_full_name  String
-  sender_email      String
-  sender_avatar_url String?
-  meta              Json?
-  messages          Message[]
-  snoozed_until     DateTime?
-  is_closed         Boolean   @default(false)
-  event_id          String?
+  id            String    @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  short_id      String    @unique
+  created_at    DateTime  @default(now()) @db.Timestamptz(6)
+  updated_at    DateTime? @db.Timestamptz(6)
+  team_id       String    @db.Uuid
+  team          Team      @relation(fields: [team_id], references: [id])
+  subject       String
+  meta          Json?
+  messages      Message[]
+  snoozed_until DateTime?
+  closed_at     DateTime?
+  event_id      String?
 
   @@map("tickets")
 }
 
 model Message {
-  id         String    @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
-  created_at DateTime  @default(now()) @db.Timestamptz(6)
-  updated_at DateTime? @db.Timestamptz(6)
-  ticket_id  String    @db.Uuid
-  ticket     Ticket    @relation(fields: [ticket_id], references: [id])
-  handler_id String?   @db.Uuid
-  handler    User?     @relation(fields: [handler_id], references: [id])
-  body       String
-  email_id   String?
+  id                   String    @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  created_at           DateTime  @default(now()) @db.Timestamptz(6)
+  updated_at           DateTime? @db.Timestamptz(6)
+  ticket_id            String    @db.Uuid
+  ticket               Ticket    @relation(fields: [ticket_id], references: [id])
+  handler_id           String?   @db.Uuid
+  handler              User?     @relation(fields: [handler_id], references: [id])
+  sent_from_full_name  String?
+  sent_from_email      String?
+  sent_from_avatar_url String?
+  body                 String
+  email_id             String?
 
   @@map("messages")
 }

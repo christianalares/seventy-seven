@@ -6,10 +6,10 @@ import { ChatMessageHandler } from './chat-message-handler'
 import { ChatMessageUser } from './chat-message-user'
 
 type Props = {
-  ticket: TicketsFindById
+  messages: TicketsFindById['messages']
 }
 
-export const TicketChat = ({ ticket }: Props) => {
+export const TicketChat = ({ messages }: Props) => {
   const ref = useRef<ElementRef<'div'>>(null)
 
   useEffect(() => {
@@ -25,7 +25,7 @@ export const TicketChat = ({ ticket }: Props) => {
   return (
     <div ref={ref} className="flex-1 overflow-scroll">
       <ul className="flex flex-col gap-4 m-8">
-        {ticket.messages.map((message) => {
+        {messages.map((message) => {
           if (message.handler) {
             return (
               <ChatMessageHandler
@@ -41,9 +41,9 @@ export const TicketChat = ({ ticket }: Props) => {
             <ChatMessageUser
               key={message.id}
               date={message.created_at}
-              name={ticket.sender_full_name}
+              name={message.sent_from_full_name ?? ''}
               body={message.body}
-              avatar={ticket.sender_avatar_url ?? undefined}
+              avatar={message.sent_from_avatar_url ?? undefined}
             />
           )
         })}
