@@ -6,7 +6,7 @@ import { DateTimePicker } from '@seventy-seven/ui/date-time-picker'
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@seventy-seven/ui/form'
 import { Icon } from '@seventy-seven/ui/icon'
 import { cn } from '@seventy-seven/ui/utils'
-import { format, isFuture, isToday } from 'date-fns'
+import { format, isFuture, isPast, isToday } from 'date-fns'
 import { useAction } from 'next-safe-action/hooks'
 import { useForm } from 'react-hook-form'
 import { toast } from 'sonner'
@@ -85,7 +85,7 @@ export const SnoozeTicketForm = ({ ticketId }: Props) => {
             loading={action.status === 'executing'}
             type="submit"
             className="gap-2 ml-auto"
-            disabled={form.watch('date') && !form.formState.isValid}
+            disabled={isPast(form.watch('date'))}
           >
             <Icon name={iconStyle.name} className={cn('size-5', iconStyle.className)} />
             {form.watch('date') ? `Snooze to ${format(form.getValues('date'), 'MMM dd (HH:mm)')}` : 'Snooze'}

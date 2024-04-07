@@ -1,6 +1,6 @@
 {
   "name": "@seventy-seven/dashboard",
-  "version": "1.0.0",
+  "version": "0.0.0",
   "private": true,
   "scripts": {
     "dev": "next dev --port 3000",
@@ -15,6 +15,7 @@
     "@seventy-seven/orm": "workspace:*",
     "@seventy-seven/supabase": "workspace:*",
     "@seventy-seven/ui": "workspace:*",
+    "@seventy-seven/jobs": "workspace:*",
     "@vercel/edge-config": "^1.1.0",
     "class-variance-authority": "^0.7.0",
     "date-fns": "^3.6.0",

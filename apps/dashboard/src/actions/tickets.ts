@@ -1,16 +1,19 @@
 'use server'
 
-import { Events, Jobs } from '@/jobs/constants'
 import { authAction } from '@/lib/safe-action'
-import { jobsClient } from '@/trigger'
+import { Events } from '@seventy-seven/jobs/constants'
+import { jobsClient } from '@seventy-seven/jobs/jobsClient'
 import { prisma } from '@seventy-seven/orm/prisma'
+import { isFuture } from 'date-fns'
 import { revalidatePath } from 'next/cache'
 import { z } from 'zod'
 
 export const snoozeTicket = authAction(
   z.object({
     ticketId: z.string().uuid(),
-    snoozedUntil: z.date({ required_error: 'Snoozed date is required' }),
+    snoozedUntil: z
+      .date({ required_error: 'Snoozed date is required' })
+      .refine(isFuture, { message: 'Snoozed date must be in the future' }),
   }),
   async (values, user) => {
     const updatedTicket = await prisma.ticket.update({
@@ -50,14 +53,13 @@ export const snoozeTicket = authAction(
         payload: {
           ticketId: updatedTicket.id,
           userId: user.id,
+          userEmail: user.email,
         },
       },
       {
         deliverAt: updatedTicket.snoozed_until,
       },
     )
-
-    console.log(1, event)
 
     // Update the ticket with the event id
     await prisma.ticket.update({

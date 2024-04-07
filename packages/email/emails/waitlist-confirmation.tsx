@@ -53,8 +53,8 @@ const WaitlistConfirmation = () => {
           },
         }}
       >
-        <Body>
-          <Container className="p-6">
+        <Body className="bg-[#f3f4f6]">
+          <Container className="p-4 bg-white rounded-md">
             <Img src={`${baseUrl}/77-logo.png`} alt="77" className="w-12" />
             <Heading as="h1" className="font-maven-pro">
               Welcome to 77!

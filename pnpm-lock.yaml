@@ -32,6 +32,9 @@ importers:
       '@seventy-seven/email':
         specifier: workspace:*
         version: link:../../packages/email
+      '@seventy-seven/jobs':
+        specifier: workspace:*
+        version: link:../../packages/jobs
       '@seventy-seven/orm':
         specifier: workspace:*
         version: link:../../packages/orm
@@ -257,6 +260,37 @@ importers:
       '@types/react-dom':
         specifier: ^18.2.22
         version: 18.2.22
+
+  packages/jobs:
+    dependencies:
+      '@seventy-seven/email':
+        specifier: workspace:*
+        version: link:../email
+      '@seventy-seven/orm':
+        specifier: workspace:*
+        version: link:../orm
+      '@trigger.dev/nextjs':
+        specifier: ^2.3.18
+        version: 2.3.18(@trigger.dev/sdk@2.3.18)(next@14.1.4)
+      '@trigger.dev/react':
+        specifier: ^2.3.18
+        version: 2.3.18(react-dom@18.2.0)(react@18.2.0)
+      '@trigger.dev/resend':
+        specifier: ^2.3.18
+        version: 2.3.18
+      '@trigger.dev/sdk':
+        specifier: ^2.3.18
+        version: 2.3.18
+      '@trigger.dev/supabase':
+        specifier: ^2.3.18
+        version: 2.3.18
+      zod:
+        specifier: ^3.22.4
+        version: 3.22.4
+    devDependencies:
+      '@types/node':
+        specifier: ^20.11.30
+        version: 20.11.30
 
   packages/orm:
     dependencies:
@@ -2219,6 +2253,16 @@ packages:
       react-dom: 18.2.0(react@18.2.0)
     dev: false
 
+  /@react-email/render@0.0.9:
+    resolution: {integrity: sha512-nrim7wiACnaXsGtL7GF6jp3Qmml8J6vAjAH88jkC8lIbfNZaCyuPQHANjyYIXlvQeAbsWADQJFZgOHUqFqjh/A==}
+    engines: {node: '>=18.0.0'}
+    dependencies:
+      html-to-text: 9.0.5
+      pretty: 2.0.0
+      react: 18.2.0
+      react-dom: 18.2.0(react@18.2.0)
+    dev: false
+
   /@react-email/row@0.0.7(react@18.2.0):
     resolution: {integrity: sha512-h7pwrLVGk5CIx7Ai/oPxBgCCAGY7BEpCUQ7FCzi4+eThcs5IdjSwDPefLEkwaFS8KZc56UNwTAH92kNq5B7blg==}
     engines: {node: '>=18.0.0'}
@@ -2500,6 +2544,14 @@ packages:
       zod-error: 1.5.0
     dev: false
 
+  /@trigger.dev/integration-kit@2.3.18:
+    resolution: {integrity: sha512-GjEET5PzEnF5O8TbIdr9glaRETjJStjqH5dIJwoBX/FRW5Vlbkw5KRBsLWKZGYY+gut1IA04LPRe1fWJ9xAGjA==}
+    engines: {node: '>=18.0.0'}
+    dependencies:
+      '@trigger.dev/core': 2.3.18
+      uuid: 9.0.1
+    dev: false
+
   /@trigger.dev/nextjs@2.3.18(@trigger.dev/sdk@2.3.18)(next@14.1.4):
     resolution: {integrity: sha512-ZS0RTZNrzGEKfOLQLYt3iqlNquD7pd39Hpd/+2tvRCaPSQ3qPYQvdjBSueW0OURZSQSiNno5VUYR5vbVBcAaXA==}
     engines: {node: '>=18.0.0'}
@@ -2530,6 +2582,19 @@ packages:
       - supports-color
     dev: false
 
+  /@trigger.dev/resend@2.3.18:
+    resolution: {integrity: sha512-q7kJV3tUkr/h0EmvD8nT1GR7zWVxwQPuqeVNC/Cc1PfjtLDiAfocmDfrkvyaOxYRBJTzCluQAywV7LPdBRVEJg==}
+    engines: {node: '>=18.0.0'}
+    dependencies:
+      '@trigger.dev/integration-kit': 2.3.18
+      '@trigger.dev/sdk': 2.3.18
+      resend: 2.1.0
+    transitivePeerDependencies:
+      - bufferutil
+      - supports-color
+      - utf-8-validate
+    dev: false
+
   /@trigger.dev/sdk@2.3.18:
     resolution: {integrity: sha512-Bjxgl4BbWOAL8rhxeBkl7SzvLLRBMJjiftq/7W7u96MDyPRFUoZZvVMSZzTJufnLBf/xS2JTi8LWU8gzhDJDvw==}
     engines: {node: '>=18.0.0'}
@@ -2548,6 +2613,21 @@ packages:
       ulid: 2.3.0
       uuid: 9.0.1
       ws: 8.16.0
+      zod: 3.22.3
+    transitivePeerDependencies:
+      - bufferutil
+      - supports-color
+      - utf-8-validate
+    dev: false
+
+  /@trigger.dev/supabase@2.3.18:
+    resolution: {integrity: sha512-K7avADrTemC3+22OOa3LJCqkjX+PG1jVecBQkg9VVs+qwCGjATUMioj6aRzQCnYu5XchenvfZhQawmeiehXgMw==}
+    engines: {node: '>=18.0.0'}
+    dependencies:
+      '@supabase/supabase-js': 2.40.0
+      '@trigger.dev/integration-kit': 2.3.18
+      '@trigger.dev/sdk': 2.3.18
+      supabase-management-js: 1.0.0
       zod: 3.22.3
     transitivePeerDependencies:
       - bufferutil
@@ -3235,6 +3315,15 @@ packages:
     resolution: {integrity: sha512-/Srv4dswyQNBfohGpz9o6Yb3Gz3SrUDqBH5rTuhGR7ahtlbYKnVxw2bCFMRljaA7EXHaXZ8wsHdodFvbkhKmqg==}
     dev: false
 
+  /condense-newlines@0.2.1:
+    resolution: {integrity: sha512-P7X+QL9Hb9B/c8HI5BFFKmjgBu2XpQuF98WZ9XkO+dBGgk5XgwiQz7o1SmpglNWId3581UcS0SFAWfoIhMHPfg==}
+    engines: {node: '>=0.10.0'}
+    dependencies:
+      extend-shallow: 2.0.1
+      is-whitespace: 0.3.0
+      kind-of: 3.2.2
+    dev: false
+
   /config-chain@1.1.13:
     resolution: {integrity: sha512-qj+f8APARXHrM0hraqXYb2/bOVSV4PvJQlNZ/DVj0QrmNM2q2euizkeuVckQ57J+W0mRH6Hvi+k50M4Jul2VRQ==}
     dependencies:
@@ -3679,6 +3768,13 @@ packages:
       tsafe: 1.6.6
     dev: false
 
+  /extend-shallow@2.0.1:
+    resolution: {integrity: sha512-zCnTtlxNoAiDc3gqY2aYAWFx7XWWiasuF2K8Me5WbN8otHKTUKBwjPtNpRs/rbUZm7KxWAaNj7P1a/p52GbVug==}
+    engines: {node: '>=0.10.0'}
+    dependencies:
+      is-extendable: 0.1.1
+    dev: false
+
   /fast-deep-equal@3.1.3:
     resolution: {integrity: sha512-f3qQ9oQy9j2AhBe/H9VC91wLmKBCCU/gDOnKNAYG5hswO7BLKj09Hc5HYNz9cGI++xlpDCIgDaitVs03ATR84Q==}
     dev: false
@@ -4048,10 +4144,19 @@ packages:
     dependencies:
       binary-extensions: 2.3.0
 
+  /is-buffer@1.1.6:
+    resolution: {integrity: sha512-NcdALwpXkTm5Zvvbk7owOUSvVvBKDgKP5/ewfXEznmQFfs4ZRmanOeKBTjRVjka3QFoN6XJ+9F3USqfHqTaU5w==}
+    dev: false
+
   /is-core-module@2.13.1:
     resolution: {integrity: sha512-hHrIjvZsftOsvKSn2TRYl63zvxsgE0K+0mYMoH6gD4omR5IWB2KynivBQczo3+wF1cCkjzvptnI9Q0sPU66ilw==}
     dependencies:
       hasown: 2.0.2
+
+  /is-extendable@0.1.1:
+    resolution: {integrity: sha512-5BMULNob1vgFX6EjQw5izWDxrecWK9AM72rugNr0TFldMOi0fj6Jk+zeKIt0xGj4cEfQIJth4w3OKWOJ4f+AFw==}
+    engines: {node: '>=0.10.0'}
+    dev: false
 
   /is-extglob@2.1.1:
     resolution: {integrity: sha512-SbKbANkN603Vi4jEZv49LeVJMn4yGwsbzZworEoyEiutsN3nJYdbO36zfhGJ6QEDpOZIFkDtnq5JRxmvl3jsoQ==}
@@ -4089,6 +4194,11 @@ packages:
   /is-unicode-supported@0.1.0:
     resolution: {integrity: sha512-knxG2q4UC3u8stRGyAVJCOdxFmv5DZiRcdlIaAQXAbSfJya+OhopNotLQrstBhququ4ZpuKbDc/8S6mgXgPFPw==}
     engines: {node: '>=10'}
+    dev: false
+
+  /is-whitespace@0.3.0:
+    resolution: {integrity: sha512-RydPhl4S6JwAyj0JJjshWJEFG6hNye3pZFBRZaTUfZFwGHxzppNaNOVgQuS/E/SlhrApuMXrpnK1EEIXfdo3Dg==}
+    engines: {node: '>=0.10.0'}
     dev: false
 
   /isexe@2.0.0:
@@ -4163,6 +4273,13 @@ packages:
     resolution: {integrity: sha512-oxVHkHR/EJf2CNXnWxRLW6mg7JyCCUcG0DtEGmL2ctUo1PNTin1PUil+r/+4r5MpVgC/fn1kjsx7mjSujKqIpw==}
     dependencies:
       json-buffer: 3.0.1
+    dev: false
+
+  /kind-of@3.2.2:
+    resolution: {integrity: sha512-NOW9QQXMoZGg/oqnVNoNTTIFEIid1627WCffUBJEdMxYApq7mNE7CpzucIPc+ZQg25Phej7IJSmX3hO+oblOtQ==}
+    engines: {node: '>=0.10.0'}
+    dependencies:
+      is-buffer: 1.1.6
     dev: false
 
   /kind-of@6.0.3:
@@ -4642,6 +4759,10 @@ packages:
       mimic-fn: 2.1.0
     dev: false
 
+  /openapi-fetch@0.6.2:
+    resolution: {integrity: sha512-Faj29Kzh7oCbt1bz6vAGNKtRJlV/GolOQTx87eYUnfCK7eVXdN9jQVojroc7tcJ5OQgyhbeOqD7LS/8UtGBnMQ==}
+    dev: false
+
   /optionator@0.9.3:
     resolution: {integrity: sha512-JjCoypp+jKn1ttEFExxhetCKeJt9zhAgAve5FXHixTvFDW/5aEktX9bufBKLRRMdU7bNtpLfcGu94B3cdEJgjg==}
     engines: {node: '>= 0.8.0'}
@@ -4853,6 +4974,15 @@ packages:
   /prelude-ls@1.2.1:
     resolution: {integrity: sha512-vkcDPrRZo1QZLbn5RLGPpg/WmIQ65qoWWhcGKf/b5eplkkarX0m9z8ppCat4mlOqUsWpyNuYgO3VRyrYHSzX5g==}
     engines: {node: '>= 0.8.0'}
+    dev: false
+
+  /pretty@2.0.0:
+    resolution: {integrity: sha512-G9xUchgTEiNpormdYBl+Pha50gOUovT18IvAe7EYMZ1/f9W/WWMPRn+xI68yXNMUk3QXHDwo/1wV/4NejVNe1w==}
+    engines: {node: '>=0.10.0'}
+    dependencies:
+      condense-newlines: 0.2.1
+      extend-shallow: 2.0.1
+      js-beautify: 1.15.1
     dev: false
 
   /prism-react-renderer@2.1.0(react@18.2.0):
@@ -5168,6 +5298,13 @@ packages:
 
   /regenerator-runtime@0.14.1:
     resolution: {integrity: sha512-dYnhHh0nJoMfnkZs6GmmhFknAGRrLznOu5nc9ML+EJxGvrx6H7teuevqVqCuPcPK//3eDrrjQhehXVx9cnkGdw==}
+    dev: false
+
+  /resend@2.1.0:
+    resolution: {integrity: sha512-s6LlaEReTUvlbo6w3Eg1M1TMuwK9OKJ1GVgyptIV8smLPHhFZVqnwBTFPZHID9rcsih72t3iuyrtkQ3IIGwnow==}
+    engines: {node: '>=18'}
+    dependencies:
+      '@react-email/render': 0.0.9
     dev: false
 
   /resend@3.2.0:
@@ -5505,6 +5642,13 @@ packages:
       mz: 2.7.0
       pirates: 4.0.6
       ts-interface-checker: 0.1.13
+
+  /supabase-management-js@1.0.0:
+    resolution: {integrity: sha512-CjtUcT1i3lsIyRwS3/HG6BUB8EaJTEdAPP0GQu8dRDi61HvJeBrswCfG/GRxebC0ZZFov+oHqFIWPe1ztyUqYA==}
+    engines: {node: '>=18.0.0'}
+    dependencies:
+      openapi-fetch: 0.6.2
+    dev: false
 
   /supabase@1.150.0:
     resolution: {integrity: sha512-hjyXukIww6Jc37Wq9urUldS61a7lZdw6J8Ky/TaScGFqTsO4DbPXUoOxHHaWYSM2ucV+4ejNZ5jYpAGmorApkA==}
