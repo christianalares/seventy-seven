@@ -11,7 +11,7 @@ const paramsSchema = z.object({
 })
 
 const searchParamsSchema = z.object({
-  id: z.string().uuid(),
+  ticketId: z.string().uuid(),
 })
 
 type Props = {
@@ -34,7 +34,7 @@ const InboxRootPage = ({ params, searchParams }: Props) => {
       </div>
       <main className="flex-1">
         <Suspense fallback={<p>Loading ticket...</p>}>
-          {parsedSearchParams.success ? <SelectedTicket id={parsedSearchParams.data.id} /> : <NoTicketSelected />}
+          {parsedSearchParams.success ? <SelectedTicket id={parsedSearchParams.data.ticketId} /> : <NoTicketSelected />}
         </Suspense>
       </main>
     </div>

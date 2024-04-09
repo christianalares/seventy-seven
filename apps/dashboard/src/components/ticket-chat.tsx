@@ -1,5 +1,6 @@
 'use client'
 
+import { useSelectedTicket } from '@/hooks/use-selected-ticket'
 import type { TicketsFindById } from '@/queries/tickets'
 import { type ElementRef, useEffect, useRef } from 'react'
 import { ChatMessageHandler } from './chat-message-handler'
@@ -10,17 +11,18 @@ type Props = {
 }
 
 export const TicketChat = ({ messages }: Props) => {
+  const { ticketId } = useSelectedTicket()
   const ref = useRef<ElementRef<'div'>>(null)
 
   useEffect(() => {
-    if (ref.current) {
+    if (ticketId && ref.current) {
       // scroll to bottom in chat
       ref.current.scrollTo({
         top: ref.current.scrollHeight,
         // behavior: 'smooth',
       })
     }
-  }, [])
+  }, [ticketId])
 
   return (
     <div ref={ref} className="flex-1 overflow-scroll">

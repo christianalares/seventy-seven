@@ -1,5 +1,6 @@
 'use client'
 
+import { useSelectedTicket } from '@/hooks/use-selected-ticket'
 import type { Folder, TicketsFindMany } from '@/queries/tickets'
 import { getIconStyle } from '@/utils/get-icon-style'
 import { Badge } from '@seventy-seven/ui/badge'
@@ -7,7 +8,6 @@ import { Icon } from '@seventy-seven/ui/icon'
 import { cn } from '@seventy-seven/ui/utils'
 import { format, isToday } from 'date-fns'
 import Link from 'next/link'
-import { useParams } from 'next/navigation'
 import { Avatar } from './avatar'
 
 type Props = {
@@ -16,7 +16,7 @@ type Props = {
 }
 
 export const TicketListItem = ({ ticket }: Props) => {
-  const { ticketId } = useParams<{ ticketId?: string }>()
+  const { ticketId } = useSelectedTicket()
 
   const isActive = ticket.id === ticketId
   const lastMessage = ticket.messages.at(-1)
@@ -33,7 +33,7 @@ export const TicketListItem = ({ ticket }: Props) => {
 
   return (
     <Link
-      href={`?id=${ticket.id}`}
+      href={`?ticketId=${ticket.id}`}
       className={cn('relative hover:bg-muted/5 dark:hover:bg-muted/30 p-4 rounded-md', {
         'bg-muted/5 dark:bg-muted/30': isActive,
       })}

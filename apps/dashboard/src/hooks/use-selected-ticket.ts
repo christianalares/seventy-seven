@@ -4,6 +4,7 @@ export const useSelectedTicket = () => {
   const [ticketId, setTicketId] = useQueryState(
     'ticketId',
     parseAsString.withOptions({
+      shallow: false,
       history: 'push',
     }),
   )
