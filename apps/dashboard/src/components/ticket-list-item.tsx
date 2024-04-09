@@ -15,12 +15,10 @@ type Props = {
   folder?: Folder
 }
 
-export const TicketListItem = ({ ticket, folder }: Props) => {
+export const TicketListItem = ({ ticket }: Props) => {
   const { ticketId } = useParams<{ ticketId?: string }>()
 
   const isActive = ticket.id === ticketId
-  const href = folder ? `/inbox/${folder}/${ticket.id}` : `/inbox/${ticket.id}`
-
   const lastMessage = ticket.messages.at(-1)
 
   const avatarName = lastMessage?.handler ? lastMessage.handler.full_name : lastMessage?.sent_from_full_name ?? ''
@@ -35,7 +33,7 @@ export const TicketListItem = ({ ticket, folder }: Props) => {
 
   return (
     <Link
-      href={href}
+      href={`?id=${ticket.id}`}
       className={cn('relative hover:bg-muted/5 dark:hover:bg-muted/30 p-4 rounded-md', {
         'bg-muted/5 dark:bg-muted/30': isActive,
       })}

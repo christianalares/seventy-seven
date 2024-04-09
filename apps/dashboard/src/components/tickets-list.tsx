@@ -2,7 +2,7 @@ import { type Folder, ticketsQueries } from '@/queries/tickets'
 import { TicketListItem } from './ticket-list-item'
 
 type Props = {
-  folder?: Folder
+  folder: Folder
 }
 
 export const TicketsList = async ({ folder }: Props) => {

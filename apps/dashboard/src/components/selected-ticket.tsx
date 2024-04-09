@@ -5,13 +5,11 @@ import { ticketsQueries } from '@/queries/tickets'
 import { notFound } from 'next/navigation'
 
 type Props = {
-  params: {
-    ticketId: string
-  }
+  id: string
 }
 
-const RootTicketPage = async ({ params }: Props) => {
-  const ticket = await ticketsQueries.findById(params.ticketId)
+const SelectedTicket = async ({ id }: Props) => {
+  const ticket = await ticketsQueries.findById(id)
 
   if (!ticket) {
     notFound()
@@ -29,4 +27,4 @@ const RootTicketPage = async ({ params }: Props) => {
   )
 }
 
-export default RootTicketPage
+export default SelectedTicket

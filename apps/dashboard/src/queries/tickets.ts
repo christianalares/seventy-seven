@@ -1,8 +1,16 @@
 import { prisma } from '@seventy-seven/orm/prisma'
+import { z } from 'zod'
 import { usersQueries } from './users'
 
-export const FOLDERS = ['snoozed', 'drafts', 'responded', 'closed'] as const
-export type Folder = (typeof FOLDERS)[number]
+export const folderSchema = z.union([
+  z.literal('all'),
+  z.literal('snoozed'),
+  z.literal('drafts'),
+  z.literal('responded'),
+  z.literal('closed'),
+])
+
+export type Folder = z.infer<typeof folderSchema>
 
 export type TicketsFindMany = Awaited<ReturnType<typeof findMany>>
 export type TicketsFindById = NonNullable<Awaited<ReturnType<typeof findById>>>
@@ -14,13 +22,18 @@ const findMany = async (folder?: Folder) => {
     where: {
       team_id: user.current_team_id,
       // If the folder is snoozed, only return tickets that have a snoozed_until date
-      ...(folder === 'snoozed'
-        ? {
-            NOT: {
-              snoozed_until: null,
-            },
-          }
-        : {}),
+      ...(folder === 'snoozed' && {
+        NOT: {
+          snoozed_until: null,
+        },
+      }),
+
+      // If the folder is closed, only return tickets that have a closed_at date
+      ...(folder === 'closed' && {
+        NOT: {
+          closed_at: null,
+        },
+      }),
     },
     select: {
       id: true,
