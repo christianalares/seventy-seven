@@ -1,6 +1,9 @@
 'use server'
 
 import { authAction } from '@/lib/safe-action'
+import { usersQueries } from '@/queries/users'
+import { componentToPlainText, createResendClient } from '@seventy-seven/email'
+import TicketClosed from '@seventy-seven/email/emails/ticket-closed'
 import { Events } from '@seventy-seven/jobs/constants'
 import { jobsClient } from '@seventy-seven/jobs/jobsClient'
 import { prisma } from '@seventy-seven/orm/prisma'
@@ -119,5 +122,108 @@ export const toggleStar = authAction(
       ...updatedTicket,
       wasStarred: !!updatedTicket.starred_at,
     }
+  },
+)
+
+export const closeTicket = authAction(
+  z.object({
+    ticketId: z.string().uuid(),
+  }),
+  async (values, user) => {
+    const updatedTicket = await prisma.ticket.update({
+      where: {
+        id: values.ticketId,
+        // Make sure the user is a member of the team
+        team: {
+          members: {
+            some: {
+              user_id: user.id,
+            },
+          },
+        },
+      },
+      data: {
+        closed_at: new Date(),
+      },
+      select: {
+        id: true,
+        short_id: true,
+        starred_at: true,
+        messages: {
+          select: {
+            id: true,
+            body: true,
+            created_at: true,
+            sent_from_full_name: true,
+            sent_from_email: true,
+            sent_from_avatar_url: true,
+            handler: {
+              select: {
+                full_name: true,
+                image_url: true,
+              },
+            },
+          },
+        },
+      },
+    })
+
+    if (!updatedTicket) {
+      throw new Error('Failed to close ticket, something went wrong 😢')
+    }
+
+    const dbUser = await usersQueries.findMe()
+
+    const resend = createResendClient()
+
+    // Construct an array of `Name <email>`
+    const recipients = updatedTicket.messages
+      .map((msg) => ({ name: msg.sent_from_full_name, email: msg.sent_from_email }))
+      .filter((r): r is { name: string; email: string } => !!r.email && !!r.name)
+      .map((r) => `${r.name} <${r.email}>`)
+
+    const uniqueRecipients = [...new Set(recipients)]
+
+    // If the team is personal or if the handlers name is the same as the team name, then the `from` field should be the handlers name
+    // otherwise show [name] from [team_name]
+    const from =
+      dbUser.full_name === dbUser.current_team.name
+        ? dbUser.full_name
+        : `${dbUser.full_name} from ${dbUser.current_team.name}`
+
+    const template = TicketClosed({
+      handler: {
+        company: {
+          name: dbUser.current_team.name,
+          image_url: dbUser.current_team.image_url ?? undefined,
+        },
+        name: dbUser.full_name,
+        avatar: dbUser.image_url ?? undefined,
+      },
+      thread: updatedTicket.messages,
+      ticket: {
+        id: updatedTicket.id,
+        short_id: updatedTicket.short_id,
+      },
+    })
+
+    const { error } = await resend.emails.send({
+      from: `${from} <seventy-seven@seventy-seven.dev>`,
+      reply_to: `${from} <${updatedTicket.short_id}@ticket.seventy-seven.dev>`,
+      to: uniqueRecipients,
+      subject: `Ticket #${updatedTicket.short_id} was closed`,
+      react: template,
+      text: componentToPlainText(template),
+    })
+
+    if (error) {
+      // biome-ignore lint/suspicious/noConsoleLog: Log here
+      console.log('Error sending email', error)
+    }
+
+    revalidatePath('/inbox')
+    revalidatePath('/inbox/closed')
+
+    return updatedTicket
   },
 )

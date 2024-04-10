@@ -1,6 +1,6 @@
 'use client'
 
-import { toggleStar } from '@/actions/tickets'
+import { closeTicket, toggleStar } from '@/actions/tickets'
 import { pushModal } from '@/components/modals'
 import type { TicketsFindById } from '@/queries/tickets'
 import { getIconStyle } from '@/utils/get-icon-style'
@@ -31,7 +31,16 @@ export const TicketActionDropdown = ({ ticket }: Props) => {
     },
   })
 
-  const isLoading = toggleStarAction.status === 'executing'
+  const closeTicketAction = useAction(closeTicket, {
+    onSuccess: (_updatedTicket) => {
+      toast.success('Ticket was closed')
+    },
+    onError: (err) => {
+      toast.error(err.serverError)
+    },
+  })
+
+  const isLoading = [toggleStarAction, closeTicketAction].some((action) => action.status === 'executing')
 
   return (
     <DropdownMenu>
@@ -59,19 +68,20 @@ export const TicketActionDropdown = ({ ticket }: Props) => {
           className="gap-2"
           onSelect={() => toggleStarAction.execute({ ticketId: ticket.id, star: !ticket.starred_at })}
         >
-          <Icon
-            name={getIconStyle('starred').name}
-            className={cn('size-4', getIconStyle('starred').className, {
-              'animate-rotate': toggleStarAction.status === 'executing',
-            })}
-          />
+          <Icon name={getIconStyle('starred').name} className={cn('size-4', getIconStyle('starred').className)} />
           {ticket.starred_at ? 'Unstar' : 'Star'}
         </DropdownMenuItem>
 
-        <DropdownMenuItem className="gap-2">
-          <Icon name={getIconStyle('closed').name} className={cn('size-4', getIconStyle('closed').className)} />
-          Close
-        </DropdownMenuItem>
+        {!ticket.closed_at && (
+          <DropdownMenuItem
+            disabled={closeTicketAction.status === 'executing'}
+            className="gap-2"
+            onSelect={() => closeTicketAction.execute({ ticketId: ticket.id })}
+          >
+            <Icon name={getIconStyle('closed').name} className={cn('size-4', getIconStyle('closed').className)} />
+            Close
+          </DropdownMenuItem>
+        )}
       </DropdownMenuContent>
     </DropdownMenu>
   )

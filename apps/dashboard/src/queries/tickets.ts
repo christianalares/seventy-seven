@@ -48,6 +48,7 @@ const findMany = async (folder?: Folder) => {
       subject: true,
       snoozed_until: true,
       starred_at: true,
+      closed_at: true,
       messages: {
         take: 1,
         orderBy: {

@@ -38,15 +38,21 @@ export const TicketListItem = ({ ticket }: Props) => {
         'bg-muted/5 dark:bg-muted/30': isActive,
       })}
     >
-      {ticket.snoozed_until && (
+      {(ticket.snoozed_until || ticket.starred_at || ticket.closed_at) && (
         <div className="absolute top-2 right-2 flex items-center gap-2">
-          <Badge variant="outline" className="gap-2 font-normal items-center text-muted-foreground">
-            {format(ticket.snoozed_until, isToday(ticket.snoozed_until) ? 'HH:mm' : 'MMM dd (HH:mm)')}
-            <Icon name={getIconStyle('snoozed').name} className={cn('size-4', getIconStyle('snoozed').className)} />
-          </Badge>
+          {ticket.snoozed_until && (
+            <Badge variant="outline" className="gap-2 font-normal items-center text-muted-foreground">
+              {format(ticket.snoozed_until, isToday(ticket.snoozed_until) ? 'HH:mm' : 'MMM dd (HH:mm)')}
+              <Icon name={getIconStyle('snoozed').name} className={cn('size-4', getIconStyle('snoozed').className)} />
+            </Badge>
+          )}
 
           {ticket.starred_at && (
             <Icon name={getIconStyle('starred').name} className={cn('size-4', getIconStyle('starred').className)} />
+          )}
+
+          {ticket.closed_at && (
+            <Icon name={getIconStyle('closed').name} className={cn('size-4', getIconStyle('closed').className)} />
           )}
         </div>
       )}

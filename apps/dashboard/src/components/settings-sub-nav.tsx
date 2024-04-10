@@ -34,11 +34,16 @@ const SubLinkItem = ({ href, label }: SubLinkItemProps) => {
   )
 }
 
-export const SettingsSubNav = () => {
+type Props = {
+  className?: string
+}
+
+export const SettingsSubNav = ({ className }: Props) => {
   return (
-    <nav>
+    <nav className={cn(className)}>
       <ul className="flex items-center gap-4">
         <SubLinkItem href="/settings" label="General" />
+        <SubLinkItem href="/settings/members" label="Members" />
         <SubLinkItem href="/settings/security" label="Security" />
       </ul>
     </nav>

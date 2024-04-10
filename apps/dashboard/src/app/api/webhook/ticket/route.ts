@@ -56,6 +56,7 @@ export async function POST(req: Request) {
         short_id: shortId,
       },
       data: {
+        closed_at: null,
         messages: {
           create: {
             body: parsedBody.data.StrippedTextReply,
