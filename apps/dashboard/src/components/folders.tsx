@@ -50,10 +50,10 @@ export const Folders = ({ className }: Props) => {
       <ul className="flex flex-col gap-1">
         <FolderFilterButton isActive={joinedSegments === 'inbox.all'} href="/inbox" label="All" />
         <FolderFilterButton
-          isActive={joinedSegments.startsWith('inbox.snoozed')}
-          href="/inbox/snoozed"
-          type="snoozed"
-          label="Snoozed"
+          isActive={joinedSegments.startsWith('inbox.unhandled')}
+          href="/inbox/unhandled"
+          type="unhandled"
+          label="Unhandled"
         />
         <FolderFilterButton
           isActive={joinedSegments === 'inbox.starred'}
@@ -61,7 +61,12 @@ export const Folders = ({ className }: Props) => {
           type="starred"
           label="Starred"
         />
-        {/* <FolderFilterButton isActive={joinedSegments === 'inbox.responded'} href="/inbox/responded" type="responded" label="Responded" /> */}
+        <FolderFilterButton
+          isActive={joinedSegments.startsWith('inbox.snoozed')}
+          href="/inbox/snoozed"
+          type="snoozed"
+          label="Snoozed"
+        />
         <FolderFilterButton
           isActive={joinedSegments.startsWith('inbox.closed')}
           href="/inbox/closed"

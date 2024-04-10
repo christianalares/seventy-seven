@@ -15,6 +15,7 @@ import {
   Home,
   Inbox,
   List,
+  ListOrdered,
   Loader2,
   type LucideProps,
   Mail,
@@ -65,6 +66,7 @@ const icons = {
   trash: Trash2,
   externalLink: ExternalLink,
   star: Star,
+  listOrdered: ListOrdered,
 }
 
 export type IconName = keyof typeof icons
