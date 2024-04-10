@@ -1,12 +1,12 @@
-import { prisma } from '@seventy-seven/orm/prisma'
+import { type Prisma, prisma } from '@seventy-seven/orm/prisma'
 import { z } from 'zod'
 import { usersQueries } from './users'
 
 export const folderSchema = z.union([
   z.literal('all'),
+  z.literal('unhandled'),
   z.literal('snoozed'),
   z.literal('starred'),
-  z.literal('responded'),
   z.literal('closed'),
 ])
 
@@ -18,59 +18,78 @@ export type TicketsFindById = NonNullable<Awaited<ReturnType<typeof findById>>>
 const findMany = async (folder?: Folder) => {
   const user = await usersQueries.findMe()
 
-  const tickets = await prisma.ticket.findMany({
-    where: {
-      team_id: user.current_team_id,
-      // If the folder is snoozed, only return tickets that have a snoozed_until date
-      ...(folder === 'snoozed' && {
-        NOT: {
-          snoozed_until: null,
-        },
-      }),
-
-      // If the folder is closed, only return tickets that have a closed_at date
-      ...(folder === 'closed' && {
-        NOT: {
-          closed_at: null,
-        },
-      }),
-
-      // If the folder is closed, only return tickets that have a closed_at date
-      ...(folder === 'starred' && {
-        NOT: {
-          starred_at: null,
-        },
-      }),
-    },
-    select: {
-      id: true,
-      created_at: true,
-      subject: true,
-      snoozed_until: true,
-      starred_at: true,
-      closed_at: true,
-      messages: {
-        take: 1,
-        orderBy: {
-          created_at: 'desc',
-        },
-        select: {
-          sent_from_full_name: true,
-          sent_from_email: true,
-          sent_from_avatar_url: true,
-          body: true,
-          handler: {
-            select: {
-              id: true,
-              full_name: true,
-              image_url: true,
-            },
+  const SELECT = {
+    id: true,
+    created_at: true,
+    subject: true,
+    snoozed_until: true,
+    starred_at: true,
+    closed_at: true,
+    messages: {
+      take: 1,
+      orderBy: {
+        created_at: 'desc',
+      },
+      select: {
+        sent_from_full_name: true,
+        sent_from_email: true,
+        sent_from_avatar_url: true,
+        body: true,
+        handler: {
+          select: {
+            id: true,
+            full_name: true,
+            image_url: true,
           },
         },
       },
     },
+  } satisfies Prisma.TicketSelect
+
+  const WHERE_MAP: Record<Folder, Prisma.TicketWhereInput> = {
+    all: {},
+    unhandled: {
+      closed_at: null,
+    },
+    starred: {
+      starred_at: {
+        not: null,
+      },
+    },
+    snoozed: {
+      snoozed_until: {
+        not: null,
+      },
+    },
+    closed: {
+      closed_at: {
+        not: null,
+      },
+    },
+  }
+
+  const tickets = await prisma.ticket.findMany({
+    where: {
+      team_id: user.current_team_id,
+      ...WHERE_MAP[folder ?? 'all'],
+    },
+    select: SELECT,
     orderBy: { created_at: 'desc' },
   })
+
+  // If the folder is unhandled we need to manually filter the tickets base on the last message is not from a handler
+  if (folder === 'unhandled') {
+    const unhandledTickets = tickets.filter((ticket) => {
+      const lastMessage = ticket.messages.at(-1)
+      if (lastMessage?.handler) {
+        return false
+      }
+
+      return true
+    })
+
+    return unhandledTickets
+  }
 
   return tickets
 }
