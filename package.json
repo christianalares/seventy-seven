@@ -1,12 +1,12 @@
 {
   "name": "seventy-seven",
   "private": true,
-  "packageManager": "pnpm@8.9.0",
+  "workspaces": ["packages/*", "apps/*"],
   "scripts": {
     "postinstall": "turbo prisma:generate",
     "build": "turbo build",
-    "dev": "dotenv -- turbo dev",
-    "dev:trigger": "dotenv -- @trigger.dev/cli@latest dev",
+    "dev": "turbo dev",
+    "dev:trigger": "@trigger.dev/cli@latest dev",
     "lint": "turbo lint",
     "check:types": "turbo check:types",
     "prisma:generate": "turbo prisma:generate"

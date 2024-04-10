@@ -80,3 +80,44 @@ export const snoozeTicket = authAction(
     return updatedTicket
   },
 )
+
+export const toggleStar = authAction(
+  z.object({
+    ticketId: z.string().uuid(),
+    star: z.boolean(),
+  }),
+  async (values, user) => {
+    const updatedTicket = await prisma.ticket.update({
+      where: {
+        id: values.ticketId,
+        // Make sure the user is a member of the team
+        team: {
+          members: {
+            some: {
+              user_id: user.id,
+            },
+          },
+        },
+      },
+      data: {
+        starred_at: values.star ? new Date() : null,
+      },
+      select: {
+        id: true,
+        starred_at: true,
+      },
+    })
+
+    if (!updatedTicket) {
+      throw new Error(`Failed to ${values.star ? 'star' : 'unstar'} ticket, something went wrong 😢`)
+    }
+
+    revalidatePath('/inbox')
+    revalidatePath('/inbox/starred')
+
+    return {
+      ...updatedTicket,
+      wasStarred: !!updatedTicket.starred_at,
+    }
+  },
+)

@@ -4,6 +4,7 @@
   "private": true,
   "main": "src/index.ts",
   "scripts": {
+    "dev": "trigger-cli dev",
     "clean": "rm -rf .turbo node_modules",
     "lint": "biome check .",
     "format": "biome format --write .",
@@ -20,6 +21,10 @@
     "zod": "^3.22.4"
   },
   "devDependencies": {
+    "@trigger.dev/cli": "^2.3.18",
     "@types/node": "^20.11.30"
+  },
+  "trigger.dev": {
+    "endpointId": "dashboard-3XzR"
   }
 }
