@@ -1,16 +1,22 @@
-// import { AuthToken } from '@/components/auth-token'
+import { InviteTeamMemberButtonWrapper } from '@/components/invite-team-member-button-wrapper'
 import { PageWrapper } from '@/components/page-wrapper'
-// import { usersQueries } from '@/queries/users'
+import { TeamMembers, TeamMembersSkeleton } from '@/components/team-members'
+import { Skeleton } from '@seventy-seven/ui/skeleton'
+import { Suspense } from 'react'
 
-const SecurityPage = async () => {
-  // const user = await usersQueries.myCurrentTeam()
-
+const MembersPage = () => {
   return (
     <PageWrapper>
-      <p>Todo</p>
-      {/* <AuthToken authToken={user.current_team.auth_token} /> */}
+      <div className="flex justify-end mb-4">
+        <Suspense fallback={<Skeleton className="h-10 w-[196px]" />}>
+          <InviteTeamMemberButtonWrapper />
+        </Suspense>
+      </div>
+      <Suspense fallback={<TeamMembersSkeleton />}>
+        <TeamMembers />
+      </Suspense>
     </PageWrapper>
   )
 }
 
-export default SecurityPage
+export default MembersPage

@@ -10,12 +10,16 @@
     "check:types": "tsc --noEmit"
   },
   "dependencies": {
+    "@faker-js/faker": "^8.4.1",
     "@hookform/resolvers": "^3.3.4",
     "@seventy-seven/email": "workspace:*",
+    "@seventy-seven/jobs": "workspace:*",
     "@seventy-seven/orm": "workspace:*",
     "@seventy-seven/supabase": "workspace:*",
     "@seventy-seven/ui": "workspace:*",
-    "@seventy-seven/jobs": "workspace:*",
+    "@trigger.dev/nextjs": "^2.3.18",
+    "@trigger.dev/react": "^2.3.18",
+    "@trigger.dev/sdk": "^2.3.18",
     "@vercel/edge-config": "^1.1.0",
     "class-variance-authority": "^0.7.0",
     "date-fns": "^3.6.0",
@@ -35,10 +39,7 @@
     "uuidv4": "^6.2.13",
     "vaul": "^0.9.0",
     "zod": "^3.22.4",
-    "zustand": "^4.5.2",
-    "@trigger.dev/sdk": "^2.3.18",
-    "@trigger.dev/nextjs": "^2.3.18",
-    "@trigger.dev/react": "^2.3.18"
+    "zustand": "^4.5.2"
   },
   "devDependencies": {
     "@seventy-seven/typescript-config": "workspace:*",

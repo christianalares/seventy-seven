@@ -6,6 +6,8 @@ import {
   CheckCircle2,
   ChevronDown,
   ChevronsUpDown,
+  Circle,
+  CircleDashed,
   ClipboardCheck,
   ClipboardCopy,
   Dot,
@@ -21,16 +23,20 @@ import {
   Mail,
   MailOpen,
   Menu,
+  Minus,
   Monitor,
   Moon,
   MoreHorizontal,
   MoreVertical,
+  Plus,
   ScrollText,
   Send,
   Settings,
   Star,
   Sun,
   Trash2,
+  UserPlus,
+  UserX,
   X,
 } from 'lucide-react'
 
@@ -67,6 +73,12 @@ const icons = {
   externalLink: ExternalLink,
   star: Star,
   listOrdered: ListOrdered,
+  userX: UserX,
+  userPlus: UserPlus,
+  circle: Circle,
+  circleDashed: CircleDashed,
+  plus: Plus,
+  minus: Minus,
 }
 
 export type IconName = keyof typeof icons

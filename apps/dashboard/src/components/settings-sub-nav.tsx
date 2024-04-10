@@ -28,7 +28,10 @@ const SubLinkItem = ({ href, label }: SubLinkItemProps) => {
         {label}
       </Link>
       {isActive && (
-        <motion.div layoutId="underline" className="absolute -bottom-0.5 left-0 w-full h-0.5 bg-muted-foreground" />
+        <motion.div
+          layoutId="settings-sub-nav-underline"
+          className="absolute -bottom-0.5 left-0 w-full h-0.5 bg-muted-foreground"
+        />
       )}
     </li>
   )

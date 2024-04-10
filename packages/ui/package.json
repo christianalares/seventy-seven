@@ -66,6 +66,7 @@
     "./badge": "./src/components/shadcn/badge.tsx",
     "./calendar": "./src/components/shadcn/calendar.tsx",
     "./popover": "./src/components/shadcn/popover.tsx",
-    "./date-time-picker": "./src/components/shadcn/time-picker/date-time-picker.tsx"
+    "./date-time-picker": "./src/components/shadcn/time-picker/date-time-picker.tsx",
+    "./skeleton": "./src/components/shadcn/skeleton.tsx"
   }
 }
