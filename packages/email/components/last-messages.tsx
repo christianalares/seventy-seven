@@ -1,5 +1,7 @@
 import { Column, Hr, Img, Row, Section, Text } from '@react-email/components'
 import { cn } from '@seventy-seven/ui/utils'
+// biome-ignore lint/correctness/noUnusedImports: <explanation>
+import * as React from 'react'
 import type { Message } from '../types'
 
 type Props = {
@@ -65,7 +67,7 @@ export const LastMessages = ({ messages }: Props) => {
             )}
 
             <Row>
-              <Text className="text-base">{message.body}</Text>
+              <Text>{message.body}</Text>
             </Row>
 
             <Hr

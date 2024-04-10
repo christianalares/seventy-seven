@@ -18,17 +18,24 @@ enum TEAM_ROLE_ENUM {
   MEMBER
 }
 
+enum SYSTEM_MESSAGE_EVENT_TYPE_ENUM {
+  CLOSED_TICKET
+  REOPENED_TICKET
+  SNOOZED_TICKET
+}
+
 model User {
-  id              String       @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
-  created_at      DateTime     @default(now()) @db.Timestamptz(6)
-  updated_at      DateTime?    @db.Timestamptz(6)
-  email           String       @unique @db.VarChar
-  full_name       String
-  image_url       String?
-  current_team_id String       @db.Uuid
-  current_team    Team         @relation(fields: [current_team_id], references: [id])
-  teams           UserOnTeam[]
-  messages        Message[]
+  id                    String               @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  created_at            DateTime             @default(now()) @db.Timestamptz(6)
+  updated_at            DateTime?            @db.Timestamptz(6)
+  email                 String               @unique @db.VarChar
+  full_name             String
+  image_url             String?
+  current_team_id       String               @db.Uuid
+  current_team          Team                 @relation(fields: [current_team_id], references: [id])
+  teams                 UserOnTeam[]
+  messages              Message[]
+  system_message_events SystemMessageEvent[]
 
   @@map("users")
 }
@@ -61,19 +68,20 @@ model UserOnTeam {
 }
 
 model Ticket {
-  id            String    @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
-  short_id      String    @unique
-  created_at    DateTime  @default(now()) @db.Timestamptz(6)
-  updated_at    DateTime? @db.Timestamptz(6)
-  team_id       String    @db.Uuid
-  team          Team      @relation(fields: [team_id], references: [id])
-  subject       String
-  meta          Json?
-  messages      Message[]
-  snoozed_until DateTime?
-  closed_at     DateTime?
-  event_id      String?
-  starred_at    DateTime?
+  id                    String               @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  short_id              String               @unique
+  created_at            DateTime             @default(now()) @db.Timestamptz(6)
+  updated_at            DateTime?            @db.Timestamptz(6)
+  team_id               String               @db.Uuid
+  team                  Team                 @relation(fields: [team_id], references: [id])
+  subject               String
+  meta                  Json?
+  messages              Message[]
+  snoozed_until         DateTime?
+  closed_at             DateTime?
+  event_id              String?
+  starred_at            DateTime?
+  system_message_events SystemMessageEvent[]
 
   @@map("tickets")
 }
@@ -93,6 +101,18 @@ model Message {
   email_id             String?
 
   @@map("messages")
+}
+
+model SystemMessageEvent {
+  id                 String                         @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  created_at         DateTime                       @default(now()) @db.Timestamptz(6)
+  created_by_user_id String?                        @db.Uuid
+  created_by_user    User?                          @relation(fields: [created_by_user_id], references: [id])
+  event_type         SYSTEM_MESSAGE_EVENT_TYPE_ENUM
+  ticket_id          String                         @db.Uuid
+  ticket             Ticket                         @relation(fields: [ticket_id], references: [id])
+
+  @@map("system_message_events")
 }
 
 model Waitlist {
