@@ -5,7 +5,7 @@ import { usersQueries } from './users'
 export const folderSchema = z.union([
   z.literal('all'),
   z.literal('snoozed'),
-  z.literal('drafts'),
+  z.literal('starred'),
   z.literal('responded'),
   z.literal('closed'),
 ])
@@ -34,12 +34,20 @@ const findMany = async (folder?: Folder) => {
           closed_at: null,
         },
       }),
+
+      // If the folder is closed, only return tickets that have a closed_at date
+      ...(folder === 'starred' && {
+        NOT: {
+          starred_at: null,
+        },
+      }),
     },
     select: {
       id: true,
       created_at: true,
       subject: true,
       snoozed_until: true,
+      starred_at: true,
       messages: {
         take: 1,
         orderBy: {
@@ -84,6 +92,8 @@ const findById = async (id: string) => {
     select: {
       id: true,
       subject: true,
+      starred_at: true,
+      closed_at: true,
       messages: {
         select: {
           created_at: true,

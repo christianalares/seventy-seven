@@ -55,7 +55,12 @@ export const Folders = ({ className }: Props) => {
           type="snoozed"
           label="Snoozed"
         />
-        {/* <FolderFilterButton isActive={joinedSegments === 'inbox.drafts'} href="/inbox/drafts" type="drafts" label="Drafts" /> */}
+        <FolderFilterButton
+          isActive={joinedSegments === 'inbox.starred'}
+          href="/inbox/starred"
+          type="starred"
+          label="Starred"
+        />
         {/* <FolderFilterButton isActive={joinedSegments === 'inbox.responded'} href="/inbox/responded" type="responded" label="Responded" /> */}
         <FolderFilterButton
           isActive={joinedSegments.startsWith('inbox.closed')}

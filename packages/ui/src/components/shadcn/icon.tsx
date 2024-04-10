@@ -27,6 +27,7 @@ import {
   ScrollText,
   Send,
   Settings,
+  Star,
   Sun,
   Trash2,
   X,
@@ -63,6 +64,7 @@ const icons = {
   scrollText: ScrollText,
   trash: Trash2,
   externalLink: ExternalLink,
+  star: Star,
 }
 
 export type IconName = keyof typeof icons

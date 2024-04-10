@@ -20,7 +20,7 @@ export const TicketChatHeader = ({ ticket }: Props) => {
       </div>
 
       <div className="ml-auto">
-        <TicketActionDropdown ticketId={ticket.id} />
+        <TicketActionDropdown ticket={ticket} />
       </div>
     </header>
   )

@@ -73,6 +73,7 @@ model Ticket {
   snoozed_until DateTime?
   closed_at     DateTime?
   event_id      String?
+  starred_at    DateTime?
 
   @@map("tickets")
 }

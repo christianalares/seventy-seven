@@ -7,8 +7,8 @@ export const getIconStyle = (type?: Folder): ReturnType<typeof r> => {
   switch (type) {
     case 'snoozed':
       return r('alarmClock', 'text-orange-500')
-    case 'drafts':
-      return r('scrollText', 'text-blue-500')
+    case 'starred':
+      return r('star', 'text-amber-500')
     case 'responded':
       return r('send', 'text-green-500')
     case 'closed':
