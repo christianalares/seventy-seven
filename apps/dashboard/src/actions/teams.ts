@@ -2,6 +2,10 @@
 
 import { authAction } from '@/lib/safe-action'
 import { usersQueries } from '@/queries/users'
+import { sentencifyArray } from '@/utils/sentencifyArray'
+import { shortId } from '@/utils/shortId'
+import { componentToPlainText, createResendClient } from '@seventy-seven/email'
+import TeamInvite from '@seventy-seven/email/emails/team-invite'
 import { prisma } from '@seventy-seven/orm/prisma'
 import { revalidatePath } from 'next/cache'
 import { uuid } from 'uuidv4'
@@ -226,3 +230,122 @@ export const generateAuthToken = authAction(z.undefined().optional(), async (_va
     isNew: !usresCurrentTeam.current_team.auth_token,
   }
 })
+
+export const inviteTeamMembers = authAction(
+  z.object({
+    emails: z.array(z.string().email()),
+    teamId: z.string().uuid(),
+  }),
+  async (input, user) => {
+    // Try to get the team which some of the emails are already in
+    const teamWithEmails = await prisma.team.findUnique({
+      where: {
+        id: input.teamId,
+        members: {
+          some: {
+            user: {
+              email: {
+                in: input.emails,
+              },
+            },
+          },
+        },
+      },
+      select: {
+        members: {
+          select: {
+            user: {
+              select: {
+                email: true,
+                full_name: true,
+              },
+            },
+          },
+        },
+      },
+    })
+
+    // Some of the users are already in the team
+    if (teamWithEmails) {
+      const emailsInTeam = teamWithEmails.members.map((member) => member.user.email)
+      const duplicateEmails = input.emails.filter((email) => emailsInTeam.includes(email))
+
+      throw new Error(`The following emails are already in the team: ${sentencifyArray(duplicateEmails)}`)
+    }
+
+    // Make sure the user is an owner of the team
+    const usersTeam = await prisma.team.findUnique({
+      where: {
+        id: input.teamId,
+        members: {
+          some: {
+            user_id: user.id,
+            role: 'OWNER',
+          },
+        },
+      },
+    })
+
+    if (!usersTeam) {
+      throw new Error('You do not have permission to invite members to this team')
+    }
+
+    const createdInvites = await prisma.$transaction(
+      input.emails.map((email) =>
+        prisma.teamInvite.create({
+          data: {
+            email,
+            team_id: usersTeam.id,
+            created_by_user_id: user.id,
+            code: shortId(),
+          },
+          select: {
+            code: true,
+            email: true,
+            team: {
+              select: {
+                id: true,
+                name: true,
+              },
+            },
+          },
+        }),
+      ),
+    )
+
+    const dbUser = await usersQueries.findMe()
+
+    const resend = createResendClient()
+
+    Promise.all(
+      createdInvites.map((invite) => {
+        const template = TeamInvite({
+          code: invite.code,
+          invitedBy: dbUser.full_name,
+          team: {
+            id: invite.team.id,
+            name: invite.team.name,
+          },
+          user: {
+            email: invite.email,
+          },
+        })
+
+        const from =
+          dbUser.full_name === usersTeam.name ? dbUser.full_name : `${dbUser.full_name} from ${usersTeam.name}`
+
+        return resend.emails.send({
+          from: `${from} <seventy-seven@seventy-seven.dev>`,
+          to: createdInvites.map((invite) => invite.email),
+          subject: `${from} has invited you to join ${usersTeam.name} on 77`,
+          react: template,
+          text: componentToPlainText(template),
+        })
+      }),
+    ).catch((error) => {
+      console.error('Could not send invites', error)
+    })
+
+    return createdInvites.length
+  },
+)

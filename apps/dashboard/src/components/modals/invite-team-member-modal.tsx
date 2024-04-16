@@ -1,7 +1,8 @@
 'use client'
 
-import { createTeam } from '@/actions/teams'
+import { inviteTeamMembers } from '@/actions/teams'
 import type { UsersGetMyCurrentTeam } from '@/queries/users'
+import { pluralize } from '@/utils/pluralize'
 import { Modal, ModalDescription, ModalHeader, ModalTitle } from '@seventy-seven/ui/modal'
 import { useAction } from 'next-safe-action/hooks'
 import { toast } from 'sonner'
@@ -13,20 +14,21 @@ type Props = {
 }
 
 export const InviteTeamMemberModal = ({ team }: Props) => {
-  const action = useAction(createTeam, {
-    onSuccess: (createdTeam) => {
-      popModal('createTeamModal')
-      toast.success(`Team "${createdTeam.name}" created successfully`)
+  const action = useAction(inviteTeamMembers, {
+    onSuccess: (numberOfCreatedInvites) => {
+      popModal('inviteTeamMemberModal')
+      toast.success(`You invited ${pluralize(numberOfCreatedInvites, 'member', 'members')}`)
     },
     onError: (err, input) => {
-      popModal('createTeamModal')
+      // popModal('inviteTeamMemberModal')
 
       toast.error(err.serverError, {
         action: {
           label: 'Retry',
           onClick: () =>
             action.execute({
-              name: input.name,
+              emails: input.emails,
+              teamId: input.teamId,
             }),
         },
       })
@@ -41,8 +43,10 @@ export const InviteTeamMemberModal = ({ team }: Props) => {
       </ModalHeader>
       <InviteTeamMemberForm
         onSubmit={(values) => {
-          console.log(values)
-          // action.execute({ name: values.name })
+          action.execute({
+            emails: values.invites.map(({ email }) => email),
+            teamId: team.id,
+          })
         }}
         loading={action.status === 'executing'}
       />{' '}

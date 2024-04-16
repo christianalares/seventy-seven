@@ -13,24 +13,36 @@ export type Database = {
         Row: {
           body: string
           created_at: string
+          email_id: string | null
           handler_id: string | null
           id: string
+          sent_from_avatar_url: string | null
+          sent_from_email: string | null
+          sent_from_full_name: string | null
           ticket_id: string
           updated_at: string | null
         }
         Insert: {
           body: string
           created_at?: string
+          email_id?: string | null
           handler_id?: string | null
           id?: string
+          sent_from_avatar_url?: string | null
+          sent_from_email?: string | null
+          sent_from_full_name?: string | null
           ticket_id: string
           updated_at?: string | null
         }
         Update: {
           body?: string
           created_at?: string
+          email_id?: string | null
           handler_id?: string | null
           id?: string
+          sent_from_avatar_url?: string | null
+          sent_from_email?: string | null
+          sent_from_full_name?: string | null
           ticket_id?: string
           updated_at?: string | null
         }
@@ -47,6 +59,45 @@ export type Database = {
             columns: ["ticket_id"]
             isOneToOne: false
             referencedRelation: "tickets"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      team_invites: {
+        Row: {
+          created_at: string
+          created_by_user_id: string
+          email: string
+          id: string
+          team_id: string
+        }
+        Insert: {
+          created_at?: string
+          created_by_user_id: string
+          email: string
+          id?: string
+          team_id: string
+        }
+        Update: {
+          created_at?: string
+          created_by_user_id?: string
+          email?: string
+          id?: string
+          team_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "team_invites_created_by_user_id_fkey"
+            columns: ["created_by_user_id"]
+            isOneToOne: false
+            referencedRelation: "users"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "team_invites_team_id_fkey"
+            columns: ["team_id"]
+            isOneToOne: false
+            referencedRelation: "teams"
             referencedColumns: ["id"]
           },
         ]
@@ -83,34 +134,40 @@ export type Database = {
       }
       tickets: {
         Row: {
+          closed_at: string | null
           created_at: string
+          event_id: string | null
           id: string
           meta: Json | null
-          sender_avatar_url: string | null
-          sender_email: string
-          sender_full_name: string
+          short_id: string
+          snoozed_until: string | null
+          starred_at: string | null
           subject: string
           team_id: string
           updated_at: string | null
         }
         Insert: {
+          closed_at?: string | null
           created_at?: string
+          event_id?: string | null
           id?: string
           meta?: Json | null
-          sender_avatar_url?: string | null
-          sender_email: string
-          sender_full_name: string
+          short_id: string
+          snoozed_until?: string | null
+          starred_at?: string | null
           subject: string
           team_id: string
           updated_at?: string | null
         }
         Update: {
+          closed_at?: string | null
           created_at?: string
+          event_id?: string | null
           id?: string
           meta?: Json | null
-          sender_avatar_url?: string | null
-          sender_email?: string
-          sender_full_name?: string
+          short_id?: string
+          snoozed_until?: string | null
+          starred_at?: string | null
           subject?: string
           team_id?: string
           updated_at?: string | null

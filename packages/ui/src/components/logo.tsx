@@ -10,7 +10,7 @@ export const Logo = ({ className }: Props) => {
       xmlns="http://www.w3.org/2000/svg"
       viewBox="0 0 1200 1200"
       fill="none"
-      className={cn('w-full h-full', className)}
+      className={cn('w-auto h-full', className)}
     >
       <title>77</title>
       <rect width="100%" height="100%" fill="#181818" rx="10%" />
