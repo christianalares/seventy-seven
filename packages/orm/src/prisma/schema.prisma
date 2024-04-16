@@ -29,6 +29,7 @@ model User {
   current_team    Team         @relation(fields: [current_team_id], references: [id])
   teams           UserOnTeam[]
   messages        Message[]
+  team_invites    TeamInvite[]
 
   @@map("users")
 }
@@ -44,6 +45,7 @@ model Team {
   tickets       Ticket[]
   is_personal   Boolean      @default(false)
   auth_token    String?
+  invites       TeamInvite[]
 
   @@map("teams")
 }
@@ -93,6 +95,20 @@ model Message {
   email_id             String?
 
   @@map("messages")
+}
+
+model TeamInvite {
+  id                 String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  created_at         DateTime @default(now()) @db.Timestamptz(6)
+  email              String
+  team_id            String   @db.Uuid
+  team               Team     @relation(fields: [team_id], references: [id])
+  created_by_user_id String   @db.Uuid
+  created_by         User     @relation(fields: [created_by_user_id], references: [id])
+  code               String   @unique
+
+  @@unique([email, team_id])
+  @@map("team_invites")
 }
 
 model Waitlist {

@@ -1,16 +1,12 @@
-// import { AuthToken } from '@/components/auth-token'
-import { PageWrapper } from '@/components/page-wrapper'
-// import { usersQueries } from '@/queries/users'
+import { TeamMembers, TeamMembersSkeleton } from '@/components/team-members'
+import { Suspense } from 'react'
 
-const SecurityPage = async () => {
-  // const user = await usersQueries.myCurrentTeam()
-
+const MembersPage = () => {
   return (
-    <PageWrapper>
-      <p>Todo</p>
-      {/* <AuthToken authToken={user.current_team.auth_token} /> */}
-    </PageWrapper>
+    <Suspense fallback={<TeamMembersSkeleton />}>
+      <TeamMembers />
+    </Suspense>
   )
 }
 
-export default SecurityPage
+export default MembersPage

@@ -38,7 +38,7 @@ export const TicketListItem = ({ ticket }: Props) => {
         'bg-muted/5 dark:bg-muted/30': isActive,
       })}
     >
-      {(ticket.snoozed_until || ticket.starred_at || ticket.closed_at) && (
+      {(ticket.snoozed_until || ticket.starred_at || ticket.closed_at || ticket.isUnhandled) && (
         <div className="absolute top-2 right-2 flex items-center gap-2">
           {ticket.snoozed_until && (
             <Badge variant="outline" className="gap-2 font-normal items-center text-muted-foreground">
@@ -53,6 +53,10 @@ export const TicketListItem = ({ ticket }: Props) => {
 
           {ticket.closed_at && (
             <Icon name={getIconStyle('closed').name} className={cn('size-4', getIconStyle('closed').className)} />
+          )}
+
+          {ticket.isUnhandled && (
+            <Icon name={getIconStyle('unhandled').name} className={cn('size-4', getIconStyle('unhandled').className)} />
           )}
         </div>
       )}

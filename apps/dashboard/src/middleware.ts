@@ -20,6 +20,10 @@ export async function middleware(req: NextRequest) {
   const supabase = createClient(req)
   const { data } = await supabase.auth.getUser()
 
+  if (/\/invites\/.+/.test(req.nextUrl.pathname) && !data.user) {
+    return Response.redirect(new URL(`/?returnTo=${req.nextUrl.pathname}`, req.url))
+  }
+
   // If we're on a protected path and the user is not logged in, redirect to /
   if (!OPEN_PATHS.includes(req.nextUrl.pathname) && !data.user) {
     return Response.redirect(new URL('/', req.url))

@@ -59,7 +59,7 @@ export const WaitlistForm = ({ className }: Props) => {
     <div className="flex flex-col items-center relative">
       <form
         className={cn(
-          'border-2 border-black dark:border-white flex overflow-hidden rounded-md h-12 w-[90vw] max-w-md ring-[14px] ring-white/85 dark:ring-black/60',
+          'border-2 border-black dark:border-white flex overflow-hidden rounded-md h-12 w-[90vw] max-w-md shadow-[0_0_50px_0_rgba(0,0,0,0.1)] dark:shadow-[0_0_50px_0_rgba(255,255,255,0.2)]',
           className,
         )}
         onSubmit={onSubmit}

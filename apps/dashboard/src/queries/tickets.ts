@@ -88,10 +88,21 @@ const findMany = async (folder?: Folder) => {
       return true
     })
 
-    return unhandledTickets
+    return unhandledTickets.map((ticket) => ({
+      ...ticket,
+      isUnhandled: true,
+    }))
   }
 
-  return tickets
+  return tickets.map((ticket) => {
+    const lastMessage = ticket.messages.at(-1)
+    const isUnhandled = !lastMessage?.handler
+
+    return {
+      ...ticket,
+      isUnhandled,
+    }
+  })
 }
 
 const findById = async (id: string) => {

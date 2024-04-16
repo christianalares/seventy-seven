@@ -1,9 +1,15 @@
 import { SignInWithGithubButton } from '@/components/sign-in-with-github-button'
 
-const UnauthorizedPage = () => {
+type Props = {
+  searchParams: {
+    returnTo?: string
+  }
+}
+
+const UnauthorizedPage = ({ searchParams }: Props) => {
   return (
     <div className="h-full flex items-center justify-center">
-      <SignInWithGithubButton />
+      <SignInWithGithubButton returnTo={searchParams.returnTo} />
     </div>
   )
 }

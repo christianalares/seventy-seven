@@ -8,7 +8,9 @@ const AccountTeamsPage = async () => {
 
   return (
     <PageWrapper>
-      <CreateTeamButton />
+      <div className="flex justify-end">
+        <CreateTeamButton />
+      </div>
 
       {userTeams.length === 0 ? (
         <p className="mt-4">You don't belong to any team.</p>

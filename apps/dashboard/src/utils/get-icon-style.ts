@@ -10,7 +10,7 @@ export const getIconStyle = (type?: Folder): ReturnType<typeof r> => {
     case 'starred':
       return r('star', 'text-amber-500')
     case 'unhandled':
-      return r('listOrdered', 'text-green-500')
+      return r('circleDashed', 'text-blue-500')
     case 'closed':
       return r('checkCircle', 'text-destructive')
     default:

@@ -12,6 +12,8 @@ import {
   Section,
   Tailwind,
 } from '@react-email/components'
+// biome-ignore lint/correctness/noUnusedImports: <explanation>
+import * as React from 'react'
 import { Footer } from '../components/footer'
 import { LastMessages } from '../components/last-messages'
 import type { Message } from '../types'

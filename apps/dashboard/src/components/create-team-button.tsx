@@ -10,7 +10,7 @@ type Props = {
 
 export const CreateTeamButton = ({ className }: Props) => {
   return (
-    <Button variant="secondary" onClick={() => pushModal('createTeamModal')} className={cn(className)}>
+    <Button onClick={() => pushModal('createTeamModal')} className={cn(className)}>
       Create team
     </Button>
   )

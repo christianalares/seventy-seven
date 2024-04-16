@@ -3,19 +3,15 @@
 import { cn } from '@seventy-seven/ui/utils'
 import { motion } from 'framer-motion'
 import Link from 'next/link'
-import { usePathname, useSelectedLayoutSegment } from 'next/navigation'
+import { useSelectedLayoutSegment } from 'next/navigation'
 
 type SubLinkItemProps = {
   href: string
   label: string
+  isActive: boolean
 }
 
-const SubLinkItem = ({ href, label }: SubLinkItemProps) => {
-  const segment = useSelectedLayoutSegment()
-  const pathname = usePathname()
-
-  const isActive = (href === '/settings' && segment === null) || pathname === href
-
+const SubLinkItem = ({ href, label, isActive }: SubLinkItemProps) => {
   return (
     <li className="relative">
       <Link
@@ -28,7 +24,10 @@ const SubLinkItem = ({ href, label }: SubLinkItemProps) => {
         {label}
       </Link>
       {isActive && (
-        <motion.div layoutId="underline" className="absolute -bottom-0.5 left-0 w-full h-0.5 bg-muted-foreground" />
+        <motion.div
+          layoutId="settings-sub-nav-underline"
+          className="absolute -bottom-0.5 left-0 w-full h-0.5 bg-muted-foreground"
+        />
       )}
     </li>
   )
@@ -39,12 +38,14 @@ type Props = {
 }
 
 export const SettingsSubNav = ({ className }: Props) => {
+  const segment = useSelectedLayoutSegment()
+
   return (
     <nav className={cn(className)}>
       <ul className="flex items-center gap-4">
-        <SubLinkItem href="/settings" label="General" />
-        <SubLinkItem href="/settings/members" label="Members" />
-        <SubLinkItem href="/settings/security" label="Security" />
+        <SubLinkItem isActive={segment === null} href="/settings" label="General" />
+        <SubLinkItem isActive={segment === 'members'} href="/settings/members" label="Members" />
+        <SubLinkItem isActive={segment === 'security'} href="/settings/security" label="Security" />
       </ul>
     </nav>
   )

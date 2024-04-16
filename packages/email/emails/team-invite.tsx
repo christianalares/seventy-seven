@@ -1,5 +1,6 @@
 import {
   Body,
+  Button,
   Container,
   Font,
   Head,
@@ -7,18 +8,33 @@ import {
   Hr,
   Html,
   Img,
-  Link,
   Preview,
   Tailwind,
   Text,
 } from '@react-email/components'
 // biome-ignore lint/correctness/noUnusedImports: <explanation>
 import * as React from 'react'
+import { Footer } from '../components/footer'
 
 const baseUrl =
   process.env.VERCEL_ENV === 'production' ? 'https://seventy-seven.dev/email/' : 'http://localhost:3001/email'
 
-const WaitlistConfirmation = () => {
+type Props = {
+  invitedBy: string
+  code: string
+  team: {
+    name: string
+    id: string
+  }
+}
+
+const TeamInvite = ({ invitedBy, code, team }: Props) => {
+  const message = `${invitedBy} has invited you to join ${team.name}`
+  const ticketUrl =
+    process.env.VERCEL_ENV === 'production'
+      ? `https://seventy-seven.dev/invites/${code}`
+      : `http://localhost:3000/invites/${code}`
+
   return (
     <Html>
       <Head>
@@ -43,8 +59,8 @@ const WaitlistConfirmation = () => {
           fontStyle="normal"
         />
       </Head>
-      <Preview>Welcome to 77!</Preview>
-      <title>Welcome to 77!</title>
+      <Preview>{message}</Preview>
+      <title>{message}</title>
       <Tailwind
         config={{
           theme: {
@@ -58,34 +74,21 @@ const WaitlistConfirmation = () => {
         <Body className="bg-[#f3f4f6]">
           <Container className="p-4 bg-white rounded-md">
             <Img src={`${baseUrl}/77-logo.png`} alt="77" className="w-12" />
-            <Heading as="h1" className="font-maven-pro">
-              Welcome to 77!
+            <Heading as="h1" className="font-maven-pro text-xl">
+              {message}
             </Heading>
 
-            <Text className="text-base">We're super happy that you are onboard, it means a lot to us! 🙏</Text>
             <Text className="text-base">
-              The app is still under development but we'll let you know as soon as there is something that you can try
-              out.
+              You have been invited by {invitedBy} to join the team {team.name} on 77.
             </Text>
 
-            <Text className="text-base">
-              Until then, feel free to follow me on 𝕏 to keep you informed about the progress:{' '}
-              <Link href="https://twitter.com/c_alares">@c_alares</Link>, I'll frequently post updates about our
-              progress.
-            </Text>
+            <Button href={ticketUrl} className="border border-solid rounded-md text-black py-2 px-3">
+              Join team
+            </Button>
 
-            <Text className="text-base">
-              Also, everything we build is open source:{' '}
-              <Link href="https://git.new/seventy-seven">git.new/seventy-seven</Link>
-            </Text>
+            <Hr className="mt-4" />
 
-            <Hr />
-
-            <Text className="text-base">
-              Kind regards!
-              <br />
-              Christian Alares @ 77
-            </Text>
+            <Footer />
           </Container>
         </Body>
       </Tailwind>
@@ -93,4 +96,13 @@ const WaitlistConfirmation = () => {
   )
 }
 
-export default WaitlistConfirmation
+TeamInvite.PreviewProps = {
+  invitedBy: 'Donald Duck',
+  code: 'abc123',
+  team: {
+    name: 'Duckberg',
+    id: 'def456',
+  },
+} satisfies Props
+
+export default TeamInvite
