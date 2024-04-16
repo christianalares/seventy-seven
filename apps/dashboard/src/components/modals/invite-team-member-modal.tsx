@@ -1,6 +1,6 @@
 'use client'
 
-import { inviteTeamMembers } from '@/actions/teams'
+import { inviteTeamMembers } from '@/actions/invite'
 import type { UsersGetMyCurrentTeam } from '@/queries/users'
 import { pluralize } from '@/utils/pluralize'
 import { Modal, ModalDescription, ModalHeader, ModalTitle } from '@seventy-seven/ui/modal'

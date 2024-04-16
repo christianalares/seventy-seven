@@ -10,16 +10,15 @@ export async function GET(request: Request) {
   const origin = requestUrl.origin
 
   const returnTo = requestUrl.searchParams.get('return_to')
-  console.log(1111, returnTo)
 
   if (code) {
     const sb = createClient()
     await sb.auth.exchangeCodeForSession(code)
   }
 
-  // if (returnTo) {
-  //   return NextResponse.redirect(`${origin}/${returnTo}`)
-  // }
+  if (returnTo) {
+    return NextResponse.redirect(`${origin}/${returnTo}`)
+  }
 
   // URL to redirect to after sign up process completes
   return NextResponse.redirect(origin)

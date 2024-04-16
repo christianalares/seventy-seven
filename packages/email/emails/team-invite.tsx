@@ -12,6 +12,7 @@ import {
   Tailwind,
   Text,
 } from '@react-email/components'
+// biome-ignore lint/correctness/noUnusedImports: <explanation>
 import * as React from 'react'
 import { Footer } from '../components/footer'
 

@@ -12,6 +12,8 @@ import {
   Tailwind,
   Text,
 } from '@react-email/components'
+// biome-ignore lint/correctness/noUnusedImports: <explanation>
+import * as React from 'react'
 
 const baseUrl =
   process.env.VERCEL_ENV === 'production' ? 'https://seventy-seven.dev/email/' : 'http://localhost:3001/email'
