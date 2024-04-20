@@ -86,7 +86,7 @@ export const WaitlistForm = ({ className }: Props) => {
         <Button
           type="submit"
           loading={action.status === 'executing'}
-          className="bg-black dark:bg-white text-background px-4 text-sm sm:text-base rounded-none h-full font-normal"
+          className="bg-black dark:bg-white text-background px-4 text-sm sm:text-base rounded-none h-full"
         >
           Join the wait list
         </Button>

@@ -1,5 +1,4 @@
 'use client'
-
 import { closeTicket, toggleStar } from '@/actions/tickets'
 import { pushModal } from '@/components/modals'
 import type { TicketsFindById } from '@/queries/tickets'

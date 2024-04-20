@@ -1,4 +1,5 @@
 import type { Config } from 'tailwindcss'
+import defaultTheme from 'tailwindcss/defaultTheme'
 
 const config = {
   darkMode: ['class'],
@@ -13,6 +14,11 @@ const config = {
       },
     },
     extend: {
+      fontFamily: {
+        sans: ['var(--roboto)', ...defaultTheme.fontFamily.sans],
+        abel: ['var(--abel)', ...defaultTheme.fontFamily.sans],
+        'maven-pro': ['var(--maven-pro)', ...defaultTheme.fontFamily.sans],
+      },
       colors: {
         border: 'hsl(var(--border))',
         'border-hover': 'hsl(var(--border-hover))',

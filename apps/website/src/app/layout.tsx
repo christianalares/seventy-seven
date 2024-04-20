@@ -19,6 +19,7 @@ const mavenPro = Maven_Pro({
   subsets: ['latin'],
   variable: '--maven-pro',
 })
+
 const abel = Abel({
   subsets: ['latin'],
   weight: '400',
