@@ -12,10 +12,10 @@
     "prisma:push": "cd ../../ && npx prisma db push --schema=./packages/orm/src/prisma/schema.prisma"
   },
   "dependencies": {
-    "@prisma/client": "^5.11.0"
+    "@prisma/client": "^5.12.1"
   },
   "devDependencies": {
-    "@types/node": "^20.11.30",
-    "prisma": "^5.11.0"
+    "@types/node": "^20.12.7",
+    "prisma": "^5.12.1"
   }
 }

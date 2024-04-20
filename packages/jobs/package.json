@@ -18,11 +18,11 @@
     "@trigger.dev/resend": "^2.3.18",
     "@trigger.dev/sdk": "^2.3.18",
     "@trigger.dev/supabase": "^2.3.18",
-    "zod": "^3.22.4"
+    "zod": "^3.22.5"
   },
   "devDependencies": {
     "@trigger.dev/cli": "^2.3.18",
-    "@types/node": "^20.11.30"
+    "@types/node": "^20.12.7"
   },
   "trigger.dev": {
     "endpointId": "dashboard-3XzR"
