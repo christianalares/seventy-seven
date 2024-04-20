@@ -50,16 +50,48 @@ export async function POST(req: Request) {
     return NextResponse.json({ error: 'Invalid OriginalRecipient email' }, { status: 400 })
   }
 
+  const foundTicket = await prisma.ticket.findUnique({
+    where: {
+      short_id: shortId,
+    },
+    select: {
+      short_id: true,
+      messages: {
+        where: {
+          // Only select messages sent by the user, not the handler
+          handler_id: null,
+        },
+        orderBy: {
+          created_at: 'desc',
+        },
+        take: 1,
+      },
+    },
+  })
+
+  if (!foundTicket) {
+    return NextResponse.json({ error: `Ticket #${shortId} not found` }, { status: 404 })
+  }
+
+  const lastMessageFromUser = foundTicket.messages.at(0)
+
+  if (!lastMessageFromUser) {
+    return NextResponse.json({ error: `No user messages found on ticket #${shortId}` }, { status: 404 })
+  }
+
   try {
     const updatedTicket = await prisma.ticket.update({
       where: {
-        short_id: shortId,
+        short_id: foundTicket.short_id,
       },
       data: {
         closed_at: null,
         messages: {
           create: {
             body: parsedBody.data.StrippedTextReply,
+            sent_from_full_name: lastMessageFromUser.sent_from_full_name,
+            sent_from_email: lastMessageFromUser.sent_from_email,
+            sent_from_avatar_url: lastMessageFromUser.sent_from_avatar_url,
           },
         },
       },
