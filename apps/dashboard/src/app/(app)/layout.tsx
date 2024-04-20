@@ -1,4 +1,4 @@
-import { getSession } from '@seventy-seven/supabase/session'
+import { getUser } from '@seventy-seven/supabase/session'
 
 type Props = {
   authed: React.ReactNode
@@ -6,9 +6,9 @@ type Props = {
 }
 
 const AppLayout = async ({ authed, unauthed }: Props) => {
-  const session = await getSession()
+  const user = await getUser()
 
-  return session ? authed : unauthed
+  return user ? authed : unauthed
 }
 
 export default AppLayout

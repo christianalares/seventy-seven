@@ -12,7 +12,7 @@ export async function middleware(req: NextRequest) {
   const supabase = createClient(req)
   const { data } = await supabase.auth.getUser()
 
-  const isUserWhitelisted = allowedEmails.includes(data.user?.email)
+  const isUserWhitelisted = allowedEmails.includes(data.user?.email ?? '')
 
   if (isHomePage) {
     if (!data.user) {

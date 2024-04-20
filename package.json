@@ -12,10 +12,10 @@
     "prisma:generate": "turbo prisma:generate"
   },
   "devDependencies": {
-    "@biomejs/biome": "^1.6.2",
+    "@biomejs/biome": "^1.7.0",
     "@seventy-seven/typescript-config": "workspace:*",
     "dotenv-cli": "^7.4.1",
     "turbo": "latest",
-    "typescript": "^5.4.3"
+    "typescript": "^5.4.5"
   }
 }

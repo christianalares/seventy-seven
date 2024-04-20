@@ -1,19 +1,19 @@
 import { prisma } from '@seventy-seven/orm/prisma'
-import { getSession } from '@seventy-seven/supabase/session'
+import { getUser } from '@seventy-seven/supabase/session'
 
 export type UsersFindMe = Awaited<ReturnType<typeof findMe>>
 export type UsersGetMyCurrentTeam = Awaited<ReturnType<typeof myCurrentTeam>>
 
 const findMe = async () => {
-  const session = await getSession()
+  const user = await getUser()
 
-  if (!session) {
+  if (!user) {
     throw new Error('No session found')
   }
 
   const me = await prisma.user.findUnique({
     where: {
-      id: session.user.id,
+      id: user.id,
     },
     include: {
       current_team: {
@@ -51,15 +51,15 @@ const findMe = async () => {
 }
 
 export const myCurrentTeam = async () => {
-  const session = await getSession()
+  const user = await getUser()
 
-  if (!session) {
+  if (!user) {
     throw new Error('No session found')
   }
 
   const usersCurrentTeam = await prisma.user.findUnique({
     where: {
-      id: session.user.id,
+      id: user.id,
     },
     select: {
       current_team: {

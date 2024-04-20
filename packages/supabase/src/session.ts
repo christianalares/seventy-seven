@@ -1,11 +1,11 @@
 import { createClient } from './clients/server'
 
-export const getSession = async () => {
+export const getUser = async () => {
   const sb = createClient()
 
   const {
-    data: { session },
-  } = await sb.auth.getSession()
+    data: { user },
+  } = await sb.auth.getUser()
 
-  return session
+  return user
 }
