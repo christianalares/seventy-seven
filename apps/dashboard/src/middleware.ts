@@ -5,7 +5,6 @@ import { type NextRequest, NextResponse } from 'next/server'
 const OPEN_PATHS = ['/closed']
 
 export async function middleware(req: NextRequest) {
-  const IS_DEV = process.env.NODE_ENV === 'development'
   const isProtectedRoute = !OPEN_PATHS.includes(req.nextUrl.pathname)
   const allowedEmails = (await get<string[]>('whitelisted-emails')) ?? []
   const isHomePage = req.nextUrl.pathname === '/'
@@ -14,10 +13,6 @@ export async function middleware(req: NextRequest) {
   const { data } = await supabase.auth.getUser()
 
   const isUserWhitelisted = allowedEmails.includes(data.user?.email)
-
-  if (IS_DEV && data.user) {
-    return NextResponse.next()
-  }
 
   if (isHomePage) {
     if (!data.user) {
