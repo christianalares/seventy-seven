@@ -227,3 +227,89 @@ export const closeTicket = authAction(
     return updatedTicket
   },
 )
+
+export const assignToMember = authAction(
+  z.object({
+    ticketId: z.string().uuid(),
+    memberId: z.string().uuid(),
+  }),
+  async (values, user) => {
+    const ticket = await prisma.ticket.findUnique({
+      where: {
+        id: values.ticketId,
+      },
+      select: {
+        team: {
+          select: {
+            members: {
+              select: {
+                user_id: true,
+              },
+            },
+          },
+        },
+      },
+    })
+
+    if (!ticket) {
+      throw new Error('Ticket not found')
+    }
+
+    const memberIdsInTeam = ticket.team.members.map((m) => m.user_id)
+
+    if (![user.id, values.memberId].every((id) => memberIdsInTeam.includes(id))) {
+      throw new Error('You cannot assign a ticket to a member that is not in the team')
+    }
+
+    const updatedTicket = await prisma.ticket.update({
+      where: {
+        id: values.ticketId,
+      },
+      data: {
+        assigned_to_user_id: values.memberId,
+      },
+      select: {
+        assigned_to_user: {
+          select: {
+            full_name: true,
+          },
+        },
+      },
+    })
+
+    revalidatePath('/inbox')
+    return updatedTicket
+  },
+)
+
+export const unassignTicket = authAction(
+  z.object({
+    revalidatePath: z.string(),
+    ticketId: z.string().uuid(),
+  }),
+  async (values, user) => {
+    await prisma.ticket
+      .update({
+        where: {
+          id: values.ticketId,
+          team: {
+            members: {
+              some: {
+                user_id: user.id,
+              },
+            },
+          },
+        },
+        data: {
+          assigned_to_user_id: null,
+        },
+      })
+      .catch((_err) => {
+        throw new Error('Failed to unassign ticket')
+      })
+
+    revalidatePath(values.revalidatePath)
+
+    return { success: true }
+  },
+)

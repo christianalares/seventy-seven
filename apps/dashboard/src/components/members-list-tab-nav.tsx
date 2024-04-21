@@ -19,7 +19,7 @@ export const MembersListTabNav = () => {
               'text-muted-foreground': pathname !== '/settings/members',
             })}
           >
-            Current
+            Team Members
           </Link>
 
           {pathname === '/settings/members' && (

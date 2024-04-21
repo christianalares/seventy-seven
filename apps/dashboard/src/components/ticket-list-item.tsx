@@ -5,6 +5,7 @@ import type { Folder, TicketsFindMany } from '@/queries/tickets'
 import { getIconStyle } from '@/utils/get-icon-style'
 import { Badge } from '@seventy-seven/ui/badge'
 import { Icon } from '@seventy-seven/ui/icon'
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@seventy-seven/ui/tooltip'
 import { cn } from '@seventy-seven/ui/utils'
 import { format, isToday } from 'date-fns'
 import Link from 'next/link'
@@ -60,6 +61,26 @@ export const TicketListItem = ({ ticket }: Props) => {
           )}
         </div>
       )}
+
+      {ticket.assigned_to_user && (
+        <div className="absolute bottom-2 right-2 flex items-center gap-2">
+          <TooltipProvider delayDuration={0}>
+            <Tooltip>
+              <TooltipTrigger>
+                <Avatar
+                  name={ticket.assigned_to_user.full_name}
+                  imageUrl={ticket.assigned_to_user.image_url ?? undefined}
+                  className="size-4"
+                />
+              </TooltipTrigger>
+              <TooltipContent>
+                <p className="text-xs">{ticket.assigned_to_user.full_name}</p>
+              </TooltipContent>
+            </Tooltip>
+          </TooltipProvider>
+        </div>
+      )}
+
       <p className="flex items-center gap-2">
         <Avatar name={avatarName} imageUrl={avatarImageUrl} className="size-7" />
         <span className="font-medium">{name}</span>

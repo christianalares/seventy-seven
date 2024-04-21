@@ -21,7 +21,7 @@ export const PendingTeamMembers = async () => {
   })
 
   if (invites.length === 0) {
-    return <p className="border-t pt-4">There are no pending invites to this team</p>
+    return <p className="border-t pt-4">There are no pending invites on this team</p>
   }
 
   return (

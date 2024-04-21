@@ -9,6 +9,7 @@ import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
+  DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from '@seventy-seven/ui/dropdown-menu'
 import { Icon } from '@seventy-seven/ui/icon'
@@ -51,6 +52,20 @@ export const TicketActionDropdown = ({ ticket }: Props) => {
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent align="end">
+        <DropdownMenuItem
+          className="gap-2"
+          onSelect={() =>
+            pushModal('assignTicketModal', {
+              ticket,
+            })
+          }
+        >
+          <Icon name="userPlus" className="size-4 text-primary" />
+          Assign to...
+        </DropdownMenuItem>
+
+        <DropdownMenuSeparator />
+
         <DropdownMenuItem
           className="gap-2"
           onSelect={() =>
