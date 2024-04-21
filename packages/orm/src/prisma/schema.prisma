@@ -30,6 +30,7 @@ model User {
   teams           UserOnTeam[]
   messages        Message[]
   team_invites    TeamInvite[]
+  tickets         Ticket[]
 
   @@map("users")
 }
@@ -63,19 +64,21 @@ model UserOnTeam {
 }
 
 model Ticket {
-  id            String    @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
-  short_id      String    @unique
-  created_at    DateTime  @default(now()) @db.Timestamptz(6)
-  updated_at    DateTime? @db.Timestamptz(6)
-  team_id       String    @db.Uuid
-  team          Team      @relation(fields: [team_id], references: [id])
-  subject       String
-  meta          Json?
-  messages      Message[]
-  snoozed_until DateTime?
-  closed_at     DateTime?
-  event_id      String?
-  starred_at    DateTime?
+  id                  String    @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  short_id            String    @unique
+  created_at          DateTime  @default(now()) @db.Timestamptz(6)
+  updated_at          DateTime? @db.Timestamptz(6)
+  team_id             String    @db.Uuid
+  team                Team      @relation(fields: [team_id], references: [id])
+  subject             String
+  meta                Json?
+  messages            Message[]
+  snoozed_until       DateTime?
+  closed_at           DateTime?
+  event_id            String?
+  starred_at          DateTime?
+  assigned_to_user_id String?   @db.Uuid
+  assigned_to_user    User?     @relation(fields: [assigned_to_user_id], references: [id])
 
   @@map("tickets")
 }

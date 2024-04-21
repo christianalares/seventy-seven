@@ -16,8 +16,10 @@
     "@radix-ui/react-popover": "^1.0.7",
     "@radix-ui/react-slot": "^1.0.2",
     "@radix-ui/react-tabs": "^1.0.4",
+    "@radix-ui/react-tooltip": "^1.0.7",
     "class-variance-authority": "^0.7.0",
     "clsx": "^2.1.0",
+    "cmdk": "^1.0.0",
     "date-fns": "^3.6.0",
     "lucide-react": "^0.372.0",
     "next-themes": "^0.3.0",
@@ -69,6 +71,10 @@
     "./popover": "./src/components/shadcn/popover.tsx",
     "./date-time-picker": "./src/components/shadcn/time-picker/date-time-picker.tsx",
     "./skeleton": "./src/components/shadcn/skeleton.tsx",
-    "./tabs": "./src/components/shadcn/tabs.tsx"
+    "./tabs": "./src/components/shadcn/tabs.tsx",
+    "./command": "./src/components/shadcn/command.tsx",
+    "./combobox": "./src/components/combobox.tsx",
+    "./tooltip": "./src/components/shadcn/tooltip.tsx",
+    "./combobox-dropdown": "./src/components/combobox-dropdown.tsx"
   }
 }

@@ -25,6 +25,13 @@ const findMany = async (folder?: Folder) => {
     snoozed_until: true,
     starred_at: true,
     closed_at: true,
+    assigned_to_user: {
+      select: {
+        id: true,
+        full_name: true,
+        image_url: true,
+      },
+    },
     messages: {
       take: 1,
       orderBy: {
@@ -77,7 +84,7 @@ const findMany = async (folder?: Folder) => {
     orderBy: { created_at: 'desc' },
   })
 
-  // If the folder is unhandled we need to manually filter the tickets base on the last message is not from a handler
+  // If the folder is unhandled we need to manually filter the tickets based on the last message is not from a handler
   if (folder === 'unhandled') {
     const unhandledTickets = tickets.filter((ticket) => {
       const lastMessage = ticket.messages.at(-1)
@@ -125,6 +132,28 @@ const findById = async (id: string) => {
       subject: true,
       starred_at: true,
       closed_at: true,
+      assigned_to_user: {
+        select: {
+          id: true,
+          full_name: true,
+          image_url: true,
+        },
+      },
+      team: {
+        select: {
+          members: {
+            select: {
+              user: {
+                select: {
+                  id: true,
+                  full_name: true,
+                  image_url: true,
+                },
+              },
+            },
+          },
+        },
+      },
       messages: {
         select: {
           created_at: true,

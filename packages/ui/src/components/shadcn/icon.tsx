@@ -35,6 +35,7 @@ import {
   Star,
   Sun,
   Trash2,
+  User,
   UserPlus,
   UserX,
   X,
@@ -131,6 +132,7 @@ const icons = {
   minus: Minus,
   github: Github,
   google: Google,
+  user: User,
 }
 
 export type IconName = keyof typeof icons
