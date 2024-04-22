@@ -1,6 +1,6 @@
 'use client'
 
-import { leaveTeam, setCurrentTeam } from '@/actions/teams'
+import { setCurrentTeam } from '@/actions/teams'
 import { Button } from '@seventy-seven/ui/button'
 import {
   DropdownMenu,
@@ -13,6 +13,7 @@ import { Icon } from '@seventy-seven/ui/icon'
 import { useAction } from 'next-safe-action/hooks'
 import Link from 'next/link'
 import { toast } from 'sonner'
+import { pushAlert } from './alerts'
 
 type Props = {
   teamId: string
@@ -23,15 +24,6 @@ export const TeamActionsMenu = ({ teamId, isCurrent }: Props) => {
   const setCurrentTeamAction = useAction(setCurrentTeam, {
     onSuccess: (updatedUser) => {
       toast.success(`Team "${updatedUser.current_team.name}" is now your current team`)
-    },
-    onError: (err) => {
-      toast.error(err.serverError)
-    },
-  })
-
-  const leaveTeamAction = useAction(leaveTeam, {
-    onSuccess: (updatedUser) => {
-      toast.success(`You succesfully left the team "${updatedUser.team.name}"`)
     },
     onError: (err) => {
       toast.error(err.serverError)
@@ -66,7 +58,7 @@ export const TeamActionsMenu = ({ teamId, isCurrent }: Props) => {
 
         <DropdownMenuSeparator />
 
-        <DropdownMenuItem variant="destructive" onSelect={() => leaveTeamAction.execute({ teamId })}>
+        <DropdownMenuItem variant="destructive" onSelect={() => pushAlert('confirmLeaveTeam', { teamId })}>
           Leave team
         </DropdownMenuItem>
       </DropdownMenuContent>

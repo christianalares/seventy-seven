@@ -7,6 +7,7 @@ import {
   ChevronDown,
   ChevronsUpDown,
   Circle,
+  CircleAlert,
   CircleDashed,
   ClipboardCheck,
   ClipboardCopy,
@@ -133,6 +134,7 @@ const icons = {
   github: Github,
   google: Google,
   user: User,
+  circleAlert: CircleAlert,
 }
 
 export type IconName = keyof typeof icons
