@@ -1,7 +1,5 @@
 import type { ComponentProps } from 'react'
-// import { cn } from '../utils'
 import {
-  // AlertDialogAction,
   AlertDialogCancel,
   AlertDialogContent,
   AlertDialogDescription,
@@ -33,12 +31,3 @@ export const AlertDescription = ({ children }: { children: React.ReactNode }) =>
 
 export const AlertFooter = AlertDialogFooter
 export const AlertCancel = AlertDialogCancel
-// export const AlertAction = AlertDialogAction
-
-// export const AlertCancel = ({ children }: { children: React.ReactNode }) => {
-//   return <AlertDialogCancel>{children}</AlertDialogCancel>
-// }
-
-// export const AlertAction = ({ children }: { children: React.ReactNode }) => {
-//   return <AlertDialogAction>{children}</AlertDialogAction>
-// }
