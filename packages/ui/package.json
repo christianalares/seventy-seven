@@ -9,6 +9,7 @@
     "check:types": "tsc --noEmit"
   },
   "dependencies": {
+    "@radix-ui/react-alert-dialog": "^1.0.5",
     "@radix-ui/react-avatar": "^1.0.4",
     "@radix-ui/react-dialog": "^1.0.5",
     "@radix-ui/react-dropdown-menu": "^2.0.6",
@@ -61,6 +62,7 @@
     "./label": "./src/components/shadcn/label.tsx",
     "./modal-responsive": "./src/components/modal-responsive.tsx",
     "./modal": "./src/components/modal.tsx",
+    "./alert": "./src/components/alert.tsx",
     "./sheet": "./src/components/shadcn/sheet.tsx",
     "./sonner": "./src/components/shadcn/sonner.tsx",
     "./spinner": "./src/components/shadcn/spinner.tsx",

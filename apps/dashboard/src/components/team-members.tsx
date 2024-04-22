@@ -9,6 +9,11 @@ import { TeamActionsDropdown } from './team-actions-dropdown'
 
 export const TeamMembers = async () => {
   const user = await usersQueries.myCurrentTeam()
+  const userMember = user.current_team.members.find((member) => member.user.id === user.id)
+
+  if (!userMember) {
+    return null
+  }
 
   return (
     <div className="border rounded-xl overflow-hidden">
@@ -40,7 +45,7 @@ export const TeamMembers = async () => {
                   <Badge variant="outline" className="font-normal">
                     {getRoleName(member.role)}
                   </Badge>
-                  <TeamActionsDropdown member={member} />
+                  <TeamActionsDropdown teamId={user.current_team.id} userMember={userMember} member={member} />
                 </div>
               </TableCell>
             </TableRow>

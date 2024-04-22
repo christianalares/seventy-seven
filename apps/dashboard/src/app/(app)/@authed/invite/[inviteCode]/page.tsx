@@ -69,9 +69,9 @@ const InviteCodePage = async ({ params }: Props) => {
           </div>
           <hr className="border-border" />
           <div>
-            <h1 className="text-xl">{user.full_name}</h1>
+            <h1 className="text-xl">Hello, {user.full_name}!</h1>
             <h2 className="mt-2">
-              You have been invited to the team {invite.team.name} by {invite.created_by.full_name}.
+              You have been invited to join the team {invite.team.name} by {invite.created_by.full_name}.
             </h2>
           </div>
           <div className="flex justify-end gap-2">

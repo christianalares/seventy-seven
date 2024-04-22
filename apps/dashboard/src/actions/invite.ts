@@ -12,19 +12,20 @@ import { z } from 'zod'
 
 export const inviteTeamMembers = authAction(
   z.object({
+    revalidatePath: z.string().optional(),
     emails: z.array(z.string().email()),
     teamId: z.string().uuid(),
   }),
-  async (input, user) => {
+  async (values, user) => {
     // Try to get the team which some of the emails are already in
     const teamWithEmails = await prisma.team.findUnique({
       where: {
-        id: input.teamId,
+        id: values.teamId,
         members: {
           some: {
             user: {
               email: {
-                in: input.emails,
+                in: values.emails,
               },
             },
           },
@@ -47,7 +48,7 @@ export const inviteTeamMembers = authAction(
     // Some of the users are already in the team
     if (teamWithEmails) {
       const emailsInTeam = teamWithEmails.members.map((member) => member.user.email)
-      const duplicateEmails = input.emails.filter((email) => emailsInTeam.includes(email))
+      const duplicateEmails = values.emails.filter((email) => emailsInTeam.includes(email))
 
       if (duplicateEmails.length === 1) {
         throw new Error(`The email ${duplicateEmails[0]} is already in the team`)
@@ -59,7 +60,7 @@ export const inviteTeamMembers = authAction(
     // Make sure the user is an owner of the team
     const usersTeam = await prisma.team.findUnique({
       where: {
-        id: input.teamId,
+        id: values.teamId,
         members: {
           some: {
             user_id: user.id,
@@ -74,7 +75,7 @@ export const inviteTeamMembers = authAction(
     }
 
     const createdInvites = await prisma.$transaction(
-      input.emails.map((email) =>
+      values.emails.map((email) =>
         prisma.teamInvite.create({
           data: {
             email,
@@ -95,8 +96,6 @@ export const inviteTeamMembers = authAction(
         }),
       ),
     )
-
-    revalidatePath('/settings/members/pending')
 
     const dbUser = await usersQueries.findMe()
 
@@ -127,6 +126,10 @@ export const inviteTeamMembers = authAction(
     ).catch((error) => {
       console.error('Could not send invites', error)
     })
+
+    if (values.revalidatePath) {
+      revalidatePath(values.revalidatePath)
+    }
 
     return createdInvites.length
   },
