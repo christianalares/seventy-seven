@@ -41,11 +41,11 @@ export const AuthToken = ({ authToken }: Props) => {
               <TooltipTrigger>
                 <span className="font-medium underline cursor-pointer">docs</span>
               </TooltipTrigger>
-              <TooltipContent>
-                <p className="text-xs flex items-center gap-2">
+              <TooltipContent asChild>
+                <span className="text-xs flex items-center gap-2">
                   <Icon name="circleAlert" strokeWidth={3} className="size-3" />
                   Coming soon
-                </p>
+                </span>
               </TooltipContent>
             </Tooltip>
           </TooltipProvider>
