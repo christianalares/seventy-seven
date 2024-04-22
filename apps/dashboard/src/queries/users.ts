@@ -62,6 +62,7 @@ export const myCurrentTeam = async () => {
       id: user.id,
     },
     select: {
+      id: true,
       current_team: {
         select: {
           id: true,

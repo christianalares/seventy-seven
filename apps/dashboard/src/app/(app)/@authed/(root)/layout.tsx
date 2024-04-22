@@ -1,3 +1,4 @@
+import { AlertProvider } from '@/components/alerts'
 import { Header } from '@/components/header'
 import { ModalProvider } from '@/components/modals'
 // import { AllModals } from '@/components/modals-OLD/all-modals'
@@ -16,6 +17,7 @@ const AuthedLayout = ({ children }: Props) => {
       {/* <AllModals />
       <AllSheets /> */}
       <ModalProvider />
+      <AlertProvider />
 
       <div className="flex-1 flex flex-col">
         <Header />

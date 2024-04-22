@@ -4,6 +4,7 @@ import { authAction } from '@/lib/safe-action'
 import { usersQueries } from '@/queries/users'
 import { prisma } from '@seventy-seven/orm/prisma'
 import { revalidatePath } from 'next/cache'
+import { redirect } from 'next/navigation'
 import { uuid } from 'uuidv4'
 import { z } from 'zod'
 
@@ -156,9 +157,77 @@ export const leaveTeam = authAction(
       return { leftTeam, updatedUser }
     })
 
-    revalidatePath('/account/teams')
+    redirect('/account/teams')
 
     return leftTeam
+  },
+)
+
+export const removeMember = authAction(
+  z.object({
+    revalidatePath: z.string().optional(),
+    teamId: z.string().uuid(),
+    memberId: z.string().uuid(),
+  }),
+  async (values, user) => {
+    const dbTeam = await prisma.team.findUnique({
+      where: {
+        id: values.teamId,
+        // Make sure the user is a owner of the team
+        members: {
+          some: {
+            user_id: user.id,
+            role: 'OWNER',
+          },
+        },
+      },
+      select: {
+        id: true,
+        is_personal: true,
+        members: {
+          select: {
+            role: true,
+            user_id: true,
+          },
+        },
+      },
+    })
+
+    if (!dbTeam) {
+      throw new Error("You don't have access to this team")
+    }
+
+    if (dbTeam.members.length <= 1) {
+      throw new Error('You are the last owner of the team. If you want to leave the team, please delete it instead.')
+    }
+
+    const deletedUserOnTeam = await prisma.userOnTeam.delete({
+      where: {
+        user_id_team_id: {
+          user_id: values.memberId,
+          team_id: dbTeam.id,
+        },
+      },
+      select: {
+        user: {
+          select: {
+            full_name: true,
+          },
+        },
+        team: {
+          select: {
+            id: true,
+            name: true,
+          },
+        },
+      },
+    })
+
+    if (values.revalidatePath) {
+      revalidatePath(values.revalidatePath)
+    }
+
+    return deletedUserOnTeam
   },
 )
 
