@@ -4,7 +4,7 @@ import { Logo } from '@seventy-seven/ui/logo'
 
 type Props = {
   searchParams: {
-    returnTo?: string
+    return_to?: string
   }
 }
 
@@ -18,8 +18,8 @@ const UnauthorizedPage = ({ searchParams }: Props) => {
         </div>
 
         <div className="space-y-4 mt-8">
-          <SignInWithGithubButton returnTo={searchParams.returnTo} />
-          <SignInWithGoogleButton returnTo={searchParams.returnTo} />
+          <SignInWithGithubButton returnTo={searchParams.return_to} />
+          <SignInWithGoogleButton returnTo={searchParams.return_to} />
         </div>
       </div>
     </div>
