@@ -5,9 +5,10 @@ type Props = {
   imageUrl?: string
   name: string
   className?: string
+  fallbackClassName?: string
 }
 
-export const Avatar = ({ imageUrl, name, className }: Props) => {
+export const Avatar = ({ imageUrl, name, className, fallbackClassName }: Props) => {
   const fullnameParts = name.split(' ')
   // @ts-ignore
   let initials = fullnameParts[0].charAt(0).toUpperCase()
@@ -25,7 +26,7 @@ export const Avatar = ({ imageUrl, name, className }: Props) => {
   return (
     <AvatarPrimitive className={cn(className)}>
       <AvatarImage src={imageUrl} />
-      <AvatarFallback>{initials}</AvatarFallback>
+      <AvatarFallback className={cn(fallbackClassName)}>{initials}</AvatarFallback>
     </AvatarPrimitive>
   )
 }

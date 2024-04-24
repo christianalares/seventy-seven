@@ -26,14 +26,12 @@ export const TeamActionsDropdown = ({ teamId, userMember, member }: Props) => {
 
   return (
     <DropdownMenu>
-      {!isNotUserAndIsNotOwner && (
-        <DropdownMenuTrigger asChild disabled={isLoading}>
-          <Button variant="ghost" size="icon-sm" className="gap-2">
-            <span className="sr-only">Open</span>
-            {isLoading ? <Spinner className="size-5" /> : <Icon name="moreHorizontal" className="size-5" />}
-          </Button>
-        </DropdownMenuTrigger>
-      )}
+      <DropdownMenuTrigger asChild disabled={isLoading || isNotUserAndIsNotOwner}>
+        <Button variant="ghost" size="icon-sm" className="gap-2">
+          <span className="sr-only">Open</span>
+          {isLoading ? <Spinner className="size-5" /> : <Icon name="moreHorizontal" className="size-5" />}
+        </Button>
+      </DropdownMenuTrigger>
 
       <DropdownMenuContent align="end">
         {isUser && (

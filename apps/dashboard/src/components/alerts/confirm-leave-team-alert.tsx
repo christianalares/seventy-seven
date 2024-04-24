@@ -5,7 +5,7 @@ import { Alert, AlertCancel, AlertDescription, AlertFooter, AlertTitle } from '@
 import { Button } from '@seventy-seven/ui/button'
 import { DialogHeader } from '@seventy-seven/ui/dialog'
 import { useAction } from 'next-safe-action/hooks'
-import { useRouter } from 'next/navigation'
+import { usePathname, useRouter } from 'next/navigation'
 import { toast } from 'sonner'
 import { popAlert } from '.'
 
@@ -14,6 +14,7 @@ type Props = {
 }
 
 export const ConfirmLeaveTeamAlert = ({ teamId }: Props) => {
+  const pathname = usePathname()
   const router = useRouter()
 
   const action = useAction(leaveTeam, {
@@ -44,7 +45,7 @@ export const ConfirmLeaveTeamAlert = ({ teamId }: Props) => {
         <Button
           loading={action.status === 'executing'}
           variant="destructive"
-          onClick={() => action.execute({ teamId })}
+          onClick={() => action.execute({ revalidatePath: pathname, teamId })}
         >
           Leave team
         </Button>
