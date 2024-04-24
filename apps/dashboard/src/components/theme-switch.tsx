@@ -1,6 +1,8 @@
 'use client'
 
+import { Button } from '@seventy-seven/ui/button'
 import { Icon, type IconName } from '@seventy-seven/ui/icon'
+import { Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectValue } from '@seventy-seven/ui/select'
 import { cn } from '@seventy-seven/ui/utils'
 import { useTheme } from 'next-themes'
 
@@ -27,25 +29,24 @@ export const ThemeSwitch = ({ className }: Props) => {
 
   return (
     <div className={cn('flex items-center relative', className)}>
-      <select
-        className="text-xs border rounded appearance-none pl-6 pr-6 py-1.5 bg-transparent outline-none capitalize w-full"
-        value={theme}
-        onChange={(event) => setTheme(event.target.value)}
-      >
-        {themes.map((theme) => (
-          <option key={theme} value={theme}>
-            {theme}
-          </option>
-        ))}
-      </select>
+      <Select value={theme} onValueChange={(newTheme) => setTheme(newTheme)}>
+        <SelectTrigger className="h-full">
+          <span className="w-full !flex items-center capitalize gap-2">
+            <Icon name={themeIconName} className="size-4" />
+            <SelectValue placeholder="Select theme" className="bg-red-100 border-4 border-red-400" />
+          </span>
+        </SelectTrigger>
 
-      <div className="absolute left-2">
-        <Icon name={themeIconName} className="size-3" />
-      </div>
-
-      <div className="absolute right-2">
-        <Icon name="chevronsUpDown" className="size-3" />
-      </div>
+        <SelectContent>
+          <SelectGroup>
+            {themes.map((theme) => (
+              <SelectItem key={theme} value={theme} className="capitalize">
+                {theme}
+              </SelectItem>
+            ))}
+          </SelectGroup>
+        </SelectContent>
+      </Select>
     </div>
   )
 }

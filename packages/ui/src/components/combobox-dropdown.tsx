@@ -23,6 +23,7 @@ type Props<T> = {
   selectedItem?: T
   renderSelectedItem?: (selectedItem: T) => React.ReactNode
   renderListItem?: (listItem: { isChecked: boolean; item: T }) => React.ReactNode
+  emptyResults?: React.ReactNode
 }
 
 export function ComboboxDropdown<T extends ComboboxItem>({
@@ -33,6 +34,7 @@ export function ComboboxDropdown<T extends ComboboxItem>({
   selectedItem: incomingSelectedItem,
   renderSelectedItem,
   renderListItem,
+  emptyResults,
 }: Props<T>) {
   const [open, setOpen] = React.useState(false)
   const [internalSelectedItem, setInternalSelectedItem] = React.useState<T | undefined>()
@@ -65,7 +67,7 @@ export function ComboboxDropdown<T extends ComboboxItem>({
             onValueChange={setInputValue}
             placeholder={searchPlaceholder ?? 'Search item...'}
           />
-          <CommandEmpty>No framework found.</CommandEmpty>
+          <CommandEmpty>{emptyResults ?? 'No item found'}</CommandEmpty>
           <CommandGroup>
             <CommandList>
               {filteredItems.map((item) => {
@@ -74,6 +76,7 @@ export function ComboboxDropdown<T extends ComboboxItem>({
                 return (
                   <CommandItem
                     disabled={item.disabled}
+                    className="cursor-pointer"
                     key={item.id}
                     value={item.id}
                     onSelect={(id) => {

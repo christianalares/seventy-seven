@@ -14,7 +14,7 @@ export const ChatMessageHandler = ({ name, avatar, body, date }: Props) => {
       <div className="flex justify-between text-xs font-medium items-center gap-2">
         <div className="flex items-center gap-2">
           <Avatar name={name} imageUrl={avatar} className="size-8 border" />
-          <p>{name}</p>
+          <p className="text-sm">{name}</p>
         </div>
 
         <time className="text-muted" dateTime={date.toISOString()}>

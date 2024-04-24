@@ -71,7 +71,7 @@ export const UserMenuDropdown = ({ user, className }: Props) => {
 
         <div className="flex flex-row justify-between items-center px-2 py-1">
           <p className="text-sm">Theme</p>
-          <ThemeSwitch />
+          <ThemeSwitch className="w-28 h-8" />
         </div>
 
         <DropdownMenuSeparator />
