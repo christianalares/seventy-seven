@@ -2,7 +2,24 @@ import { prisma } from '@seventy-seven/orm/prisma'
 import { getUser } from '@seventy-seven/supabase/session'
 
 export type UsersFindMe = Awaited<ReturnType<typeof findMe>>
+export type UsersFindMaybeMe = Awaited<ReturnType<typeof findMaybeMe>>
 export type UsersGetMyCurrentTeam = Awaited<ReturnType<typeof myCurrentTeam>>
+
+const findMaybeMe = async () => {
+  const user = await getUser()
+
+  if (!user) {
+    return null
+  }
+
+  const me = await prisma.user.findUnique({
+    where: {
+      id: user.id,
+    },
+  })
+
+  return me
+}
 
 const findMe = async () => {
   const user = await getUser()
@@ -100,5 +117,6 @@ export const myCurrentTeam = async () => {
 
 export const usersQueries = {
   findMe,
+  findMaybeMe,
   myCurrentTeam,
 }
