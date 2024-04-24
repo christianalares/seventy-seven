@@ -6,6 +6,7 @@ import { Skeleton } from '@seventy-seven/ui/skeleton'
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@seventy-seven/ui/table'
 import { Avatar } from './avatar'
 import { TeamActionsDropdown } from './team-actions-dropdown'
+import { TeamRoleSelect } from './team-role-select'
 
 export const TeamMembers = async () => {
   const user = await usersQueries.myCurrentTeam()
@@ -42,9 +43,14 @@ export const TeamMembers = async () => {
               </TableCell>
               <TableCell>
                 <div className="flex justify-end items-center gap-2">
-                  <Badge variant="outline" className="font-normal">
-                    {getRoleName(member.role)}
-                  </Badge>
+                  {userMember.role !== 'OWNER' ? (
+                    <Badge variant="outline" className="font-normal">
+                      {getRoleName(member.role)}
+                    </Badge>
+                  ) : (
+                    <TeamRoleSelect teamId={user.current_team.id} member={member} />
+                  )}
+
                   <TeamActionsDropdown teamId={user.current_team.id} userMember={userMember} member={member} />
                 </div>
               </TableCell>

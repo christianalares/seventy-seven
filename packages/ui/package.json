@@ -15,6 +15,7 @@
     "@radix-ui/react-dropdown-menu": "^2.0.6",
     "@radix-ui/react-label": "^2.0.2",
     "@radix-ui/react-popover": "^1.0.7",
+    "@radix-ui/react-select": "^2.0.0",
     "@radix-ui/react-slot": "^1.0.2",
     "@radix-ui/react-tabs": "^1.0.4",
     "@radix-ui/react-tooltip": "^1.0.7",
@@ -77,6 +78,7 @@
     "./command": "./src/components/shadcn/command.tsx",
     "./combobox": "./src/components/combobox.tsx",
     "./tooltip": "./src/components/shadcn/tooltip.tsx",
+    "./select": "./src/components/shadcn/select.tsx",
     "./combobox-dropdown": "./src/components/combobox-dropdown.tsx"
   }
 }

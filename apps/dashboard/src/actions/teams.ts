@@ -3,7 +3,7 @@
 import { opServerClient } from '@/lib/openpanel'
 import { authAction } from '@/lib/safe-action'
 import { usersQueries } from '@/queries/users'
-import { prisma } from '@seventy-seven/orm/prisma'
+import { TEAM_ROLE_ENUM, prisma } from '@seventy-seven/orm/prisma'
 import { revalidatePath } from 'next/cache'
 import { uuid } from 'uuidv4'
 import { z } from 'zod'
@@ -39,6 +39,7 @@ export const createTeam = authAction(
 
 export const setCurrentTeam = authAction(
   z.object({
+    revalidatePath: z.string().optional(),
     teamId: z.string().uuid(),
   }),
   async (values, user) => {
@@ -69,7 +70,9 @@ export const setCurrentTeam = authAction(
       profileId: user.id,
     })
 
-    revalidatePath('/account/teams')
+    if (values.revalidatePath) {
+      revalidatePath(values.revalidatePath)
+    }
 
     return updatedUser
   },
@@ -77,6 +80,7 @@ export const setCurrentTeam = authAction(
 
 export const leaveTeam = authAction(
   z.object({
+    revalidatePath: z.string().optional(),
     teamId: z.string().uuid(),
   }),
   async (values, user) => {
@@ -172,6 +176,10 @@ export const leaveTeam = authAction(
       team_id: leftTeam.team.id,
       profileId: user.id,
     })
+
+    if (values.revalidatePath) {
+      revalidatePath(values.revalidatePath)
+    }
 
     return leftTeam
   },
@@ -282,6 +290,75 @@ export const updateTeamName = authAction(
     }
 
     return updatedTeam
+  },
+)
+
+export const changeMemberRole = authAction(
+  z.object({
+    revalidatePath: z.string().optional(),
+    teamId: z.string().uuid(),
+    memberId: z.string().uuid(),
+    role: z.nativeEnum(TEAM_ROLE_ENUM),
+  }),
+  async (values, user) => {
+    const dbTeam = await prisma.team.findUnique({
+      where: {
+        id: values.teamId,
+      },
+      select: {
+        id: true,
+        members: {
+          select: {
+            role: true,
+            user_id: true,
+          },
+        },
+      },
+    })
+
+    if (!dbTeam) {
+      throw new Error('Could not find team')
+    }
+
+    const userInTeam = dbTeam.members.find((member) => member.user_id === user.id)
+
+    if (!userInTeam) {
+      throw new Error('You are not a member of this team')
+    }
+
+    if (userInTeam.role !== 'OWNER') {
+      throw new Error('You do not have permission to change roles')
+    }
+
+    if (!dbTeam.members.some((member) => member.user_id === values.memberId)) {
+      throw new Error('User is not a member of this team')
+    }
+
+    const updatedUserOnTeam = await prisma.userOnTeam.update({
+      where: {
+        user_id_team_id: {
+          user_id: values.memberId,
+          team_id: dbTeam.id,
+        },
+      },
+      data: {
+        role: values.role,
+      },
+      select: {
+        role: true,
+        user: {
+          select: {
+            full_name: true,
+          },
+        },
+      },
+    })
+
+    if (values.revalidatePath) {
+      revalidatePath(values.revalidatePath)
+    }
+
+    return updatedUserOnTeam
   },
 )
 

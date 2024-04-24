@@ -30,6 +30,7 @@ const findMe = async () => {
             select: {
               id: true,
               name: true,
+              image_url: true,
               tickets: {
                 select: {
                   id: true,
@@ -80,6 +81,9 @@ export const myCurrentTeam = async () => {
                   image_url: true,
                 },
               },
+            },
+            orderBy: {
+              created_at: 'asc',
             },
           },
         },

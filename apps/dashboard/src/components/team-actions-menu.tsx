@@ -10,8 +10,10 @@ import {
   DropdownMenuTrigger,
 } from '@seventy-seven/ui/dropdown-menu'
 import { Icon } from '@seventy-seven/ui/icon'
+import { Spinner } from '@seventy-seven/ui/spinner'
 import { useAction } from 'next-safe-action/hooks'
 import Link from 'next/link'
+import { usePathname } from 'next/navigation'
 import { toast } from 'sonner'
 import { pushAlert } from './alerts'
 
@@ -21,6 +23,8 @@ type Props = {
 }
 
 export const TeamActionsMenu = ({ teamId, isCurrent }: Props) => {
+  const pathname = usePathname()
+
   const setCurrentTeamAction = useAction(setCurrentTeam, {
     onSuccess: (updatedUser) => {
       toast.success(`Team "${updatedUser.current_team.name}" is now your current team`)
@@ -33,8 +37,12 @@ export const TeamActionsMenu = ({ teamId, isCurrent }: Props) => {
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
-        <Button variant="ghost" size="icon">
-          <Icon name="moreVertical" className="size-4" />
+        <Button variant="ghost" size="icon" disabled={setCurrentTeamAction.status === 'executing'}>
+          {setCurrentTeamAction.status === 'executing' ? (
+            <Spinner className="size-4" />
+          ) : (
+            <Icon name="moreVertical" className="size-4" />
+          )}
         </Button>
       </DropdownMenuTrigger>
 
@@ -43,6 +51,7 @@ export const TeamActionsMenu = ({ teamId, isCurrent }: Props) => {
           disabled={isCurrent}
           onSelect={() => {
             setCurrentTeamAction.execute({
+              revalidatePath: pathname,
               teamId,
             })
           }}
