@@ -1,3 +1,4 @@
+import { opServerClient } from '@/lib/openpanel'
 import { shortId } from '@/utils/shortId'
 import { prisma } from '@seventy-seven/orm/prisma'
 import { NextResponse } from 'next/server'
@@ -15,14 +16,6 @@ const ticketsPostSchema = z.object({
 export async function POST(req: Request) {
   const authHeader = req.headers.get('Authorization')
 
-  let body: any
-
-  try {
-    body = await req.json()
-  } catch (_error) {
-    return NextResponse.json({ error: 'Invalid post body' }, { status: 400 })
-  }
-
   if (!authHeader) {
     return NextResponse.json({ error: 'Missing header X-Api-Key' }, { status: 400 })
   }
@@ -31,6 +24,17 @@ export async function POST(req: Request) {
 
   if (!apiToken) {
     return NextResponse.json({ error: 'Invalid API key' }, { status: 403 })
+  }
+
+  const parsedBody = ticketsPostSchema.safeParse(await req.json())
+
+  if (!parsedBody.success) {
+    const errors = parsedBody.error.errors.map((error) => ({
+      path: error.path.join('.'),
+      message: error.message,
+    }))
+
+    return NextResponse.json({ error: 'Invalid request body', errors }, { status: 400 })
   }
 
   const foundTeam = await prisma.team.findFirst({
@@ -47,17 +51,6 @@ export async function POST(req: Request) {
     return NextResponse.json({ error: 'Invalid API key' }, { status: 403 })
   }
 
-  const parsedBody = ticketsPostSchema.safeParse(body)
-
-  if (!parsedBody.success) {
-    const errors = parsedBody.error.errors.map((error) => ({
-      path: error.path.join('.'),
-      message: error.message,
-    }))
-
-    return NextResponse.json({ error: 'Invalid request body', errors }, { status: 400 })
-  }
-
   const createdTicket = await prisma.ticket.create({
     data: {
       team_id: foundTeam.id,
@@ -72,6 +65,12 @@ export async function POST(req: Request) {
         },
       },
     },
+  })
+
+  opServerClient.event('created_ticket', {
+    team_id: foundTeam.id,
+    ticket_id: createdTicket.id,
+    subject: createdTicket.subject,
   })
 
   return NextResponse.json(createdTicket, { status: 201 })

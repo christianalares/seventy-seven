@@ -1,10 +1,10 @@
 'use server'
 
+import { opServerClient } from '@/lib/openpanel'
 import { authAction } from '@/lib/safe-action'
 import { usersQueries } from '@/queries/users'
 import { prisma } from '@seventy-seven/orm/prisma'
 import { revalidatePath } from 'next/cache'
-import { redirect } from 'next/navigation'
 import { uuid } from 'uuidv4'
 import { z } from 'zod'
 
@@ -23,6 +23,12 @@ export const createTeam = authAction(
           },
         },
       },
+    })
+
+    opServerClient.event('team_created', {
+      team_id: createdTeam.id,
+      profileId: user.id,
+      team_name: createdTeam.name,
     })
 
     revalidatePath('/account/teams')
@@ -56,6 +62,11 @@ export const setCurrentTeam = authAction(
           },
         },
       },
+    })
+
+    opServerClient.event('team_switched', {
+      team_id: values.teamId,
+      profileId: user.id,
     })
 
     revalidatePath('/account/teams')
@@ -157,7 +168,10 @@ export const leaveTeam = authAction(
       return { leftTeam, updatedUser }
     })
 
-    redirect('/account/teams')
+    opServerClient.event('team_left', {
+      team_id: leftTeam.team.id,
+      profileId: user.id,
+    })
 
     return leftTeam
   },
@@ -223,6 +237,11 @@ export const removeMember = authAction(
       },
     })
 
+    opServerClient.event('team_member_removed', {
+      team_id: dbTeam.id,
+      profileId: user.id,
+    })
+
     if (values.revalidatePath) {
       revalidatePath(values.revalidatePath)
     }
@@ -251,6 +270,11 @@ export const updateTeamName = authAction(
       data: {
         name: values.name,
       },
+    })
+
+    opServerClient.event('team_name_updated', {
+      team_id: values.teamId,
+      profileId: user.id,
     })
 
     if (!updatedTeam) {
@@ -288,6 +312,11 @@ export const generateAuthToken = authAction(z.undefined().optional(), async (_va
     .catch((_error) => {
       throw new Error('Could not generate auth token')
     })
+
+  opServerClient.event('auth_token_generated', {
+    team_id: usresCurrentTeam.current_team.id,
+    profileId: user.id,
+  })
 
   revalidatePath('/settings/security')
 

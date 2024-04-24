@@ -40,9 +40,6 @@ export const Header = () => {
               <Link href="/">Pricing</Link>
             </li>
             <li>
-              <Link href="/">Story</Link>
-            </li>
-            <li>
               <Link href="/">Docs</Link>
             </li>
           </ul>
@@ -65,7 +62,7 @@ export const Header = () => {
             </Button>
           )}
           <Button asChild>
-            <a href="https://dashboard.seventy-seven.dev">Sign in</a>
+            <a href="https://app.seventy-seven.dev">Sign in</a>
           </Button>
         </div>
       </div>

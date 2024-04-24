@@ -1,5 +1,6 @@
 'use server'
 
+import { opServerClient } from '@/lib/openpanel'
 import { authAction } from '@/lib/safe-action'
 import { usersQueries } from '@/queries/users'
 import { sentencifyArray } from '@/utils/sentencifyArray'
@@ -131,6 +132,12 @@ export const inviteTeamMembers = authAction(
       revalidatePath(values.revalidatePath)
     }
 
+    opServerClient.event('team_members_invited', {
+      team_id: usersTeam.id,
+      profileId: user.id,
+      number_of_invites: createdInvites.length,
+    })
+
     return createdInvites.length
   },
 )
@@ -205,6 +212,11 @@ export const acceptInvitation = authAction(
       }
     })
 
+    opServerClient.event('team_member_invite_accepted', {
+      team_id: values.teamId,
+      profileId: dbUser.id,
+    })
+
     revalidatePath('/settings/members')
 
     return { success: true }
@@ -233,12 +245,19 @@ export const revokeInvitation = authAction(
           },
         },
         select: {
+          team_id: true,
           email: true,
         },
       })
       .catch((_err) => {
         throw new Error('Could not revoke invite')
       })
+
+    opServerClient.event('team_member_invite_revoked', {
+      team_id: deletedInvite.team_id,
+      email: deletedInvite.email,
+      profileId: user.id,
+    })
 
     revalidatePath('/settings/members/pending')
 

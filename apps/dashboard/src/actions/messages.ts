@@ -1,5 +1,6 @@
 'use server'
 
+import { opServerClient } from '@/lib/openpanel'
 import { authAction } from '@/lib/safe-action'
 import { usersQueries } from '@/queries/users'
 import { componentToPlainText, createResendClient } from '@seventy-seven/email'
@@ -48,6 +49,7 @@ export const createMessage = authAction(
 
             team: {
               select: {
+                id: true,
                 name: true,
                 image_url: true,
                 is_personal: true,
@@ -134,6 +136,12 @@ export const createMessage = authAction(
         })
       }
     }
+
+    opServerClient.event('message_created', {
+      team_id: createdMessage.ticket.team.id,
+      ticket_id: createdMessage.ticket.id,
+      profileId: user.id,
+    })
 
     revalidatePath(`/inbox/${createdMessage.ticket.id}`)
 
