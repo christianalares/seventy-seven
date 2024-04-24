@@ -1,6 +1,5 @@
 'use client'
 
-import { Button } from '@seventy-seven/ui/button'
 import { Icon, type IconName } from '@seventy-seven/ui/icon'
 import { Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectValue } from '@seventy-seven/ui/select'
 import { cn } from '@seventy-seven/ui/utils'
