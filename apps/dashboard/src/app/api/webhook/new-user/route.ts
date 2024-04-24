@@ -1,4 +1,5 @@
 import { opServerClient } from '@/lib/openpanel'
+import { createResendClient } from '@seventy-seven/email'
 import { headers } from 'next/headers'
 import { NextResponse } from 'next/server'
 import { z } from 'zod'
@@ -24,6 +25,10 @@ export async function POST(req: Request) {
     return NextResponse.json({ error: 'Missing API key' }, { status: 400 })
   }
 
+  if (apiKey !== process.env.API_ROUTE_SECRET) {
+    return NextResponse.json({ error: 'Invalid API key' }, { status: 403 })
+  }
+
   const parsedBody = newUserWebhookPostSchema.safeParse(await req.json())
 
   if (!parsedBody.success) {
@@ -34,6 +39,20 @@ export async function POST(req: Request) {
 
     return NextResponse.json({ error: 'Invalid request body', errors }, { status: 400 })
   }
+
+  const resend = createResendClient()
+
+  const [firstName, lastName] = parsedBody.data.record.full_name.split(' ')
+
+  // Create a new contact in Resend
+  await resend.contacts.create({
+    email: parsedBody.data.record.email,
+    firstName,
+    lastName,
+    unsubscribed: false,
+    // ID for the "General" audience
+    audienceId: 'f90d06f7-da55-4db8-a55d-7bdbecdcba33',
+  })
 
   opServerClient.event('new_user', {
     email: parsedBody.data.record.email,
