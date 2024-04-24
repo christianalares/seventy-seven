@@ -1,4 +1,5 @@
 import { opServerClient } from '@/lib/openpanel'
+import { headers } from 'next/headers'
 import { NextResponse } from 'next/server'
 import { z } from 'zod'
 
@@ -17,6 +18,12 @@ const newUserWebhookPostSchema = z.object({
 })
 
 export async function POST(req: Request) {
+  const apiKey = headers().get('X-Api-Key')
+
+  if (!apiKey) {
+    return NextResponse.json({ error: 'Missing API key' }, { status: 400 })
+  }
+
   const parsedBody = newUserWebhookPostSchema.safeParse(await req.json())
 
   if (!parsedBody.success) {
