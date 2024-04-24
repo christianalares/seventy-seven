@@ -1,5 +1,6 @@
 'use server'
 
+import { opServerClient } from '@/lib/openpanel'
 import { authAction } from '@/lib/safe-action'
 import { usersQueries } from '@/queries/users'
 import { componentToPlainText, createResendClient } from '@seventy-seven/email'
@@ -76,6 +77,11 @@ export const snoozeTicket = authAction(
       throw new Error('Failed to snooze ticket, something went wrong 😢')
     }
 
+    opServerClient.event('snoozed_ticket', {
+      ticket_id: updatedTicket.id,
+      user_id: user.id,
+    })
+
     revalidatePath('/inbox')
     revalidatePath(`/inbox/${updatedTicket.id}`)
     revalidatePath(`/inbox/snoozed/${updatedTicket.id}`)
@@ -113,6 +119,18 @@ export const toggleStar = authAction(
 
     if (!updatedTicket) {
       throw new Error(`Failed to ${values.star ? 'star' : 'unstar'} ticket, something went wrong 😢`)
+    }
+
+    if (values.star) {
+      opServerClient.event('starred_ticket', {
+        ticket_id: updatedTicket.id,
+        user_id: user.id,
+      })
+    } else {
+      opServerClient.event('unstarred_ticket', {
+        ticket_id: updatedTicket.id,
+        user_id: user.id,
+      })
     }
 
     revalidatePath('/inbox')
@@ -221,6 +239,11 @@ export const closeTicket = authAction(
       console.log('Error sending email', error)
     }
 
+    opServerClient.event('closed_ticket', {
+      ticket_id: updatedTicket.id,
+      closed_by_user_id: user.id,
+    })
+
     revalidatePath('/inbox')
     revalidatePath('/inbox/closed')
 
@@ -277,7 +300,14 @@ export const assignToMember = authAction(
       },
     })
 
+    opServerClient.event('assigned_ticket', {
+      ticket_id: values.ticketId,
+      assigned_by_user_id: user.id,
+      assigned_to_user_id: values.memberId,
+    })
+
     revalidatePath('/inbox')
+
     return updatedTicket
   },
 )
@@ -307,6 +337,11 @@ export const unassignTicket = authAction(
       .catch((_err) => {
         throw new Error('Failed to unassign ticket')
       })
+
+    opServerClient.event('unassigned_ticket', {
+      ticket_id: values.ticketId,
+      user_id: user.id,
+    })
 
     revalidatePath(values.revalidatePath)
 

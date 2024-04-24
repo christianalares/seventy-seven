@@ -35,7 +35,7 @@ export async function middleware(req: NextRequest) {
       return Response.redirect(new URL('/closed', req.url))
     }
 
-    return Response.redirect(new URL(`/?returnTo=${req.nextUrl.pathname}`, req.url))
+    return Response.redirect(new URL(`/?return_to=${req.nextUrl.pathname}`, req.url))
   }
 
   return NextResponse.next()

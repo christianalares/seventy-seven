@@ -11,6 +11,7 @@
     "check:types": "tsc --noEmit"
   },
   "dependencies": {
+    "@openpanel/nextjs": "0.0.8-beta",
     "@faker-js/faker": "^8.4.1",
     "@hookform/resolvers": "^3.3.4",
     "@seventy-seven/email": "workspace:*",

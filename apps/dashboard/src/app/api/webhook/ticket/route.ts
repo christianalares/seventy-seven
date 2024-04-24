@@ -25,15 +25,7 @@ export async function POST(req: Request) {
     return NextResponse.json({ error: 'Invalid IP address' }, { status: 403 })
   }
 
-  let body: any
-
-  try {
-    body = await req.json()
-  } catch (_error) {
-    return NextResponse.json({ error: 'Invalid post body' }, { status: 400 })
-  }
-
-  const parsedBody = ticketsWebhookPostSchema.safeParse(body)
+  const parsedBody = ticketsWebhookPostSchema.safeParse(await req.json())
 
   if (!parsedBody.success) {
     const errors = parsedBody.error.errors.map((error) => ({

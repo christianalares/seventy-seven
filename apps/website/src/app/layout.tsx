@@ -34,8 +34,8 @@ export const viewport: Viewport = {
 }
 
 export const metadata: Metadata = {
-  title: '77',
-  description: 'The open source alternative to Zendesk',
+  title: 'Seventy Seven - The open source alternative to Zendesk',
+  description: 'A modern and simple platform to make customer support extremely easy',
 }
 
 type Props = {

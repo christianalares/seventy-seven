@@ -5,6 +5,7 @@ import { Alert, AlertCancel, AlertDescription, AlertFooter, AlertTitle } from '@
 import { Button } from '@seventy-seven/ui/button'
 import { DialogHeader } from '@seventy-seven/ui/dialog'
 import { useAction } from 'next-safe-action/hooks'
+import { useRouter } from 'next/navigation'
 import { toast } from 'sonner'
 import { popAlert } from '.'
 
@@ -13,10 +14,13 @@ type Props = {
 }
 
 export const ConfirmLeaveTeamAlert = ({ teamId }: Props) => {
+  const router = useRouter()
+
   const action = useAction(leaveTeam, {
     onSuccess: (leftTeam) => {
       toast.success(`You have left the team ${leftTeam.team.name}`)
       popAlert('confirmLeaveTeam')
+      router.push('/account/teams')
     },
     onError: (error) => {
       toast.error(error.serverError)

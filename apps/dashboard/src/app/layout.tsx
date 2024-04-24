@@ -1,4 +1,5 @@
 import { ThemeProvider } from '@/components/theme-provider'
+import { OpenpanelProvider } from '@openpanel/nextjs'
 import '@seventy-seven/ui/globals.css'
 import { cn } from '@seventy-seven/ui/utils'
 import type { Metadata, Viewport } from 'next'
@@ -33,9 +34,17 @@ type Props = {
   children: React.ReactNode
 }
 
+const NEXT_PUBLIC_OPEN_PANEL_CLIENT_ID_CLIENT = process.env.NEXT_PUBLIC_OPEN_PANEL_CLIENT_ID_CLIENT
+
+if (!NEXT_PUBLIC_OPEN_PANEL_CLIENT_ID_CLIENT) {
+  throw new Error('NEXT_PUBLIC_OPEN_PANEL_CLIENT_ID_CLIENT is required')
+}
+
 const RootLayout = async ({ children }: Props) => {
   return (
     <html lang="en" className="h-full" suppressHydrationWarning>
+      <OpenpanelProvider clientId={NEXT_PUBLIC_OPEN_PANEL_CLIENT_ID_CLIENT} trackScreenViews trackOutgoingLinks />
+
       <body className={cn('h-full flex flex-col', roboto.variable, mavenPro.variable)} suppressHydrationWarning>
         <ThemeProvider attribute="class" defaultTheme="system" enableSystem disableTransitionOnChange>
           {children}
