@@ -82,6 +82,7 @@ export const AssignTeamMemberForm = ({ ticket }: Props) => {
                   <ComboboxDropdown
                     placeholder="Select team member..."
                     searchPlaceholder="Search team member..."
+                    emptyResults="No team member found"
                     items={memberItems}
                     selectedItem={foundMember}
                     onSelect={(item) => field.onChange(item.id)}
