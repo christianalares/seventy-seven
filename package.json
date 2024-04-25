@@ -1,7 +1,6 @@
 {
   "name": "seventy-seven",
   "private": true,
-  "workspaces": ["packages/*", "apps/*"],
   "scripts": {
     "postinstall": "turbo prisma:generate",
     "build": "turbo build",
