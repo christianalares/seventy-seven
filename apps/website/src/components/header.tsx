@@ -1,30 +1,19 @@
 'use client'
 
 import { Button } from '@seventy-seven/ui/button'
-import { Icon } from '@seventy-seven/ui/icon'
 import { Logo } from '@seventy-seven/ui/logo'
-import { AnimatePresence, motion } from 'framer-motion'
-import { useTheme } from 'next-themes'
+import dynamic from 'next/dynamic'
 import Link from 'next/link'
-import { useEffect, useState } from 'react'
+
+const ChangeThemeButton = dynamic(
+  () => import('./change-theme-button').then(({ ChangeThemeButton }) => ChangeThemeButton),
+  {
+    ssr: false,
+    loading: () => null,
+  },
+)
 
 export const Header = () => {
-  const [isClient, setIsClient] = useState(false)
-
-  useEffect(() => {
-    setIsClient(true)
-  }, [])
-
-  const { setTheme, resolvedTheme } = useTheme()
-
-  const onThemeChange = () => {
-    if (resolvedTheme === 'light') {
-      setTheme('dark')
-    } else {
-      setTheme('light')
-    }
-  }
-
   return (
     <header className="p-4 h-20 flex items-center">
       <div className="w-full grid grid-cols-[repeat(2,1fr)] items-center h-full">
@@ -46,21 +35,7 @@ export const Header = () => {
         </nav> */}
 
         <div className="justify-self-end flex items-center gap-4">
-          {isClient && (
-            <Button size="icon" variant="outline" onClick={onThemeChange} className="overflow-hidden">
-              <AnimatePresence mode="popLayout" initial={false}>
-                <motion.div
-                  key={resolvedTheme}
-                  initial={{ opacity: 0, rotate: -90, x: -30, y: 10 }}
-                  animate={{ opacity: 1, rotate: 0, x: 0, y: 0 }}
-                  exit={{ opacity: 0, rotate: 90, x: 30, y: 10 }}
-                  transition={{ duration: 0.6 }}
-                >
-                  <Icon name={resolvedTheme === 'light' ? 'moon' : 'sun'} className="size-4" />
-                </motion.div>
-              </AnimatePresence>
-            </Button>
-          )}
+          <ChangeThemeButton />
           <Button asChild>
             <a href="https://app.seventy-seven.dev">Sign in</a>
           </Button>
