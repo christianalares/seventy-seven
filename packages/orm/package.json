@@ -9,7 +9,7 @@
     "lint": "biome check .",
     "check:types": "tsc --noEmit",
     "prisma:generate": "prisma generate --schema=./src/prisma/schema.prisma",
-    "prisma:push": "cd ../../ && npx prisma db push --schema=./packages/orm/src/prisma/schema.prisma"
+    "prisma:push": "cd ../../ && npx prisma db push --schema=./packages/orm/src/prisma/schema.prisma --skip-generate"
   },
   "dependencies": {
     "@prisma/client": "^5.12.1"

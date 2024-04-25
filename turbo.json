@@ -15,6 +15,9 @@
     "prisma:generate": {
       "cache": false
     },
+    "prisma:push": {
+      "cache": false
+    },
     "check:types": {
       "persistent": true
     }
