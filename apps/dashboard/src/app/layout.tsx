@@ -6,6 +6,22 @@ import type { Metadata, Viewport } from 'next'
 import { Maven_Pro, Roboto } from 'next/font/google'
 import './globals.css'
 
+export const viewport: Viewport = {
+  width: 'device-width',
+  initialScale: 1,
+  maximumScale: 1,
+  userScalable: false,
+}
+
+export const metadata: Metadata = {
+  metadataBase: new URL('https://seventy-seven.dev'),
+  title: {
+    default: 'Seventy Seven | The open source alternative to Zendesk',
+    template: '%s | Seventy Seven',
+  },
+  description: 'A modern and simple platform to make customer support extremely easy',
+}
+
 const mavenPro = Maven_Pro({
   subsets: ['latin'],
   variable: '--maven-pro',
@@ -17,18 +33,6 @@ const roboto = Roboto({
   weight: ['300', '400', '500', '700'],
   variable: '--roboto',
 })
-
-export const viewport: Viewport = {
-  width: 'device-width',
-  initialScale: 1,
-  maximumScale: 1,
-  userScalable: false,
-}
-
-export const metadata: Metadata = {
-  title: '77',
-  description: 'The open source alternative to Zendesk',
-}
 
 type Props = {
   children: React.ReactNode
