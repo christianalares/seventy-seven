@@ -2,6 +2,8 @@
 
 import { useSelectedTicket } from '@/hooks/use-selected-ticket'
 import type { TicketsFindById } from '@/queries/tickets'
+import { createClient } from '@seventy-seven/supabase/clients/client'
+import { useRouter } from 'next/navigation'
 import { type ElementRef, useEffect, useRef } from 'react'
 import { ChatMessageHandler } from './chat-message-handler'
 import { ChatMessageUser } from './chat-message-user'
@@ -11,10 +13,34 @@ type Props = {
 }
 
 export const TicketChat = ({ messages }: Props) => {
+  const router = useRouter()
+  const sb = createClient()
+
+  useEffect(() => {
+    const channel = sb
+      .channel('realtime_messages')
+      .on(
+        'postgres_changes',
+        {
+          event: 'INSERT',
+          schema: 'public',
+          table: 'messages',
+        },
+        (_payload) => {
+          router.refresh()
+        },
+      )
+      .subscribe()
+
+    return () => {
+      sb.removeChannel(channel)
+    }
+  }, [sb, router])
+
   const { ticketId } = useSelectedTicket()
   const ref = useRef<ElementRef<'div'>>(null)
 
-  useEffect(() => {
+  /*   useEffect(() => {
     if (ticketId && ref.current) {
       // scroll to bottom in chat
       ref.current.scrollTo({
@@ -22,7 +48,16 @@ export const TicketChat = ({ messages }: Props) => {
         // behavior: 'smooth',
       })
     }
-  }, [ticketId])
+  }, [ticketId]) */
+
+  useEffect(() => {
+    if (ticketId && ref.current && messages.length > 0) {
+      ref.current.scrollTo({
+        top: ref.current.scrollHeight,
+        behavior: 'smooth',
+      })
+    }
+  }, [ticketId, messages.length])
 
   return (
     <div ref={ref} className="flex-1 overflow-scroll">
