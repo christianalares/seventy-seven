@@ -16,6 +16,9 @@ export const TicketChat = ({ messages }: Props) => {
   const router = useRouter()
   const sb = createClient()
 
+  const { ticketId } = useSelectedTicket()
+  const ref = useRef<ElementRef<'div'>>(null)
+
   useEffect(() => {
     const channel = sb
       .channel('realtime_messages')
@@ -37,26 +40,16 @@ export const TicketChat = ({ messages }: Props) => {
     }
   }, [sb, router])
 
-  const { ticketId } = useSelectedTicket()
-  const ref = useRef<ElementRef<'div'>>(null)
-
-  /*   useEffect(() => {
-    if (ticketId && ref.current) {
-      // scroll to bottom in chat
-      ref.current.scrollTo({
-        top: ref.current.scrollHeight,
-        // behavior: 'smooth',
-      })
-    }
-  }, [ticketId]) */
-
   useEffect(() => {
-    if (ticketId && ref.current && messages.length > 0) {
-      ref.current.scrollTo({
-        top: ref.current.scrollHeight,
-        behavior: 'smooth',
-      })
+    if (!ticketId || !ref.current || messages.length <= 0) {
+      return
     }
+
+    // Scroll to bottom in chat
+    ref.current.scrollTo({
+      top: ref.current.scrollHeight,
+      behavior: 'smooth',
+    })
   }, [ticketId, messages.length])
 
   return (

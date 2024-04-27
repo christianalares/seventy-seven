@@ -21,8 +21,6 @@ type Props = {
 }
 
 const TicketMessageResponse = ({ handler, thread }: Props) => {
-  console.log({ handler })
-
   return (
     <Html>
       <Head>
