@@ -1,8 +1,6 @@
 import { usersQueries } from '@/queries/users'
 import { Logo } from '@seventy-seven/ui/logo'
 
-// export const dynamic = 'force-dynamic'
-
 const ClosedPage = async () => {
   const user = await usersQueries.findMaybeMe()
 

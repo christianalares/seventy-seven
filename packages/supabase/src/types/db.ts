@@ -65,6 +65,7 @@ export type Database = {
       }
       team_invites: {
         Row: {
+          code: string
           created_at: string
           created_by_user_id: string
           email: string
@@ -72,6 +73,7 @@ export type Database = {
           team_id: string
         }
         Insert: {
+          code: string
           created_at?: string
           created_by_user_id: string
           email: string
@@ -79,6 +81,7 @@ export type Database = {
           team_id: string
         }
         Update: {
+          code?: string
           created_at?: string
           created_by_user_id?: string
           email?: string
@@ -134,6 +137,7 @@ export type Database = {
       }
       tickets: {
         Row: {
+          assigned_to_user_id: string | null
           closed_at: string | null
           created_at: string
           event_id: string | null
@@ -147,6 +151,7 @@ export type Database = {
           updated_at: string | null
         }
         Insert: {
+          assigned_to_user_id?: string | null
           closed_at?: string | null
           created_at?: string
           event_id?: string | null
@@ -160,6 +165,7 @@ export type Database = {
           updated_at?: string | null
         }
         Update: {
+          assigned_to_user_id?: string | null
           closed_at?: string | null
           created_at?: string
           event_id?: string | null
@@ -173,6 +179,13 @@ export type Database = {
           updated_at?: string | null
         }
         Relationships: [
+          {
+            foreignKeyName: "tickets_assigned_to_user_id_fkey"
+            columns: ["assigned_to_user_id"]
+            isOneToOne: false
+            referencedRelation: "users"
+            referencedColumns: ["id"]
+          },
           {
             foreignKeyName: "tickets_team_id_fkey"
             columns: ["team_id"]
@@ -222,18 +235,24 @@ export type Database = {
       }
       users_on_teams: {
         Row: {
+          created_at: string
           role: Database["public"]["Enums"]["TEAM_ROLE_ENUM"]
           team_id: string
+          updated_at: string | null
           user_id: string
         }
         Insert: {
+          created_at?: string
           role: Database["public"]["Enums"]["TEAM_ROLE_ENUM"]
           team_id: string
+          updated_at?: string | null
           user_id: string
         }
         Update: {
+          created_at?: string
           role?: Database["public"]["Enums"]["TEAM_ROLE_ENUM"]
           team_id?: string
+          updated_at?: string | null
           user_id?: string
         }
         Relationships: [

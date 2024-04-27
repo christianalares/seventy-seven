@@ -1,4 +1,4 @@
-import { Body, Container, Font, Head, Heading, Html, Img, Preview, Tailwind } from '@react-email/components'
+import { Body, Container, Font, Head, Heading, Html, Img, Preview, Tailwind, Text } from '@react-email/components'
 // biome-ignore lint/correctness/noUnusedImports: <explanation>
 import * as React from 'react'
 import { Footer } from '../components/footer'
@@ -58,14 +58,13 @@ const TicketMessageResponse = ({ handler, thread }: Props) => {
               <Heading as="h1">{handler.company.name}</Heading>
             )}
 
-            <Heading as="h2" className="font-maven-pro text-lg flex items-center gap-4 mt-8">
+            <Text className="font-maven-pro text-lg mt-4">
               {handler.name === handler.company.name
                 ? `${handler.name} has sent you a response`
                 : `${handler.name} from ${handler.company.name} has sent you a response`}
-            </Heading>
+            </Text>
 
             <LastMessages messages={thread.slice(0, 5)} />
-
             <Footer />
           </Container>
         </Body>

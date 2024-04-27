@@ -17,7 +17,7 @@ export async function POST(req: Request) {
   const authHeader = req.headers.get('Authorization')
 
   if (!authHeader) {
-    return NextResponse.json({ error: 'Missing header X-Api-Key' }, { status: 400 })
+    return NextResponse.json({ error: 'Missing Authorization header' }, { status: 400 })
   }
 
   const [_bearer, apiToken] = authHeader.split(' ')
