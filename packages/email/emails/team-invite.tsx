@@ -32,7 +32,7 @@ const TeamInvite = ({ invitedBy, code, team }: Props) => {
   const message = `${invitedBy} has invited you to join ${team.name}`
   const ticketUrl =
     process.env.VERCEL_ENV === 'production'
-      ? `https://seventy-seven.dev/invite/${code}`
+      ? `https://app.seventy-seven.dev/invite/${code}`
       : `http://localhost:3000/invite/${code}`
 
   return (
