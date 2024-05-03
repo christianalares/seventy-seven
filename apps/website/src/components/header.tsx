@@ -1,6 +1,7 @@
 'use client'
 
 import { Button } from '@seventy-seven/ui/button'
+import { Icon } from '@seventy-seven/ui/icon'
 import { Logo } from '@seventy-seven/ui/logo'
 import dynamic from 'next/dynamic'
 import Link from 'next/link'
@@ -35,6 +36,12 @@ export const Header = () => {
         </nav> */}
 
         <div className="justify-self-end flex items-center gap-4">
+          <Button asChild size="icon" variant="ghost">
+            <a href="https://git.new/seventy-seven" className="" target="_blank" rel="noreferrer">
+              <span className="sr-only">Github</span>
+              <Icon name="github" />
+            </a>
+          </Button>
           <ChangeThemeButton />
           <Button asChild>
             <a href="https://app.seventy-seven.dev">Sign in</a>
