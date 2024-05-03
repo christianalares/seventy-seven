@@ -36,15 +36,15 @@ export const Header = () => {
         </nav> */}
 
         <div className="justify-self-end flex items-center gap-4">
+          <ChangeThemeButton />
+          <Button asChild>
+            <a href="https://app.seventy-seven.dev">Sign in</a>
+          </Button>
           <Button asChild size="icon" variant="ghost">
             <a href="https://git.new/seventy-seven" className="" target="_blank" rel="noreferrer">
               <span className="sr-only">Github</span>
               <Icon name="github" />
             </a>
-          </Button>
-          <ChangeThemeButton />
-          <Button asChild>
-            <a href="https://app.seventy-seven.dev">Sign in</a>
           </Button>
         </div>
       </div>
