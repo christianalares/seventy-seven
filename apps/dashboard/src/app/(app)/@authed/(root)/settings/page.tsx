@@ -7,7 +7,11 @@ const SettingsPage = async () => {
 
   return (
     <PageWrapper>
-      <UpdateTeamNameForm teamId={user.current_team_id} defaultValues={{ name: user.current_team.name }} />
+      <UpdateTeamNameForm
+        key={user.current_team_id}
+        teamId={user.current_team_id}
+        defaultValues={{ name: user.current_team.name }}
+      />
     </PageWrapper>
   )
 }

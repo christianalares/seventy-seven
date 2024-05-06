@@ -4,7 +4,7 @@
   "scripts": {
     "postinstall": "turbo prisma:generate",
     "build": "turbo build",
-    "dev": "turbo dev",
+    "dev": "dotenv -- turbo dev",
     "dev:trigger": "@trigger.dev/cli@latest dev",
     "lint": "turbo lint",
     "check:types": "turbo check:types",
