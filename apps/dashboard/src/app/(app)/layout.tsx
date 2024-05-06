@@ -1,5 +1,5 @@
-import { SetProfileId } from '@openpanel/nextjs'
-import { getUser } from '@seventy-seven/supabase/session'
+import { OpenpanelSetProfile } from '@/components/openpanel-set-profile'
+import { usersQueries } from '@/queries/users'
 
 type Props = {
   authed: React.ReactNode
@@ -7,11 +7,11 @@ type Props = {
 }
 
 const AppLayout = async ({ authed, unauthed }: Props) => {
-  const user = await getUser()
+  const user = await usersQueries.findMaybeMe()
 
   return user ? (
     <>
-      <SetProfileId value={user.id} />
+      <OpenpanelSetProfile user={user} />
       {authed}
     </>
   ) : (

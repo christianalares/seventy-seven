@@ -38,20 +38,16 @@ type Props = {
   children: React.ReactNode
 }
 
-const NEXT_PUBLIC_OPENPANEL_DASHBOARD_CLIENT_ID_CLIENT = process.env.NEXT_PUBLIC_OPENPANEL_DASHBOARD_CLIENT_ID_CLIENT
+const NEXT_PUBLIC_OPENPANEL_DASHBOARD_CLIENT_ID = process.env.NEXT_PUBLIC_OPENPANEL_DASHBOARD_CLIENT_ID
 
-if (!NEXT_PUBLIC_OPENPANEL_DASHBOARD_CLIENT_ID_CLIENT) {
-  throw new Error('NEXT_PUBLIC_OPENPANEL_DASHBOARD_CLIENT_ID_CLIENT is required')
+if (!NEXT_PUBLIC_OPENPANEL_DASHBOARD_CLIENT_ID) {
+  throw new Error('NEXT_PUBLIC_OPENPANEL_DASHBOARD_CLIENT_ID is required')
 }
 
 const RootLayout = async ({ children }: Props) => {
   return (
     <html lang="en" className="h-full" suppressHydrationWarning>
-      <OpenpanelProvider
-        clientId={NEXT_PUBLIC_OPENPANEL_DASHBOARD_CLIENT_ID_CLIENT}
-        trackScreenViews
-        trackOutgoingLinks
-      />
+      <OpenpanelProvider clientId={NEXT_PUBLIC_OPENPANEL_DASHBOARD_CLIENT_ID} trackScreenViews trackOutgoingLinks />
 
       <body className={cn('h-full flex flex-col', roboto.variable, mavenPro.variable)} suppressHydrationWarning>
         <ThemeProvider attribute="class" defaultTheme="system" enableSystem disableTransitionOnChange>
