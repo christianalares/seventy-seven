@@ -1,4 +1,4 @@
-import { Body, Container, Font, Head, Heading, Html, Img, Preview, Tailwind, Text } from '@react-email/components'
+import { Body, Container, Font, Head, Html, Img, Preview, Tailwind, Text } from '@react-email/components'
 // biome-ignore lint/correctness/noUnusedImports: <explanation>
 import * as React from 'react'
 import { Footer } from '../components/footer'
@@ -55,7 +55,7 @@ const TicketMessageResponse = ({ handler, thread }: Props) => {
             {handler.company.image_url ? (
               <Img src={handler.company.image_url} alt="Acme" className="h-16" />
             ) : (
-              <Heading as="h1">{handler.company.name}</Heading>
+              <Text className="text-xl">{handler.company.name}</Text>
             )}
 
             <Text className="font-maven-pro text-lg mt-4">

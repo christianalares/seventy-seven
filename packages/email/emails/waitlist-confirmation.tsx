@@ -1,17 +1,4 @@
-import {
-  Body,
-  Container,
-  Font,
-  Head,
-  Heading,
-  Hr,
-  Html,
-  Img,
-  Link,
-  Preview,
-  Tailwind,
-  Text,
-} from '@react-email/components'
+import { Body, Container, Font, Head, Hr, Html, Img, Link, Preview, Tailwind, Text } from '@react-email/components'
 // biome-ignore lint/correctness/noUnusedImports: <explanation>
 import * as React from 'react'
 
@@ -58,9 +45,7 @@ const WaitlistConfirmation = () => {
         <Body className="bg-[#f3f4f6]">
           <Container className="p-4 bg-white rounded-md">
             <Img src={`${baseUrl}/77-logo.png`} alt="77" className="w-12" />
-            <Heading as="h1" className="font-maven-pro">
-              Welcome to 77!
-            </Heading>
+            <Text className="text-2xl font-maven-pro">Welcome to Seventy Seven!</Text>
 
             <Text className="text-base">We're super happy that you are onboard, it means a lot to us! 🙏</Text>
             <Text className="text-base">
@@ -84,7 +69,7 @@ const WaitlistConfirmation = () => {
             <Text className="text-base">
               Kind regards!
               <br />
-              Christian Alares @ 77
+              Christian Alares @ Seventy Seven
             </Text>
           </Container>
         </Body>
