@@ -35,10 +35,14 @@ const LinkItem = ({ href, label, icon }: LinkItemProps) => {
   )
 }
 
-export const MainMenu = () => {
+type Props = {
+  className?: string
+}
+
+export const MainMenu = ({ className }: Props) => {
   return (
-    <nav>
-      <ul className="flex flex-col gap-2">
+    <nav className={cn(className)}>
+      <ul className="flex items-center gap-2">
         {/* <LinkItem href="/" icon="home" label="Overview" /> */}
         <LinkItem href="/inbox" icon="inbox" label="Inbox" />
         <LinkItem href="/settings" icon="settings" label="Settings" />

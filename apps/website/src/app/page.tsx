@@ -6,8 +6,8 @@ import { WaitlistForm } from '@/components/waitlist-form'
 import { Waves } from '@/components/waves'
 import Image from 'next/image'
 import Balancer from 'react-wrap-balancer'
-import productDark from '../../public/img/77-dark.png'
-import productLight from '../../public/img/77-light.png'
+import productDark from '../../public/img/77-dark.webp'
+import productLight from '../../public/img/77-light.webp'
 
 const IndexPage = () => {
   return (

@@ -24,6 +24,9 @@ type Props<T> = {
   renderSelectedItem?: (selectedItem: T) => React.ReactNode
   renderListItem?: (listItem: { isChecked: boolean; item: T }) => React.ReactNode
   emptyResults?: React.ReactNode
+  popoverProps?: React.ComponentProps<typeof PopoverContent>
+  hideSearch?: boolean
+  disabled?: boolean
 }
 
 export function ComboboxDropdown<T extends ComboboxItem>({
@@ -35,6 +38,9 @@ export function ComboboxDropdown<T extends ComboboxItem>({
   renderSelectedItem,
   renderListItem,
   emptyResults,
+  popoverProps,
+  hideSearch,
+  disabled,
 }: Props<T>) {
   const [open, setOpen] = React.useState(false)
   const [internalSelectedItem, setInternalSelectedItem] = React.useState<T | undefined>()
@@ -46,7 +52,7 @@ export function ComboboxDropdown<T extends ComboboxItem>({
 
   return (
     <Popover open={open} onOpenChange={setOpen}>
-      <PopoverTrigger asChild>
+      <PopoverTrigger asChild disabled={disabled}>
         <Button variant="outline" role="combobox" aria-expanded={open} className="w-full justify-between">
           {selectedItem
             ? <div className="flex items-center">{renderSelectedItem?.(selectedItem)}</div> ?? selectedItem.label
@@ -57,16 +63,20 @@ export function ComboboxDropdown<T extends ComboboxItem>({
 
       <PopoverContent
         className="p-0"
+        {...popoverProps}
         style={{
           width: 'var(--radix-popover-trigger-width)',
+          ...popoverProps?.style,
         }}
       >
         <Command loop shouldFilter={false}>
-          <CommandInput
-            value={inputValue}
-            onValueChange={setInputValue}
-            placeholder={searchPlaceholder ?? 'Search item...'}
-          />
+          {!hideSearch && (
+            <CommandInput
+              value={inputValue}
+              onValueChange={setInputValue}
+              placeholder={searchPlaceholder ?? 'Search item...'}
+            />
+          )}
           <CommandEmpty>{emptyResults ?? 'No item found'}</CommandEmpty>
           <CommandGroup>
             <CommandList>
