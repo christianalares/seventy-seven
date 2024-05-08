@@ -1,17 +1,4 @@
-import {
-  Body,
-  Button,
-  Container,
-  Font,
-  Head,
-  Heading,
-  Hr,
-  Html,
-  Img,
-  Preview,
-  Tailwind,
-  Text,
-} from '@react-email/components'
+import { Body, Button, Container, Font, Head, Hr, Html, Img, Preview, Tailwind, Text } from '@react-email/components'
 // biome-ignore lint/correctness/noUnusedImports: <explanation>
 import * as React from 'react'
 import { Footer } from '../components/footer'
@@ -74,12 +61,10 @@ const TeamInvite = ({ invitedBy, code, team }: Props) => {
         <Body className="bg-[#f3f4f6]">
           <Container className="p-4 bg-white rounded-md">
             <Img src={`${baseUrl}/77-logo.png`} alt="77" className="w-12" />
-            <Heading as="h1" className="font-maven-pro text-xl">
-              {message}
-            </Heading>
+            <Text className="font-maven-pro text-xl">{message}</Text>
 
             <Text className="text-base">
-              You have been invited by {invitedBy} to join the team {team.name} on 77.
+              You have been invited by {invitedBy} to join the team {team.name} on Seventy Seven.
             </Text>
 
             <Button href={ticketUrl} className="border border-solid rounded-md text-black py-2 px-3">

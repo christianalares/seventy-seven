@@ -4,13 +4,13 @@ import {
   Container,
   Font,
   Head,
-  Heading,
   Html,
   Img,
   Preview,
   Row,
   Section,
   Tailwind,
+  Text,
 } from '@react-email/components'
 // biome-ignore lint/correctness/noUnusedImports: <explanation>
 import * as React from 'react'
@@ -73,13 +73,9 @@ const TicketMessageResponse = ({ shortId, subject, thread, ticketUrl }: Props) =
           <Container className="p-4 max-w-4xl bg-white rounded-md">
             <Img src={`${baseUrl}/77-logo.png`} alt="77" className="w-12" />
 
-            <Heading as="h1" className="font-maven-pro text-2xl">
-              Snoozed ticket was due
-            </Heading>
+            <Text className="font-maven-pro text-2xl">Snoozed ticket was due</Text>
 
-            <Heading as="h2" className="font-maven-pro text-lg flex items-center gap-4 mb-0 mt-8">
-              {subject}
-            </Heading>
+            <Text className="font-maven-pro text-lg flex items-center gap-4 mb-0 mt-8">{subject}</Text>
 
             <Section className="mb-12">
               <Row>

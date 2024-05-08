@@ -1,4 +1,4 @@
-import { Body, Container, Font, Head, Heading, Html, Img, Preview, Tailwind, Text } from '@react-email/components'
+import { Body, Container, Font, Head, Html, Img, Preview, Tailwind, Text } from '@react-email/components'
 import type { Prisma } from '@seventy-seven/orm/prisma'
 // biome-ignore lint/correctness/noUnusedImports: <explanation>
 import * as React from 'react'
@@ -67,12 +67,10 @@ const TicketClosed = ({ handler, thread, ticket }: Props) => {
             {handler.company.image_url ? (
               <Img src={handler.company.image_url} alt="Acme" className="h-16" />
             ) : (
-              <Heading as="h1">{handler.company.name}</Heading>
+              <Text className="text-xl">{handler.company.name}</Text>
             )}
 
-            <Heading as="h2" className="font-maven-pro text-lg flex items-center gap-4 mt-8">
-              {closedPhrase}
-            </Heading>
+            <Text className="font-maven-pro text-lg flex items-center gap-4 mt-8">{closedPhrase}</Text>
 
             <Text className="text-base">
               Your ticket <span className="font-bold">#{ticket.short_id}</span> was closed. If you want to re-open this
