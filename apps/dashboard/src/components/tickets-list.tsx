@@ -1,12 +1,11 @@
-import { type Folder, ticketsQueries } from '@/queries/tickets'
+import { ticketFiltersCache } from '@/lib/search-params'
+import { ticketsQueries } from '@/queries/tickets'
 import { TicketListItem } from './ticket-list-item'
 
-type Props = {
-  folder: Folder
-}
+export const TicketsList = async () => {
+  const filters = ticketFiltersCache.all()
 
-export const TicketsList = async ({ folder }: Props) => {
-  const tickets = await ticketsQueries.findMany(folder)
+  const tickets = await ticketsQueries.findMany(filters.statuses ?? [])
 
   if (tickets.length === 0) {
     return (
@@ -17,9 +16,9 @@ export const TicketsList = async ({ folder }: Props) => {
   }
 
   return (
-    <div className="flex flex-col gap-4">
+    <div className="flex flex-col gap-4 p-4">
       {tickets.map((ticket) => (
-        <TicketListItem key={ticket.id} ticket={ticket} folder={folder} />
+        <TicketListItem key={ticket.id} ticket={ticket} folder={filters.statuses?.[0] ?? 'all'} />
       ))}
     </div>
   )

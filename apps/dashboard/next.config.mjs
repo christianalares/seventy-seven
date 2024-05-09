@@ -13,15 +13,15 @@ const config = {
       },
     ],
   },
-  async redirects() {
-    return [
-      {
-        source: '/inbox',
-        destination: '/inbox/all',
-        permanent: false,
-      },
-    ]
-  },
+  // async redirects() {
+  //   return [
+  //     {
+  //       source: '/inbox',
+  //       destination: '/inbox/all',
+  //       permanent: false,
+  //     },
+  //   ]
+  // },
 }
 
 export default config

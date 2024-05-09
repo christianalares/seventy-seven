@@ -19,7 +19,7 @@ type Props = {
 export const TicketListItem = ({ ticket }: Props) => {
   const { ticketId } = useSelectedTicket()
 
-  const isActive = ticket.id === ticketId
+  const isActive = ticket.id === ticketId.ticketId
   const lastMessage = ticket.messages.at(-1)
 
   const avatarName = lastMessage?.handler ? lastMessage.handler.full_name : lastMessage?.sent_from_full_name ?? ''
