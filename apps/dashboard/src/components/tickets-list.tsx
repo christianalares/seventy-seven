@@ -5,6 +5,7 @@ import { TicketListItem } from './ticket-list-item'
 
 export const TicketsList = async () => {
   const filters = ticketFiltersCache.all()
+  const hasFilters = Object.values(filters).some((value) => value !== null)
 
   const tickets = await ticketsQueries.findMany({
     statuses: filters.statuses ?? undefined,
@@ -14,7 +15,9 @@ export const TicketsList = async () => {
   if (tickets.length === 0) {
     return (
       <div className="h-full flex items-center justify-center">
-        <p className="text-muted-foreground text-2xl">No tickets found</p>
+        <p className="text-muted-foreground text-2xl">
+          {hasFilters ? 'No tickets matching your filters' : 'No tickets found'}
+        </p>
       </div>
     )
   }
