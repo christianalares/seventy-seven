@@ -25,7 +25,7 @@ export const TicketsList = async () => {
   return (
     <div className="flex flex-col gap-4 p-4">
       {tickets.map((ticket) => (
-        <TicketListItem key={ticket.id} ticket={ticket} folder={filters.statuses?.[0] ?? 'all'} />
+        <TicketListItem key={ticket.id} ticket={ticket} />
       ))}
     </div>
   )

@@ -1,18 +1,7 @@
 import type { Status } from '@/lib/search-params'
 import { insertIf } from '@/utils/insertIf'
 import { type Prisma, prisma } from '@seventy-seven/orm/prisma'
-import { z } from 'zod'
 import { usersQueries } from './users'
-
-export const folderSchema = z.union([
-  z.literal('all'),
-  z.literal('unhandled'),
-  z.literal('snoozed'),
-  z.literal('starred'),
-  z.literal('closed'),
-])
-
-export type Folder = z.infer<typeof folderSchema>
 
 export type TicketsFindMany = Awaited<ReturnType<typeof findMany>>
 export type TicketsFindById = NonNullable<Awaited<ReturnType<typeof findById>>>

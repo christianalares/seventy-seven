@@ -3,7 +3,6 @@
 import { closeTicket, toggleStar } from '@/actions/tickets'
 import { pushModal } from '@/components/modals'
 import type { TicketsFindById } from '@/queries/tickets'
-import { getIconStyle } from '@/utils/get-icon-style'
 import { Button } from '@seventy-seven/ui/button'
 import {
   DropdownMenu,
@@ -14,7 +13,6 @@ import {
 } from '@seventy-seven/ui/dropdown-menu'
 import { Icon } from '@seventy-seven/ui/icon'
 import { Spinner } from '@seventy-seven/ui/spinner'
-import { cn } from '@seventy-seven/ui/utils'
 import { useAction } from 'next-safe-action/hooks'
 import { toast } from 'sonner'
 
@@ -74,7 +72,7 @@ export const TicketActionDropdown = ({ ticket }: Props) => {
             })
           }
         >
-          <Icon name={getIconStyle('snoozed').name} className={cn('size-4', getIconStyle('snoozed').className)} />
+          <Icon name="alarmClock" className="size-4 text-orange-500" />
           Snooze
         </DropdownMenuItem>
 
@@ -83,7 +81,7 @@ export const TicketActionDropdown = ({ ticket }: Props) => {
           className="gap-2"
           onSelect={() => toggleStarAction.execute({ ticketId: ticket.id, star: !ticket.starred_at })}
         >
-          <Icon name={getIconStyle('starred').name} className={cn('size-4', getIconStyle('starred').className)} />
+          <Icon name="star" className="size-4 text-amber-500" />
           {ticket.starred_at ? 'Unstar' : 'Star'}
         </DropdownMenuItem>
 
@@ -93,7 +91,7 @@ export const TicketActionDropdown = ({ ticket }: Props) => {
             className="gap-2"
             onSelect={() => closeTicketAction.execute({ ticketId: ticket.id })}
           >
-            <Icon name={getIconStyle('closed').name} className={cn('size-4', getIconStyle('closed').className)} />
+            <Icon name="checkCircle" className="'size-4 text-destructive'" />
             Close
           </DropdownMenuItem>
         )}

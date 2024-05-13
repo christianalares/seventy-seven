@@ -1,8 +1,7 @@
 'use client'
 
 import { useSelectedTicket } from '@/hooks/use-selected-ticket'
-import type { Folder, TicketsFindMany } from '@/queries/tickets'
-import { getIconStyle } from '@/utils/get-icon-style'
+import type { TicketsFindMany } from '@/queries/tickets'
 import { Badge } from '@seventy-seven/ui/badge'
 import { Icon } from '@seventy-seven/ui/icon'
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@seventy-seven/ui/tooltip'
@@ -13,7 +12,6 @@ import { Avatar } from './avatar'
 
 type Props = {
   ticket: TicketsFindMany[number]
-  folder?: Folder
 }
 
 export const TicketListItem = ({ ticket }: Props) => {
@@ -44,21 +42,13 @@ export const TicketListItem = ({ ticket }: Props) => {
           {ticket.snoozed_until && (
             <Badge variant="outline" className="gap-2 font-normal items-center text-muted-foreground">
               {format(ticket.snoozed_until, isToday(ticket.snoozed_until) ? 'HH:mm' : 'MMM dd (HH:mm)')}
-              <Icon name={getIconStyle('snoozed').name} className={cn('size-4', getIconStyle('snoozed').className)} />
+              <Icon name="alarmClock" className="'size-4 text-orange-500'" />
             </Badge>
           )}
 
-          {ticket.starred_at && (
-            <Icon name={getIconStyle('starred').name} className={cn('size-4', getIconStyle('starred').className)} />
-          )}
-
-          {ticket.closed_at && (
-            <Icon name={getIconStyle('closed').name} className={cn('size-4', getIconStyle('closed').className)} />
-          )}
-
-          {ticket.isUnhandled && (
-            <Icon name={getIconStyle('unhandled').name} className={cn('size-4', getIconStyle('unhandled').className)} />
-          )}
+          {ticket.starred_at && <Icon name="star" className="'size-4 text-amber-500'" />}
+          {ticket.closed_at && <Icon name="checkCircle" className="size-4 text-destructive" />}
+          {ticket.isUnhandled && <Icon name="circleDashed" className="size-4 text-blue-500" />}
         </div>
       )}
 
