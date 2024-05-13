@@ -6,6 +6,7 @@ export type Status = (typeof statuses)[number]
 
 export const ticketFiltersParsers = {
   statuses: parseAsArrayOf(parseAsStringEnum<Status>([...statuses])),
+  assignees: parseAsArrayOf(parseAsString),
 }
 
 export const ticketFiltersCache = createSearchParamsCache(ticketFiltersParsers)

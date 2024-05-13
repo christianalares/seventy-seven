@@ -1,4 +1,5 @@
 import type { Status } from '@/lib/search-params'
+import { insertIf } from '@/utils/insertIf'
 import { type Prisma, prisma } from '@seventy-seven/orm/prisma'
 import { z } from 'zod'
 import { usersQueries } from './users'
@@ -16,7 +17,12 @@ export type Folder = z.infer<typeof folderSchema>
 export type TicketsFindMany = Awaited<ReturnType<typeof findMany>>
 export type TicketsFindById = NonNullable<Awaited<ReturnType<typeof findById>>>
 
-const findMany = async (statuses: Status[] = []) => {
+type FindManyFilters = {
+  statuses?: Status[]
+  memberIds?: string[]
+}
+
+const findMany = async ({ statuses = [], memberIds = [] }: FindManyFilters) => {
   const user = await usersQueries.findMe()
 
   const SELECT = {
@@ -54,19 +60,31 @@ const findMany = async (statuses: Status[] = []) => {
     },
   } satisfies Prisma.TicketSelect
 
+  const AND: Prisma.TicketWhereInput['AND'] =
+    memberIds.length === 0
+      ? undefined
+      : [
+          ...insertIf.array(memberIds.length > 0, {
+            assigned_to_user_id: {
+              in: memberIds,
+            },
+          }),
+        ]
+
   const OR: Prisma.TicketWhereInput['OR'] =
     statuses.length === 0
       ? undefined
       : [
-          ...(statuses.includes('unhandled') ? [{ closed_at: null }] : []),
-          ...(statuses.includes('starred') ? [{ starred_at: { not: null } }] : []),
-          ...(statuses.includes('snoozed') ? [{ snoozed_until: { not: null } }] : []),
-          ...(statuses.includes('closed') ? [{ closed_at: { not: null } }] : []),
+          ...insertIf.array(statuses.includes('unhandled'), { closed_at: null }),
+          ...insertIf.array(statuses.includes('starred'), { starred_at: { not: null } }),
+          ...insertIf.array(statuses.includes('snoozed'), { snoozed_until: { not: null } }),
+          ...insertIf.array(statuses.includes('closed'), { closed_at: { not: null } }),
         ]
 
   const tickets = await prisma.ticket.findMany({
     where: {
       team_id: user.current_team_id,
+      AND,
       OR,
     },
     select: SELECT,

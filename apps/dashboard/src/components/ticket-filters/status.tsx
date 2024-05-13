@@ -12,7 +12,7 @@ export const StatusFilter = () => {
   }
 
   return (
-    <div className="space-y-2">
+    <div className="flex flex-col gap-2 h-full">
       <h2 className="text-sm font-medium">You can select one or more statuses</h2>
 
       <ToggleGroup
@@ -38,6 +38,12 @@ export const StatusFilter = () => {
           Closed
         </ToggleGroupItem>
       </ToggleGroup>
+
+      {filter.statuses === null && (
+        <div className="flex-1 flex justify-center items-center">
+          <p className="text-muted">Select one or more statuses</p>
+        </div>
+      )}
     </div>
   )
 }
