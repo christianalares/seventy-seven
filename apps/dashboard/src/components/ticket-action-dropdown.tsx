@@ -91,7 +91,7 @@ export const TicketActionDropdown = ({ ticket }: Props) => {
             className="gap-2"
             onSelect={() => closeTicketAction.execute({ ticketId: ticket.id })}
           >
-            <Icon name="checkCircle" className="'size-4 text-destructive'" />
+            <Icon name="checkCircle" className="size-4 text-destructive" />
             Close
           </DropdownMenuItem>
         )}

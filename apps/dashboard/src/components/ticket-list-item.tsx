@@ -42,7 +42,7 @@ export const TicketListItem = ({ ticket }: Props) => {
           {ticket.snoozed_until && (
             <Badge variant="outline" className="gap-2 font-normal items-center text-muted-foreground">
               {format(ticket.snoozed_until, isToday(ticket.snoozed_until) ? 'HH:mm' : 'MMM dd (HH:mm)')}
-              <Icon name="alarmClock" className="'size-4 text-orange-500'" />
+              <Icon name="alarmClock" className="size-4 text-orange-500" />
             </Badge>
           )}
 
