@@ -1,21 +1,17 @@
+import type { Status } from '@/lib/search-params'
+import { insertIf } from '@/utils/insertIf'
 import { type Prisma, prisma } from '@seventy-seven/orm/prisma'
-import { z } from 'zod'
 import { usersQueries } from './users'
-
-export const folderSchema = z.union([
-  z.literal('all'),
-  z.literal('unhandled'),
-  z.literal('snoozed'),
-  z.literal('starred'),
-  z.literal('closed'),
-])
-
-export type Folder = z.infer<typeof folderSchema>
 
 export type TicketsFindMany = Awaited<ReturnType<typeof findMany>>
 export type TicketsFindById = NonNullable<Awaited<ReturnType<typeof findById>>>
 
-const findMany = async (folder?: Folder) => {
+type FindManyFilters = {
+  statuses?: Status[]
+  memberIds?: string[]
+}
+
+const findMany = async ({ statuses = [], memberIds = [] }: FindManyFilters) => {
   const user = await usersQueries.findMe()
 
   const SELECT = {
@@ -53,55 +49,40 @@ const findMany = async (folder?: Folder) => {
     },
   } satisfies Prisma.TicketSelect
 
-  const WHERE_MAP: Record<Folder, Prisma.TicketWhereInput> = {
-    all: {},
-    unhandled: {
-      closed_at: null,
-    },
-    starred: {
-      starred_at: {
-        not: null,
-      },
-    },
-    snoozed: {
-      snoozed_until: {
-        not: null,
-      },
-    },
-    closed: {
-      closed_at: {
-        not: null,
-      },
-    },
-  }
+  const AND: Prisma.TicketWhereInput['AND'] =
+    memberIds.length === 0
+      ? undefined
+      : [
+          ...insertIf.array(memberIds.length > 0, {
+            assigned_to_user_id: {
+              in: memberIds,
+            },
+          }),
+        ]
+
+  const OR: Prisma.TicketWhereInput['OR'] =
+    statuses.length === 0
+      ? undefined
+      : [
+          ...insertIf.array(statuses.includes('unhandled'), { closed_at: null }),
+          ...insertIf.array(statuses.includes('starred'), { starred_at: { not: null } }),
+          ...insertIf.array(statuses.includes('snoozed'), { snoozed_until: { not: null } }),
+          ...insertIf.array(statuses.includes('closed'), { closed_at: { not: null } }),
+        ]
 
   const tickets = await prisma.ticket.findMany({
     where: {
       team_id: user.current_team_id,
-      ...WHERE_MAP[folder ?? 'all'],
+      AND,
+      OR,
     },
     select: SELECT,
     orderBy: { created_at: 'desc' },
   })
 
-  // If the folder is unhandled we need to manually filter the tickets based on the last message is not from a handler
-  if (folder === 'unhandled') {
-    const unhandledTickets = tickets.filter((ticket) => {
-      const lastMessage = ticket.messages.at(-1)
-      if (lastMessage?.handler) {
-        return false
-      }
-
-      return true
-    })
-
-    return unhandledTickets.map((ticket) => ({
-      ...ticket,
-      isUnhandled: true,
-    }))
-  }
-
-  return tickets.map((ticket) => {
+  // "Unhandled" tickets are those where the last message was sent by a customer and not a team member.
+  // Think of it as "unread" or "not responded to"
+  const ticketsWithHandledStatus = tickets.map((ticket) => {
     const lastMessage = ticket.messages.at(-1)
     const isUnhandled = !lastMessage?.handler
 
@@ -110,6 +91,12 @@ const findMany = async (folder?: Folder) => {
       isUnhandled,
     }
   })
+
+  if (statuses.length > 0 && statuses.includes('unhandled')) {
+    return ticketsWithHandledStatus.filter((ticket) => ticket.isUnhandled)
+  }
+
+  return ticketsWithHandledStatus
 }
 
 const findById = async (id: string) => {

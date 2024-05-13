@@ -1,13 +1,11 @@
-import { parseAsString, useQueryState } from 'nuqs'
+import { ticketIdParsers } from '@/lib/search-params'
+import { useQueryStates } from 'nuqs'
 
 export const useSelectedTicket = () => {
-  const [ticketId, setTicketId] = useQueryState(
-    'ticketId',
-    parseAsString.withOptions({
-      shallow: false,
-      history: 'push',
-    }),
-  )
+  const [ticketId, setTicketId] = useQueryStates(ticketIdParsers, {
+    shallow: false,
+    history: 'push',
+  })
 
   return { ticketId, setTicketId }
 }

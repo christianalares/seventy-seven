@@ -1,11 +1,9 @@
 import { snoozeTicket } from '@/actions/tickets'
-import { getIconStyle } from '@/utils/get-icon-style'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { Button } from '@seventy-seven/ui/button'
 import { DateTimePicker } from '@seventy-seven/ui/date-time-picker'
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@seventy-seven/ui/form'
 import { Icon } from '@seventy-seven/ui/icon'
-import { cn } from '@seventy-seven/ui/utils'
 import { format, isFuture, isPast, isToday } from 'date-fns'
 import { useAction } from 'next-safe-action/hooks'
 import { useForm } from 'react-hook-form'
@@ -53,8 +51,6 @@ export const SnoozeTicketForm = ({ ticketId }: Props) => {
     action.execute({ ticketId, snoozedUntil: values.date })
   })
 
-  const iconStyle = getIconStyle('snoozed')
-
   return (
     <Form {...form}>
       <form onSubmit={onSubmit}>
@@ -87,7 +83,7 @@ export const SnoozeTicketForm = ({ ticketId }: Props) => {
             className="gap-2 ml-auto"
             disabled={isPast(form.watch('date'))}
           >
-            <Icon name={iconStyle.name} className={cn('size-5', iconStyle.className)} />
+            <Icon name="alarmClock" className="size-5 text-orange-500" />
             {form.watch('date') ? `Snooze to ${format(form.getValues('date'), 'MMM dd (HH:mm)')}` : 'Snooze'}
           </Button>
         </div>

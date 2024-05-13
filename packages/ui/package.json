@@ -18,6 +18,8 @@
     "@radix-ui/react-select": "^2.0.0",
     "@radix-ui/react-slot": "^1.0.2",
     "@radix-ui/react-tabs": "^1.0.4",
+    "@radix-ui/react-toggle": "^1.0.3",
+    "@radix-ui/react-toggle-group": "^1.0.4",
     "@radix-ui/react-tooltip": "^1.0.7",
     "class-variance-authority": "^0.7.0",
     "clsx": "^2.1.0",
@@ -79,6 +81,8 @@
     "./combobox": "./src/components/combobox.tsx",
     "./tooltip": "./src/components/shadcn/tooltip.tsx",
     "./select": "./src/components/shadcn/select.tsx",
-    "./combobox-dropdown": "./src/components/combobox-dropdown.tsx"
+    "./combobox-dropdown": "./src/components/combobox-dropdown.tsx",
+    "./toggle": "./src/components/shadcn/toggle.tsx",
+    "./toggle-group": "./src/components/shadcn/toggle-group.tsx"
   }
 }

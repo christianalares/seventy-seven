@@ -9,7 +9,7 @@ import { Button } from './shadcn/button'
 import { Command, CommandEmpty, CommandGroup, CommandInput, CommandItem } from './shadcn/command'
 import { Popover, PopoverContent, PopoverTrigger } from './shadcn/popover'
 
-type ComboboxItem = {
+export type ComboboxItem = {
   id: string
   label: string
   disabled?: boolean
