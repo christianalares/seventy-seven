@@ -46,7 +46,7 @@ export const TicketListItem = ({ ticket }: Props) => {
             </Badge>
           )}
 
-          {ticket.starred_at && <Icon name="star" className="'size-4 text-amber-500'" />}
+          {ticket.starred_at && <Icon name="star" className="size-4 text-amber-500" />}
           {ticket.closed_at && <Icon name="checkCircle" className="size-4 text-destructive" />}
           {ticket.isUnhandled && <Icon name="circleDashed" className="size-4 text-blue-500" />}
         </div>
