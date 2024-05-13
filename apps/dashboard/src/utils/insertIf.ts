@@ -7,5 +7,3 @@ export const insertIf = {
     return condition ? obj : {}
   },
 }
-
-// const arr: Array<{ a: boolean, b: string }>
