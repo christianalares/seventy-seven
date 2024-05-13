@@ -6,7 +6,7 @@ import { Badge } from '@seventy-seven/ui/badge'
 import { Icon } from '@seventy-seven/ui/icon'
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@seventy-seven/ui/tooltip'
 import { cn } from '@seventy-seven/ui/utils'
-import { format, isToday } from 'date-fns'
+import { format, formatDistance, isToday } from 'date-fns'
 import Link from 'next/link'
 import { Avatar } from './avatar'
 
@@ -74,6 +74,22 @@ export const TicketListItem = ({ ticket }: Props) => {
       <p className="flex items-center gap-2">
         <Avatar name={avatarName} imageUrl={avatarImageUrl} className="size-7" />
         <span className="font-medium">{name}</span>
+
+        <TooltipProvider delayDuration={200}>
+          <Tooltip>
+            <TooltipTrigger>
+              <time className="block text-muted font-normal text-xs" dateTime={lastMessage.created_at.toISOString()}>
+                {formatDistance(lastMessage.created_at, new Date(), { addSuffix: true })}
+              </time>
+            </TooltipTrigger>
+            <TooltipContent asChild>
+              <span className="text-xs font-normal flex items-center gap-2">
+                <Icon name="calendar" strokeWidth={2} className="size-3" />
+                {format(lastMessage.created_at, 'PPpp')}
+              </span>
+            </TooltipContent>
+          </Tooltip>
+        </TooltipProvider>
       </p>
 
       <p className="mt-2">{ticket.subject}</p>

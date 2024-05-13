@@ -34,6 +34,7 @@ const findMany = async ({ statuses = [], memberIds = [] }: FindManyFilters) => {
         created_at: 'desc',
       },
       select: {
+        created_at: true,
         sent_from_full_name: true,
         sent_from_email: true,
         sent_from_avatar_url: true,

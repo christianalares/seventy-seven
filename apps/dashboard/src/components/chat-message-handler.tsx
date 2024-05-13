@@ -1,4 +1,6 @@
-import { format } from 'date-fns'
+import { Icon } from '@seventy-seven/ui/icon'
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@seventy-seven/ui/tooltip'
+import { format, formatDistance } from 'date-fns'
 import { Avatar } from './avatar'
 
 type Props = {
@@ -17,9 +19,21 @@ export const ChatMessageHandler = ({ name, avatar, body, date }: Props) => {
           <p className="text-sm">{name}</p>
         </div>
 
-        <time className="text-muted" dateTime={date.toISOString()}>
-          {format(date, 'HH:mm')}
-        </time>
+        <TooltipProvider delayDuration={200}>
+          <Tooltip>
+            <TooltipTrigger>
+              <time className="text-muted font-normal" dateTime={date.toISOString()}>
+                {formatDistance(date, new Date(), { addSuffix: true })}
+              </time>
+            </TooltipTrigger>
+            <TooltipContent asChild>
+              <span className="text-xs font-normal flex items-center gap-2">
+                <Icon name="calendar" strokeWidth={2} className="size-3" />
+                {format(date, 'PPpp')}
+              </span>
+            </TooltipContent>
+          </Tooltip>
+        </TooltipProvider>
       </div>
 
       <p className="mt-2">{body}</p>
