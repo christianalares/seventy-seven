@@ -85,7 +85,7 @@ export const Assignee = ({ userTeam }: Props) => {
         </ul>
       ) : (
         <div className="flex-1 flex justify-center items-center">
-          <p className="text-muted">Select one or more team member</p>
+          <p className="text-muted">Select one or more team members</p>
         </div>
       )}
     </div>
