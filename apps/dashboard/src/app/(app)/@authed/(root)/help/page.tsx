@@ -83,7 +83,7 @@ const HelpPage = () => {
 
       <h2 className="mt-4 text-xl">Any questions?</h2>
       <p className="mt-4">
-        Feel free to hook me up on 𝕏 if you have any questions or just want to chat:{' '}
+        Feel free to hook up on 𝕏 if you have any questions or just want to chat:{' '}
         <a className="text-blue-600" href="https://twitter.com/c_alares" target="_blank" rel="noreferrer">
           @c_alares
         </a>
