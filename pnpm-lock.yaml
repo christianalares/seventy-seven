@@ -104,6 +104,9 @@ importers:
       sonner:
         specifier: ^1.4.41
         version: 1.4.41(react-dom@18.2.0)(react@18.2.0)
+      sugar-high:
+        specifier: ^0.6.1
+        version: 0.6.1
       tailwindcss-animate:
         specifier: ^1.0.7
         version: 1.0.7(tailwindcss@3.4.3)
@@ -415,6 +418,9 @@ importers:
       sonner:
         specifier: ^1.4.41
         version: 1.4.41(react-dom@18.2.0)(react@18.2.0)
+      sugar-high:
+        specifier: ^0.6.1
+        version: 0.6.1
       tailwind-merge:
         specifier: ^2.3.0
         version: 2.3.0
@@ -7743,6 +7749,10 @@ packages:
       mz: 2.7.0
       pirates: 4.0.6
       ts-interface-checker: 0.1.13
+
+  /sugar-high@0.6.1:
+    resolution: {integrity: sha512-kg1qMW7WwJcueXIlHkChL/p2EWY3gf8rQmP6n5nUq2TWVqatqDTMLvViS9WgAjgyTKH5/3/b8sRwWPOOAo1zMA==}
+    dev: false
 
   /supabase-management-js@1.0.0:
     resolution: {integrity: sha512-CjtUcT1i3lsIyRwS3/HG6BUB8EaJTEdAPP0GQu8dRDi61HvJeBrswCfG/GRxebC0ZZFov+oHqFIWPe1ztyUqYA==}

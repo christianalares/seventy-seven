@@ -362,42 +362,49 @@ export const changeMemberRole = authAction(
   },
 )
 
-export const generateAuthToken = authAction(z.undefined().optional(), async (_values, user) => {
-  const usresCurrentTeam = await usersQueries.myCurrentTeam()
+export const generateAuthToken = authAction(
+  z.object({
+    revalidatePath: z.string().optional(),
+  }),
+  async (values, user) => {
+    const usresCurrentTeam = await usersQueries.myCurrentTeam()
 
-  const randomToken = Buffer.from(`${uuid()}_${uuid()}`).toString('base64')
+    const randomToken = Buffer.from(`${uuid()}_${uuid()}`).toString('base64')
 
-  await prisma.team
-    .update({
-      where: {
-        id: usresCurrentTeam.current_team.id,
-        // Make sure the user is an owner of the team
-        members: {
-          some: {
-            user_id: user.id,
-            role: 'OWNER',
+    await prisma.team
+      .update({
+        where: {
+          id: usresCurrentTeam.current_team.id,
+          // Make sure the user is an owner of the team
+          members: {
+            some: {
+              user_id: user.id,
+              role: 'OWNER',
+            },
           },
         },
-      },
-      data: {
-        auth_token: randomToken,
-      },
-      select: {
-        auth_token: true,
-      },
+        data: {
+          auth_token: randomToken,
+        },
+        select: {
+          auth_token: true,
+        },
+      })
+      .catch((_error) => {
+        throw new Error('Could not generate auth token')
+      })
+
+    opServerClient.event('auth_token_generated', {
+      team_id: usresCurrentTeam.current_team.id,
+      profileId: user.id,
     })
-    .catch((_error) => {
-      throw new Error('Could not generate auth token')
-    })
 
-  opServerClient.event('auth_token_generated', {
-    team_id: usresCurrentTeam.current_team.id,
-    profileId: user.id,
-  })
+    if (values.revalidatePath) {
+      revalidatePath(values.revalidatePath)
+    }
 
-  revalidatePath('/settings/security')
-
-  return {
-    isNew: !usresCurrentTeam.current_team.auth_token,
-  }
-})
+    return {
+      isNew: !usresCurrentTeam.current_team.auth_token,
+    }
+  },
+)

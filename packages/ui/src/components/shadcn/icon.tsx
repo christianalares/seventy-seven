@@ -17,6 +17,7 @@ import {
   Filter,
   Home,
   Inbox,
+  Info,
   List,
   ListOrdered,
   Loader2,
@@ -137,6 +138,7 @@ const icons = {
   user: User,
   circleAlert: CircleAlert,
   tag: Tag,
+  info: Info,
 }
 
 export type IconName = keyof typeof icons

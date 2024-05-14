@@ -4,6 +4,17 @@
 
 @layer base {
   :root {
+    /* CODE BLOCK */
+    --sh-class: #000000;
+    --sh-identifier: #000000;
+    --sh-sign: #766959;
+    --sh-string: #585858;
+    --sh-keyword: #585858;
+    --sh-comment: #5E6A6A;
+    --sh-jsxliterals: #000000;
+    --sh-property: #585858;
+    --sh-entity: #585858;
+    
     --background: 0 0% 100%;
     --foreground: 224 71.4% 4.1%;
 
@@ -37,6 +48,17 @@
   }
 
   .dark {
+    /* CODE BLOCK */
+    --sh-class: #FFFFFF;
+    --sh-identifier: #FFFFFF;
+    --sh-sign: #8996a3;
+    --sh-string: #A7A7A7;
+    --sh-keyword: #A7A7A7;
+    --sh-comment: #a19595;
+    --sh-jsxliterals: #FFFFFF;
+    --sh-property: #A7A7A7;
+    --sh-entity: #A7A7A7;
+    
     --background: 224 71.4% 4.1%;
     
     /* TODO: Chagne to a more natural dark */
