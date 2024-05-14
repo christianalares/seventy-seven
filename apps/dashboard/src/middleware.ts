@@ -1,41 +1,23 @@
 import { createClient } from '@seventy-seven/supabase/clients/middleware'
-import { get } from '@vercel/edge-config'
 import { type NextRequest, NextResponse } from 'next/server'
 
 const OPEN_PATHS = ['/closed']
 
 export async function middleware(req: NextRequest) {
   const isProtectedRoute = !OPEN_PATHS.includes(req.nextUrl.pathname)
-  const allowedEmails = (await get<string[]>('whitelisted-emails')) ?? []
   const isHomePage = req.nextUrl.pathname === '/'
 
   const supabase = createClient(req)
   const { data } = await supabase.auth.getUser()
 
-  const isUserWhitelisted = allowedEmails.includes(data.user?.email ?? '')
-
-  if (isHomePage) {
-    if (!data.user) {
-      return NextResponse.next()
-    }
-
-    if (data.user && !isUserWhitelisted) {
-      return Response.redirect(new URL('/closed', req.url))
-    }
-
-    return NextResponse.next()
-  }
-
   if (isProtectedRoute) {
-    if (data.user && isUserWhitelisted) {
+    if (data.user) {
       return NextResponse.next()
     }
 
-    if (data.user && !isUserWhitelisted) {
-      return Response.redirect(new URL('/closed', req.url))
+    if (!isHomePage) {
+      return Response.redirect(new URL(`/?return_to=${req.nextUrl.pathname}`, req.url))
     }
-
-    return Response.redirect(new URL(`/?return_to=${req.nextUrl.pathname}`, req.url))
   }
 
   return NextResponse.next()
