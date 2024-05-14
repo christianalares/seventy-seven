@@ -9,12 +9,12 @@ export const Header = async () => {
   const user = await usersQueries.findMe()
 
   return (
-    <header className="p-4 border-b flex items-center justify-between h-20">
-      <div className="h-full flex items-center gap-6">
+    <header className="p-4 border-b flex items-center justify-between h-20 gap-2">
+      <div className="h-full flex items-center gap-6 flex-1">
         <Link href="/" className="h-full">
           <Logo />
         </Link>
-        <MainMenu />
+        <MainMenu className="flex-1" />
       </div>
 
       <div className="flex items-center gap-4">

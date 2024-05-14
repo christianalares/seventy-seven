@@ -10,14 +10,15 @@ type LinkItemProps = {
   href: string
   label: string
   icon?: IconName
+  className?: string
 }
 
-const LinkItem = ({ href, label, icon }: LinkItemProps) => {
+const LinkItem = ({ href, label, icon, className }: LinkItemProps) => {
   const segment = useSelectedLayoutSegment()
   const isActive = (segment === null && href === '/') || segment === href.substring(1)
 
   return (
-    <li>
+    <li className={cn(className)}>
       <Button
         variant="ghost"
         size="sm"
@@ -46,6 +47,7 @@ export const MainMenu = ({ className }: Props) => {
         {/* <LinkItem href="/" icon="home" label="Overview" /> */}
         <LinkItem href="/inbox" icon="inbox" label="Inbox" />
         <LinkItem href="/settings" icon="settings" label="Settings" />
+        <LinkItem href="/help" icon="info" label="Help" className="ml-auto" />
       </ul>
     </nav>
   )

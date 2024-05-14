@@ -3,6 +3,10 @@
 @tailwind utilities;
 
 @layer base {
+  pre::-webkit-scrollbar {
+    display: none;
+  }
+
   * {
     @apply border-border;
   }

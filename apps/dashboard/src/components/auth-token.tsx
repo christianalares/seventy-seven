@@ -8,6 +8,8 @@ import { Icon } from '@seventy-seven/ui/icon'
 import { Input } from '@seventy-seven/ui/input'
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@seventy-seven/ui/tooltip'
 import { useAction } from 'next-safe-action/hooks'
+import Link from 'next/link'
+import { usePathname } from 'next/navigation'
 import { toast } from 'sonner'
 import { ClipboardButton } from './clipboard-button'
 
@@ -16,15 +18,17 @@ type Props = {
 }
 
 export const AuthToken = ({ authToken }: Props) => {
+  const pathname = usePathname()
+
   const action = useAction(generateAuthToken, {
     onSuccess: ({ isNew }) => {
       toast.success(isNew ? 'Token created' : 'Token re-generated')
     },
-    onError: (err) => {
+    onError: (err, input) => {
       toast.error(err.serverError, {
         action: {
           label: 'Retry',
-          onClick: () => action.execute(undefined),
+          onClick: () => action.execute(input),
         },
       })
     },
@@ -35,20 +39,12 @@ export const AuthToken = ({ authToken }: Props) => {
       <CardHeader>
         <CardTitle>Authorization token</CardTitle>
         <CardDescription>
-          This token needs to be provided when creating tickets via the API. You can read more about that in the{' '}
-          <TooltipProvider delayDuration={0}>
-            <Tooltip>
-              <TooltipTrigger>
-                <span className="font-medium underline cursor-pointer">docs</span>
-              </TooltipTrigger>
-              <TooltipContent asChild>
-                <span className="text-xs flex items-center gap-2">
-                  <Icon name="circleAlert" strokeWidth={3} className="size-3" />
-                  Coming soon
-                </span>
-              </TooltipContent>
-            </Tooltip>
-          </TooltipProvider>
+          This token needs to be provided when creating tickets via the API.
+          <br />
+          You can read more about that on the{' '}
+          <Link className="text-primary font-semibold hover:underline" href="/help">
+            help section
+          </Link>
           . Do not share this key and make sure to only store it in a .env file
         </CardDescription>
       </CardHeader>
@@ -56,7 +52,7 @@ export const AuthToken = ({ authToken }: Props) => {
       <CardContent>
         {authToken && (
           <div className="flex items-center border rounded-md px-2">
-            <Input defaultValue={authToken} disabled className="border-0 px-0" />
+            <Input key={authToken} defaultValue={authToken} disabled className="border-0 px-0" />
             <ClipboardButton text={authToken} />
           </div>
         )}
@@ -68,7 +64,7 @@ export const AuthToken = ({ authToken }: Props) => {
             <p>Revoke and generate a new token</p>
             <Button
               loading={action.status === 'executing'}
-              onClick={() => action.execute(undefined)}
+              onClick={() => action.execute({ revalidatePath: pathname })}
               variant="destructive"
             >
               Re-generate
@@ -77,7 +73,10 @@ export const AuthToken = ({ authToken }: Props) => {
         ) : (
           <>
             <p>You have no authorization token, click the button to generate one.</p>
-            <Button loading={action.status === 'executing'} onClick={() => action.execute(undefined)}>
+            <Button
+              loading={action.status === 'executing'}
+              onClick={() => action.execute({ revalidatePath: pathname })}
+            >
               Generate
             </Button>
           </>
