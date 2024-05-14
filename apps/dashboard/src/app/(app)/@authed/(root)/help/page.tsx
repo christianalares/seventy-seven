@@ -41,7 +41,7 @@ const HelpPage = () => {
   method: 'POST',
   headers: {
     'Content-Type': 'application/json',
-    Authorization: 'Bearer YOUR_AUTH_TOKEN',
+    Authorization: \`Bearer \${process.env.SEVENTY_SEVEN_AUTH_TOKEN}\`,
   },
   body: JSON.stringify({
     subject: 'My first ticket',
