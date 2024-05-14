@@ -5,7 +5,7 @@ const AuthorizedPage = async () => {
   const user = await usersQueries.findMaybeMe()
 
   if (user) {
-    redirect('/inbox/all')
+    redirect('/inbox')
   }
 
   return null
