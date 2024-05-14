@@ -122,6 +122,7 @@ model Waitlist {
   created_at DateTime @default(now()) @db.Timestamptz(6)
   email      String   @unique
   email_id   String?
+  is_invited Boolean  @default(false)
 
   @@map("waitlist")
 }
