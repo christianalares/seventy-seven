@@ -44,8 +44,8 @@ export const TicketActionDropdown = ({ ticket }: Props) => {
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild disabled={isLoading}>
-        <Button variant="outline" className="gap-2">
-          Actions
+        <Button variant="outline" className="gap-2 w-10 p-0 sm:w-auto sm:px-4">
+          <span className="sr-only sm:not-sr-only">Actions</span>
           {isLoading ? <Spinner className="size-5" /> : <Icon name="chevronDown" className="size-5" />}
         </Button>
       </DropdownMenuTrigger>

@@ -11,10 +11,10 @@ export const TicketChatHeader = ({ ticket }: Props) => {
   const senderEmail = lastMessageFromUser?.sent_from_email ?? ''
 
   return (
-    <header className="border-b p-4 flex items-center">
+    <header className="border-b p-4 flex items-center gap-2">
       <div>
-        <h1 className="text-xl">{ticket.subject}</h1>
-        <span className="text-sm text-muted-foreground">
+        <h1 className="text-base sm:text-xl">{ticket.subject}</h1>
+        <span className="text-xs sm:text-sm text-muted-foreground">
           {senderFullName} - {senderEmail}
         </span>
       </div>
