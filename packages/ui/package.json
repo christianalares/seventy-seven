@@ -67,7 +67,6 @@
     "./modal-responsive": "./src/components/modal-responsive.tsx",
     "./modal": "./src/components/modal.tsx",
     "./alert": "./src/components/alert.tsx",
-    "./sheet": "./src/components/shadcn/sheet.tsx",
     "./sonner": "./src/components/shadcn/sonner.tsx",
     "./spinner": "./src/components/shadcn/spinner.tsx",
     "./table": "./src/components/shadcn/table.tsx",
@@ -85,6 +84,7 @@
     "./combobox-dropdown": "./src/components/combobox-dropdown.tsx",
     "./toggle": "./src/components/shadcn/toggle.tsx",
     "./toggle-group": "./src/components/shadcn/toggle-group.tsx",
-    "./code-block": "./src/components/code-block.tsx"
+    "./code-block": "./src/components/code-block.tsx",
+    "./sheet": "./src/components/sheet.tsx"
   }
 }

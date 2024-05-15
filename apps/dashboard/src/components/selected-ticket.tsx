@@ -16,7 +16,7 @@ const SelectedTicket = async ({ id }: Props) => {
   }
 
   return (
-    <div className="flex flex-col h-[calc(100vh-theme(spacing.20))] overflow-hidden">
+    <div className="flex flex-col h-[calc(100vh-theme(spacing.36))] overflow-hidden">
       <TicketChatHeader ticket={ticket} />
       <TicketChat messages={ticket.messages} />
 

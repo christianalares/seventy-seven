@@ -1,11 +1,11 @@
 'use client'
 
+import type { VariantProps } from 'class-variance-authority'
+import { CommandList } from 'cmdk'
 import { Check, ChevronsUpDown } from 'lucide-react'
 import * as React from 'react'
-
-import { CommandList } from 'cmdk'
 import { cn } from '../utils'
-import { Button } from './shadcn/button'
+import { Button, type buttonVariants } from './shadcn/button'
 import { Command, CommandEmpty, CommandGroup, CommandInput, CommandItem } from './shadcn/command'
 import { Popover, PopoverContent, PopoverTrigger } from './shadcn/popover'
 
@@ -30,6 +30,8 @@ type Props<T> = {
 }
 
 export function ComboboxDropdown<T extends ComboboxItem>({
+  variant,
+  size,
   placeholder,
   searchPlaceholder,
   items,
@@ -41,7 +43,7 @@ export function ComboboxDropdown<T extends ComboboxItem>({
   popoverProps,
   hideSearch,
   disabled,
-}: Props<T>) {
+}: Props<T> & VariantProps<typeof buttonVariants>) {
   const [open, setOpen] = React.useState(false)
   const [internalSelectedItem, setInternalSelectedItem] = React.useState<T | undefined>()
   const [inputValue, setInputValue] = React.useState('')
@@ -53,7 +55,13 @@ export function ComboboxDropdown<T extends ComboboxItem>({
   return (
     <Popover open={open} onOpenChange={setOpen}>
       <PopoverTrigger asChild disabled={disabled}>
-        <Button variant="outline" role="combobox" aria-expanded={open} className="w-full justify-between">
+        <Button
+          variant={variant ?? 'outline'}
+          size={size}
+          role="combobox"
+          aria-expanded={open}
+          className="w-full justify-between"
+        >
           {selectedItem
             ? <div className="flex items-center">{renderSelectedItem?.(selectedItem)}</div> ?? selectedItem.label
             : placeholder ?? 'Select item...'}

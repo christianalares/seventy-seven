@@ -93,7 +93,7 @@ export const TicketListItem = ({ ticket }: Props) => {
       </p>
 
       <p className="mt-2">{ticket.subject}</p>
-      <p className="mt-2 text-muted truncate text-sm">{lastMessage.body}</p>
+      <p className="mt-2 text-muted line-clamp-1 text-sm">{lastMessage.body}</p>
     </Link>
   )
 }

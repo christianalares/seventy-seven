@@ -29,7 +29,7 @@ const LinkItem = ({ href, label, icon, className }: LinkItemProps) => {
       >
         <Link href={href}>
           {icon && <Icon className="size-4" name={icon} />}
-          <span className="sr-only md:not-sr-only">{label}</span>
+          <span className="sr-only sm:not-sr-only">{label}</span>
         </Link>
       </Button>
     </li>
