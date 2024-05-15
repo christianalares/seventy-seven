@@ -61,18 +61,23 @@ type FilterButtonProps = {
 
 export const FilterButton = ({ children, onClick, onRemove }: FilterButtonProps) => {
   return (
-    <p className={cn(buttonVariants({ variant: 'secondary', size: 'xs' }), 'flex items-center text-xs px-0')}>
+    <p
+      className={cn(
+        buttonVariants({ variant: 'outline', size: 'xs' }),
+        'flex items-center text-xs px-0 [&:not(:disabled)]:hover:bg-background',
+      )}
+    >
       <button
         type="button"
         onClick={onClick}
-        className="h-full px-2 rounded-l-md flex items-center gap-2 hover:bg-border"
+        className="h-full px-2 rounded-l-md flex items-center gap-2 hover:underline"
       >
         {children}
       </button>
 
       <button
         type="button"
-        className="rounded-full size-5 mr-2 hover:bg-border flex items-center justify-center"
+        className="rounded-full size-5 mr-2 flex items-center justify-center hover:bg-secondary/80"
         onClick={onRemove}
       >
         <Icon name="close" className="size-4" />

@@ -1,6 +1,7 @@
 import { AlertProvider } from '@/components/alerts'
 import { Header } from '@/components/header'
 import { ModalProvider } from '@/components/modals'
+import { SheetProvider } from '@/components/sheets'
 import { Toaster } from '@seventy-seven/ui/sonner'
 
 type Props = {
@@ -13,11 +14,12 @@ const AuthedLayout = ({ children }: Props) => {
       <Toaster position="top-center" />
       <ModalProvider />
       <AlertProvider />
+      <SheetProvider />
 
       <div className="flex-1 flex flex-col">
         <Header />
 
-        <div className="flex-1">{children}</div>
+        <main className="flex-1">{children}</main>
       </div>
     </>
   )

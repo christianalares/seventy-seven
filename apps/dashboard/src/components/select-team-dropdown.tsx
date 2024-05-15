@@ -36,6 +36,7 @@ export const SelectTeamDropdown = ({ user }: Props) => {
 
   return (
     <ComboboxDropdown
+      size="sm"
       disabled={action.status === 'executing'}
       placeholder="Select team"
       searchPlaceholder="Search team"
@@ -58,10 +59,10 @@ export const SelectTeamDropdown = ({ user }: Props) => {
           <Avatar
             name={selectedItem.label}
             imageUrl={selectedItem.imgUrl ?? undefined}
-            className="mr-2 size-6"
+            className="sm:mr-2 size-5"
             fallbackClassName="text-xs"
           />
-          <span>{selectedItem.label}</span>
+          <span className="sr-only sm:not-sr-only">{selectedItem.label}</span>
         </>
       )}
       renderListItem={({ isChecked, item }) => {
@@ -71,7 +72,7 @@ export const SelectTeamDropdown = ({ user }: Props) => {
             <Avatar
               name={item.label}
               imageUrl={item.imgUrl ?? undefined}
-              className="mr-2 size-6"
+              className="mr-2 size-5"
               fallbackClassName="text-xs"
             />
             <span>{item.label}</span>

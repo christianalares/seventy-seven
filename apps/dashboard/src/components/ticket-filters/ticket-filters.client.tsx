@@ -22,15 +22,13 @@ export const TicketFiltersClient = ({ userTeam }: Props) => {
   const { hasFilters } = useTicketFilters()
 
   return (
-    <div className="px-2 h-14 flex items-center justify-end border-b gap-2">
-      <TicketFilterList open={() => setIsOpen(true)} setActiveTabId={setActiveTabId} />
-
+    <div className="flex items-center gap-2">
       <Popover open={isOpen} onOpenChange={setIsOpen}>
         <PopoverTrigger asChild>
-          <Button variant="ghost" size="icon" className="relative">
-            {hasFilters && <span className="absolute block top-2 right-2 size-2 bg-destructive rounded-full" />}
-            <span className="sr-only">Filters</span>
-            <Icon name="filter" className="size-4" />
+          <Button variant="outline" size="xs" className="relative ml-auto gap-2">
+            {hasFilters && <span className="absolute block top-1 right-1 size-1.5 bg-destructive rounded-full" />}
+            <Icon name="filter" className="size-3" />
+            <span>Filters</span>
           </Button>
         </PopoverTrigger>
 
@@ -55,6 +53,8 @@ export const TicketFiltersClient = ({ userTeam }: Props) => {
           </Tabs>
         </PopoverContent>
       </Popover>
+
+      <TicketFilterList open={() => setIsOpen(true)} setActiveTabId={setActiveTabId} />
     </div>
   )
 }

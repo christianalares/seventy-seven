@@ -10,9 +10,8 @@ export const TicketFiltersServer = async () => {
 
 export const TicketFilterLoading = () => {
   return (
-    <div className="px-2 h-14 flex items-center justify-end border-b">
+    <Skeleton className="size-10">
       <span className="sr-only">Loading filters</span>
-      <Skeleton className="size-10" />
-    </div>
+    </Skeleton>
   )
 }
