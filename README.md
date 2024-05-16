@@ -10,7 +10,7 @@
 <p align="center">
   <a href="https://seventy-seven.dev">Website</a> · 
   <a href="https://app.seventy-seven.dev">Sign in</a> · 
-  <a href="https://app.seventy-seven.dev">𝕏 / Twitter</a>
+  <a href="https://twitter.com/c_alares">𝕏 / Twitter</a>
 <p>
 
 <p align="center">
