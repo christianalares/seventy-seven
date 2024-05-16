@@ -16,7 +16,7 @@ export const TicketFilterList = ({ open, setActiveTabId }: Props) => {
   }
 
   return (
-    <ul className="flex items-center gap-2">
+    <ul className="hidden md:flex items-center gap-2">
       {(filter.statuses ?? []).length > 0 && (
         <li>
           <FilterButton

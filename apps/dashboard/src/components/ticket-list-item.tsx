@@ -7,7 +7,6 @@ import { Icon } from '@seventy-seven/ui/icon'
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@seventy-seven/ui/tooltip'
 import { cn } from '@seventy-seven/ui/utils'
 import { format, formatDistance, isToday } from 'date-fns'
-import Link from 'next/link'
 import { Avatar } from './avatar'
 
 type Props = {
@@ -15,7 +14,7 @@ type Props = {
 }
 
 export const TicketListItem = ({ ticket }: Props) => {
-  const { ticketId } = useSelectedTicket()
+  const { ticketId, setTicketId } = useSelectedTicket()
 
   const isActive = ticket.id === ticketId.ticketId
   const lastMessage = ticket.messages.at(-1)
@@ -31,9 +30,11 @@ export const TicketListItem = ({ ticket }: Props) => {
   }
 
   return (
-    <Link
-      href={`?ticketId=${ticket.id}`}
-      className={cn('relative hover:bg-muted/5 dark:hover:bg-muted/30 p-4 rounded-md', {
+    <button
+      type="button"
+      // href={`?ticketId=${ticket.id}`}
+      onClick={() => setTicketId({ ticketId: ticket.id })}
+      className={cn('text-left relative hover:bg-muted/5 dark:hover:bg-muted/30 p-4 rounded-md', {
         'bg-muted/5 dark:bg-muted/30': isActive,
       })}
     >
@@ -56,32 +57,35 @@ export const TicketListItem = ({ ticket }: Props) => {
         <div className="absolute bottom-2 right-2 flex items-center gap-2">
           <TooltipProvider delayDuration={0}>
             <Tooltip>
-              <TooltipTrigger>
-                <Avatar
-                  name={ticket.assigned_to_user.full_name}
-                  imageUrl={ticket.assigned_to_user.image_url ?? undefined}
-                  className="size-4"
-                />
+              <TooltipTrigger asChild>
+                <span>
+                  <Avatar
+                    name={ticket.assigned_to_user.full_name}
+                    imageUrl={ticket.assigned_to_user.image_url ?? undefined}
+                    className="size-4"
+                  />
+                </span>
               </TooltipTrigger>
-              <TooltipContent>
-                <p className="text-xs">{ticket.assigned_to_user.full_name}</p>
+              <TooltipContent asChild>
+                <span className="text-xs">{ticket.assigned_to_user.full_name}</span>
               </TooltipContent>
             </Tooltip>
           </TooltipProvider>
         </div>
       )}
 
-      <p className="flex items-center gap-2">
+      <div className="flex items-center gap-2">
         <Avatar name={avatarName} imageUrl={avatarImageUrl} className="size-7" />
         <span className="font-medium">{name}</span>
 
         <TooltipProvider delayDuration={200}>
           <Tooltip>
-            <TooltipTrigger>
+            <TooltipTrigger asChild>
               <time className="block text-muted font-normal text-xs" dateTime={lastMessage.created_at.toISOString()}>
                 {formatDistance(lastMessage.created_at, new Date(), { addSuffix: true })}
               </time>
             </TooltipTrigger>
+
             <TooltipContent asChild>
               <span className="text-xs font-normal flex items-center gap-2">
                 <Icon name="calendar" strokeWidth={2} className="size-3" />
@@ -90,10 +94,10 @@ export const TicketListItem = ({ ticket }: Props) => {
             </TooltipContent>
           </Tooltip>
         </TooltipProvider>
-      </p>
+      </div>
 
       <p className="mt-2">{ticket.subject}</p>
       <p className="mt-2 text-muted line-clamp-1 text-sm">{lastMessage.body}</p>
-    </Link>
+    </button>
   )
 }

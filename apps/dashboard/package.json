@@ -26,6 +26,7 @@
     "class-variance-authority": "^0.7.0",
     "date-fns": "^3.6.0",
     "framer-motion": "^11.1.7",
+    "lodash.debounce": "^4.0.8",
     "lucide-react": "^0.372.0",
     "nanoid": "^5.0.7",
     "next": "^14.2.2",
@@ -46,6 +47,7 @@
   },
   "devDependencies": {
     "@seventy-seven/typescript-config": "workspace:*",
+    "@types/lodash.debounce": "^4.0.9",
     "@types/node": "^20.12.7",
     "@types/react": "^18.2.79",
     "@types/react-dom": "^18.2.25",
