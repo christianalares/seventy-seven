@@ -1,9 +1,7 @@
-'use client'
-
 import { Container } from '@/components/container'
 import { HeroHeading } from '@/components/hero-heading'
-import { WaitlistForm } from '@/components/waitlist-form'
 import { Waves } from '@/components/waves'
+import { Button } from '@seventy-seven/ui/button'
 import Image from 'next/image'
 import Balancer from 'react-wrap-balancer'
 import productDark from '../../public/img/77-dark.webp'
@@ -23,11 +21,18 @@ const IndexPage = () => {
           <Balancer>A modern and simple platform to make customer support extremely easy</Balancer>
         </h2>
 
-        <div className="flex justify-center mt-[clamp(90px,15vw,140px)]">
-          <WaitlistForm />
+        <div className="flex justify-center mt-12">
+          <Button
+            asChild
+            type="button"
+            size="xl"
+            className="bg-transparent [&:not(:disabled)]:hover:bg-transparent bg-gradient-to-br from-foreground to-foreground/70 shadow-xl hover:scale-105 transition-transform duration-300"
+          >
+            <a href="https://app.seventy-seven.dev">Try it out</a>
+          </Button>
         </div>
 
-        <div className="flex justify-center mt-[clamp(80px,15vw,10rem)]">
+        <div className="flex justify-center mt-20">
           <Image
             priority
             src={productLight}

@@ -3,6 +3,12 @@
 @tailwind utilities;
 
 @layer base {
+  :root {
+    --bg-shade-1: #404040;
+    --bg-shade-2: #858585;
+    --bg-shade-3: #d3d3d3;
+  }
+
   * {
     @apply border-border;
   }

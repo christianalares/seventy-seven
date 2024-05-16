@@ -1,3 +1,5 @@
+'use client'
+
 import debounce from 'lodash.debounce'
 import { useTheme } from 'next-themes'
 import { type ElementRef, useEffect, useRef } from 'react'

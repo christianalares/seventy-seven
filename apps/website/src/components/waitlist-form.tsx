@@ -1,3 +1,5 @@
+'use client'
+
 import { joinWaitlist } from '@/actions/waitlist'
 import { useStore } from '@/store'
 import { zodResolver } from '@hookform/resolvers/zod'
