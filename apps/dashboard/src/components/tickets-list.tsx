@@ -5,11 +5,14 @@ import { TicketListItem } from './ticket-list-item'
 
 export const TicketsList = async () => {
   const filters = ticketFiltersCache.all()
-  const hasFilters = Object.values(filters).some((value) => value !== null)
+  const hasFilters = Object.entries(filters)
+    .filter(([key]) => ['statuses', 'assignees'].includes(key))
+    .some(([_key, value]) => value !== null)
 
   const tickets = await ticketsQueries.findMany({
     statuses: filters.statuses ?? undefined,
     memberIds: filters.assignees ?? undefined,
+    query: filters.q ?? undefined,
   })
 
   if (tickets.length === 0) {

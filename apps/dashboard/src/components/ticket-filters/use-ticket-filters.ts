@@ -9,7 +9,9 @@ export const useTicketFilters = () => {
     shallow: false,
   })
 
-  const hasFilters = Object.values(filter).some((value) => value !== null)
+  const hasFilters = Object.entries(filter)
+    .filter(([key]) => ['statuses', 'assignees'].includes(key))
+    .some(([_key, value]) => value !== null)
 
   return { filter, setFilter, hasFilters }
 }

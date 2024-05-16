@@ -1,6 +1,6 @@
 import type { Status } from '@/lib/search-params'
 import { insertIf } from '@/utils/insertIf'
-import { type Prisma, prisma } from '@seventy-seven/orm/prisma'
+import { Prisma, prisma } from '@seventy-seven/orm/prisma'
 import { usersQueries } from './users'
 
 export type TicketsFindMany = Awaited<ReturnType<typeof findMany>>
@@ -9,9 +9,10 @@ export type TicketsFindById = NonNullable<Awaited<ReturnType<typeof findById>>>
 type FindManyFilters = {
   statuses?: Status[]
   memberIds?: string[]
+  query?: string
 }
 
-const findMany = async ({ statuses = [], memberIds = [] }: FindManyFilters) => {
+const findMany = async ({ statuses = [], memberIds = [], query = '' }: FindManyFilters) => {
   const user = await usersQueries.findMe()
 
   const SELECT = {
@@ -62,13 +63,34 @@ const findMany = async ({ statuses = [], memberIds = [] }: FindManyFilters) => {
         ]
 
   const OR: Prisma.TicketWhereInput['OR'] =
-    statuses.length === 0
+    statuses.length === 0 && !query
       ? undefined
       : [
-          ...insertIf.array(statuses.includes('unhandled'), { closed_at: null }),
-          ...insertIf.array(statuses.includes('starred'), { starred_at: { not: null } }),
-          ...insertIf.array(statuses.includes('snoozed'), { snoozed_until: { not: null } }),
-          ...insertIf.array(statuses.includes('closed'), { closed_at: { not: null } }),
+          ...(statuses.includes('unhandled') ? [{ closed_at: null }] : []),
+          ...(statuses.includes('starred') ? [{ starred_at: { not: null } }] : []),
+          ...(statuses.includes('snoozed') ? [{ snoozed_until: { not: null } }] : []),
+          ...(statuses.includes('closed') ? [{ closed_at: { not: null } }] : []),
+          ...(query.length > 0
+            ? [
+                {
+                  subject: {
+                    contains: query,
+                    mode: Prisma.QueryMode.insensitive,
+                  },
+                },
+
+                {
+                  messages: {
+                    some: {
+                      body: {
+                        contains: query,
+                        mode: Prisma.QueryMode.insensitive,
+                      },
+                    },
+                  },
+                },
+              ]
+            : []),
         ]
 
   const tickets = await prisma.ticket.findMany({

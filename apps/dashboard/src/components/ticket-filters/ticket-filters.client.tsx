@@ -23,9 +23,11 @@ export const TicketFiltersClient = ({ userTeam }: Props) => {
 
   return (
     <div className="flex items-center gap-2">
+      <TicketFilterList open={() => setIsOpen(true)} setActiveTabId={setActiveTabId} />
+
       <Popover open={isOpen} onOpenChange={setIsOpen}>
         <PopoverTrigger asChild>
-          <Button variant="outline" size="xs" className="relative ml-auto gap-2">
+          <Button variant="outline" className="relative ml-auto gap-2">
             {hasFilters && <span className="absolute block top-1 right-1 size-1.5 bg-destructive rounded-full" />}
             <Icon name="filter" className="size-3" />
             <span>Filters</span>
@@ -53,8 +55,6 @@ export const TicketFiltersClient = ({ userTeam }: Props) => {
           </Tabs>
         </PopoverContent>
       </Popover>
-
-      <TicketFilterList open={() => setIsOpen(true)} setActiveTabId={setActiveTabId} />
     </div>
   )
 }

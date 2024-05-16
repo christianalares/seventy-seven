@@ -71,6 +71,9 @@ importers:
       framer-motion:
         specifier: ^11.1.7
         version: 11.1.7(react-dom@18.2.0)(react@18.2.0)
+      lodash.debounce:
+        specifier: ^4.0.8
+        version: 4.0.8
       lucide-react:
         specifier: ^0.372.0
         version: 0.372.0(react@18.2.0)
@@ -126,6 +129,9 @@ importers:
       '@seventy-seven/typescript-config':
         specifier: workspace:*
         version: link:../../packages/typescript-config
+      '@types/lodash.debounce':
+        specifier: ^4.0.9
+        version: 4.0.9
       '@types/node':
         specifier: ^20.12.7
         version: 20.12.7

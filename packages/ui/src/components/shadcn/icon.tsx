@@ -32,6 +32,7 @@ import {
   MoreVertical,
   Plus,
   ScrollText,
+  Search,
   Send,
   Settings,
   Star,
@@ -139,6 +140,7 @@ const icons = {
   circleAlert: CircleAlert,
   tag: Tag,
   info: Info,
+  search: Search,
 }
 
 export type IconName = keyof typeof icons
