@@ -76,14 +76,14 @@ jobsClient.defineJob({
       thread: updatedTicket.messages,
       ticketUrl:
         process.env.VERCEL_ENV === 'production'
-          ? `https://seventy-seven.dev/inbox/${updatedTicket.id}`
-          : `http://localhost:3000/inbox/${updatedTicket.id}`,
+          ? `https://seventy-seven.dev/inbox?ticketId=${updatedTicket.id}`
+          : `http://localhost:3000/inbox?ticketId=${updatedTicket.id}`,
     })
 
-    io.resend.emails.send(
+    const sentSnoozeEmail = await io.resend.emails.send(
       'snooze-expired',
       {
-        from: '77 <seventy-seven@seventy-seven.dev>',
+        from: 'Seventy Seven <seventy-seven@seventy-seven.dev>',
         to: [payload.userEmail],
         subject: `Snooze Alert #${updatedTicket.short_id}`,
         react: template,
@@ -91,5 +91,7 @@ jobsClient.defineJob({
       },
       {},
     )
+
+    return sentSnoozeEmail
   },
 })
