@@ -26,6 +26,6 @@ export const ModalDescription = ({ children }: { children: React.ReactNode }) =>
   return <DialogDescription className="text-left">{children}</DialogDescription>
 }
 
-export const ModalFooter = ({ children }: { children: React.ReactNode }) => {
-  return <DialogFooter>{children}</DialogFooter>
+export const ModalFooter = ({ children, className }: { children: React.ReactNode; className?: string }) => {
+  return <DialogFooter className={cn(className)}>{children}</DialogFooter>
 }
