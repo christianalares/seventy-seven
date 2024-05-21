@@ -76,7 +76,7 @@ jobsClient.defineJob({
       thread: updatedTicket.messages,
       ticketUrl:
         process.env.VERCEL_ENV === 'production'
-          ? `https://seventy-seven.dev/inbox?ticketId=${updatedTicket.id}`
+          ? `https://app.seventy-seven.dev/inbox?ticketId=${updatedTicket.id}`
           : `http://localhost:3000/inbox?ticketId=${updatedTicket.id}`,
     })
 
