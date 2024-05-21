@@ -5,6 +5,10 @@
   "main": "dist/index.js",
   "module": "dist/index.mjs",
   "types": "dist/index.d.ts",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/christianalares/seventy-seven"
+  },
   "files": ["dist"],
   "scripts": {
     "dev": "tsup tsup src/index.ts --format cjs,esm --dts --watch",
