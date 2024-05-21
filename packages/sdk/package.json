@@ -9,6 +9,7 @@
     "type": "git",
     "url": "https://github.com/christianalares/seventy-seven"
   },
+  "homepage": "https://seventy-seven.dev",
   "publishConfig": {
     "access": "public"
   },
