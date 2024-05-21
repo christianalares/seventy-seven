@@ -17,7 +17,7 @@
   "scripts": {
     "dev": "tsup tsup src/index.ts --format cjs,esm --dts --watch",
     "build": "rm -rf dist && tsup src/index.ts --format cjs,esm --dts",
-    "publish": "npm run build && npm publish",
+    "npm:publish": "npm run build && npm publish",
     "lint": "biome check .",
     "check:types": "tsc --noEmit"
   },
