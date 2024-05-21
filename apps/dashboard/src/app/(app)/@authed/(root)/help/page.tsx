@@ -1,9 +1,13 @@
+import { CreateSeventySevenTicketButton } from '@/components/create-seventy-seven-ticket-button'
 import { PageWrapper } from '@/components/page-wrapper'
+import { usersQueries } from '@/queries/users'
 import { Button } from '@seventy-seven/ui/button'
 import { CodeBlock } from '@seventy-seven/ui/code-block'
 import Link from 'next/link'
 
-const HelpPage = () => {
+const HelpPage = async () => {
+  const user = await usersQueries.findMe()
+
   return (
     <PageWrapper className="m-8 [&_p+p]:mt-2">
       <h1 className="text-2xl">Help</h1>
@@ -87,6 +91,12 @@ const HelpPage = () => {
         <a className="text-blue-600" href="https://twitter.com/c_alares" target="_blank" rel="noreferrer">
           @c_alares
         </a>
+      </p>
+
+      <p>
+        This is a little meta but we actually use Seventy Seven for Seventy Seven so if you have any troubles you can
+        <CreateSeventySevenTicketButton user={user}>create a ticket</CreateSeventySevenTicketButton> to get in contact
+        with us.
       </p>
     </PageWrapper>
   )

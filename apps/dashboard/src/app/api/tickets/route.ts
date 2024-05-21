@@ -65,6 +65,11 @@ export async function POST(req: Request) {
         },
       },
     },
+    select: {
+      id: true,
+      subject: true,
+      meta: true,
+    },
   })
 
   opServerClient.event('created_ticket', {

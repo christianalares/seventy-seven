@@ -1,0 +1,20 @@
+{
+  "name": "@seventy-seven/sdk",
+  "version": "0.0.0-beta.1",
+  "main": "dist/index.js",
+  "module": "dist/index.mjs",
+  "types": "dist/index.d.ts",
+  "files": ["dist"],
+  "scripts": {
+    "dev": "tsup tsup src/index.ts --format cjs,esm --dts --watch",
+    "build": "rm -rf dist && tsup src/index.ts --format cjs,esm --dts",
+    "publish": "npm run build && npm publish",
+    "lint": "biome check .",
+    "check:types": "tsc --noEmit"
+  },
+  "devDependencies": {
+    "@seventy-seven/typescript-config": "workspace:*",
+    "tsup": "^8.0.2",
+    "typescript": "^5.4.5"
+  }
+}
