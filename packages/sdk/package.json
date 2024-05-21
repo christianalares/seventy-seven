@@ -1,5 +1,6 @@
 {
   "name": "@seventy-seven/sdk",
+  "private": false,
   "version": "0.0.0-beta.1",
   "main": "dist/index.js",
   "module": "dist/index.mjs",
