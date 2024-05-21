@@ -9,11 +9,14 @@
     "type": "git",
     "url": "https://github.com/christianalares/seventy-seven"
   },
+  "publishConfig": {
+    "access": "public"
+  },
   "files": ["dist"],
   "scripts": {
     "dev": "tsup tsup src/index.ts --format cjs,esm --dts --watch",
     "build": "rm -rf dist && tsup src/index.ts --format cjs,esm --dts",
-    "publish": "npm run build && npm publish --access=public",
+    "publish": "npm run build && npm publish",
     "lint": "biome check .",
     "check:types": "tsc --noEmit"
   },
