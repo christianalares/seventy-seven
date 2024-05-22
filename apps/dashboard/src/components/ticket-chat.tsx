@@ -18,6 +18,7 @@ export const TicketChat = ({ messages }: Props) => {
 
   const { ticketId } = useSelectedTicket()
   const ref = useRef<ElementRef<'div'>>(null)
+  const isMountedRef = useRef(false)
 
   useEffect(() => {
     const channel = sb
@@ -48,8 +49,10 @@ export const TicketChat = ({ messages }: Props) => {
     // Scroll to bottom in chat
     ref.current.scrollTo({
       top: ref.current.scrollHeight,
-      behavior: 'smooth',
+      behavior: isMountedRef.current ? 'smooth' : 'instant',
     })
+
+    isMountedRef.current = true
   }, [ticketId, messages.length])
 
   return (
