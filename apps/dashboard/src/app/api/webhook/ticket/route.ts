@@ -3,7 +3,6 @@ import { Prisma, prisma } from '@seventy-seven/orm/prisma'
 import { revalidatePath } from 'next/cache'
 import { headers } from 'next/headers'
 import { NextResponse } from 'next/server'
-import { parse } from 'node-html-parser'
 import { z } from 'zod'
 
 const ticketsWebhookPostSchema = z.object({
