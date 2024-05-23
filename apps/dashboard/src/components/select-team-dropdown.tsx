@@ -55,6 +55,11 @@ export const SelectTeamDropdown = ({ user }: Props) => {
         align: 'end',
       }}
       onSelect={(item) => {
+        // Do nothing if the user is already on the selected team
+        if (item.id === user.current_team_id) {
+          return
+        }
+
         action.execute({
           revalidatePath: pathname,
           teamId: item.id,
