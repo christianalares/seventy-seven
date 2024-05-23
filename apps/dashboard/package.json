@@ -11,13 +11,13 @@
     "check:types": "tsc --noEmit"
   },
   "dependencies": {
-    "@seventy-seven/sdk": "workspace:*",
     "@faker-js/faker": "^8.4.1",
     "@hookform/resolvers": "^3.3.4",
     "@openpanel/nextjs": "0.0.8-beta",
     "@seventy-seven/email": "workspace:*",
     "@seventy-seven/jobs": "workspace:*",
     "@seventy-seven/orm": "workspace:*",
+    "@seventy-seven/sdk": "workspace:*",
     "@seventy-seven/supabase": "workspace:*",
     "@seventy-seven/ui": "workspace:*",
     "@trigger.dev/nextjs": "^2.3.18",
@@ -33,6 +33,7 @@
     "next": "^14.2.2",
     "next-safe-action": "^6.2.0",
     "next-themes": "^0.3.0",
+    "node-html-parser": "^6.1.13",
     "nuqs": "^1.17.1",
     "pushmodal": "^1.0.3",
     "react": "^18.2.0",
