@@ -60,7 +60,7 @@ export const SelectTeamDropdown = ({ user }: Props) => {
             name={selectedItem.label}
             imageUrl={selectedItem.imgUrl ?? undefined}
             className="sm:mr-2 size-5"
-            fallbackClassName="text-xs"
+            fallbackClassName="text-[10px] font-medium"
           />
           <span className="sr-only sm:not-sr-only">{selectedItem.label}</span>
         </>
@@ -73,7 +73,7 @@ export const SelectTeamDropdown = ({ user }: Props) => {
               name={item.label}
               imageUrl={item.imgUrl ?? undefined}
               className="mr-2 size-5"
-              fallbackClassName="text-xs"
+              fallbackClassName="text-[10px] font-medium"
             />
             <span>{item.label}</span>
           </>
