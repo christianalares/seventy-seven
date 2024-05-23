@@ -2,8 +2,8 @@ import { ChatResponseForm } from '@/components/forms/chat-response-form'
 import { TicketChat } from '@/components/ticket-chat'
 import { TicketChatHeader } from '@/components/ticket-chat-header'
 import { ticketsQueries } from '@/queries/tickets'
+import { Icon } from '@seventy-seven/ui/icon'
 import { Skeleton } from '@seventy-seven/ui/skeleton'
-import { notFound } from 'next/navigation'
 
 type Props = {
   id: string
@@ -13,7 +13,14 @@ export const SelectedTicket = async ({ id }: Props) => {
   const ticket = await ticketsQueries.findById(id)
 
   if (!ticket) {
-    notFound()
+    return (
+      <div className="h-full flex justify-center items-center">
+        <p className="text-muted-foreground text-2xl flex flex-col items-center gap-2">
+          <Icon name="mailQuestion" className="size-8" />
+          Ticket not found
+        </p>
+      </div>
+    )
   }
 
   return (

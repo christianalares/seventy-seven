@@ -24,6 +24,7 @@ import {
   type LucideProps,
   Mail,
   MailOpen,
+  MailQuestion,
   Menu,
   Minus,
   Monitor,
@@ -39,6 +40,7 @@ import {
   Sun,
   Tag,
   Trash2,
+  Unlink,
   User,
   UserPlus,
   UserX,
@@ -141,6 +143,7 @@ const icons = {
   tag: Tag,
   info: Info,
   search: Search,
+  mailQuestion: MailQuestion,
 }
 
 export type IconName = keyof typeof icons

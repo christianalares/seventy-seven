@@ -1,6 +1,7 @@
 'use client'
 
 import { setCurrentTeam } from '@/actions/teams'
+import { useSelectedTicket } from '@/hooks/use-selected-ticket'
 import type { UsersFindMe } from '@/queries/users'
 import { ComboboxDropdown } from '@seventy-seven/ui/combobox-dropdown'
 import { Icon } from '@seventy-seven/ui/icon'
@@ -15,10 +16,15 @@ type Props = {
 }
 
 export const SelectTeamDropdown = ({ user }: Props) => {
+  const { ticketId, setTicketId } = useSelectedTicket()
   const pathname = usePathname()
 
   const action = useAction(setCurrentTeam, {
     onSuccess: (updatedUser) => {
+      if (ticketId.ticketId) {
+        setTicketId({ ticketId: null })
+      }
+
       toast.success(`Switched to team ${updatedUser.current_team.name}`)
     },
     onError: (err) => {
