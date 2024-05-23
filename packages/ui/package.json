@@ -11,6 +11,7 @@
   "dependencies": {
     "@radix-ui/react-alert-dialog": "^1.0.5",
     "@radix-ui/react-avatar": "^1.0.4",
+    "@radix-ui/react-checkbox": "^1.0.4",
     "@radix-ui/react-dialog": "^1.0.5",
     "@radix-ui/react-dropdown-menu": "^2.0.6",
     "@radix-ui/react-label": "^2.0.2",
@@ -85,6 +86,7 @@
     "./toggle": "./src/components/shadcn/toggle.tsx",
     "./toggle-group": "./src/components/shadcn/toggle-group.tsx",
     "./code-block": "./src/components/code-block.tsx",
-    "./sheet": "./src/components/sheet.tsx"
+    "./sheet": "./src/components/sheet.tsx",
+    "./checkbox": "./src/components/shadcn/checkbox.tsx"
   }
 }

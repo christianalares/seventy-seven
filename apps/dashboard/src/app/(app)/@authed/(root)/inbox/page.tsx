@@ -27,9 +27,12 @@ const InboxRootPage = async ({ searchParams }: Props) => {
 
       <div className="flex h-full">
         <div
-          className={cn('h-[calc(100vh-136px)] overflow-y-auto md:w-[35vw] md:max-w-lg md:min-w-96 md:border-r', {
-            'max-md:hidden': !!ticketId.ticketId,
-          })}
+          className={cn(
+            'h-[calc(100vh-136px)] overflow-y-auto w-full md:w-[35vw] md:max-w-lg md:min-w-96 md:border-r',
+            {
+              'max-md:hidden': !!ticketId.ticketId,
+            },
+          )}
         >
           <Suspense key={numberOfActiveFilters} fallback={<TicketListSkeleton />}>
             <TicketsList />
