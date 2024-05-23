@@ -129,6 +129,7 @@ const findById = async (id: string) => {
     where: {
       // Make sure the ticket belongs to the user's team
       team: {
+        id: user.current_team_id,
         members: {
           some: {
             user_id: user.id,

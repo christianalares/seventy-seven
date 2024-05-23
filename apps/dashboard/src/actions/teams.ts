@@ -59,6 +59,7 @@ export const setCurrentTeam = authAction(
       select: {
         current_team: {
           select: {
+            id: true,
             name: true,
           },
         },
