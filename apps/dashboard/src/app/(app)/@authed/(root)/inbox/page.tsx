@@ -1,6 +1,6 @@
 import { TicketSearchForm } from '@/components/forms/ticket-search-form'
-import NoTicketSelected from '@/components/no-ticket-selected'
-import SelectedTicket from '@/components/selected-ticket'
+import { NoTicketSelected } from '@/components/no-ticket-selected'
+import { SelectedTicket, SelectedTicketSkeleton } from '@/components/selected-ticket'
 import { TicketFilterLoading, TicketFiltersServer } from '@/components/ticket-filters/ticket-filters.server'
 import { TicketListSkeleton, TicketsList } from '@/components/tickets-list'
 import { ticketFiltersCache, ticketIdCache } from '@/lib/search-params'
@@ -41,7 +41,7 @@ const InboxRootPage = async ({ searchParams }: Props) => {
             'hidden md:block': !ticketId.ticketId,
           })}
         >
-          <Suspense key={ticketId.ticketId} fallback={<p>Loading ticket...</p>}>
+          <Suspense key={ticketId.ticketId} fallback={<SelectedTicketSkeleton />}>
             {ticketId.ticketId ? <SelectedTicket id={ticketId.ticketId} /> : <NoTicketSelected />}
           </Suspense>
         </div>

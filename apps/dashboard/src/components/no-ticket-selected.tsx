@@ -5,5 +5,3 @@ export const NoTicketSelected = () => {
     </div>
   )
 }
-
-export default NoTicketSelected
