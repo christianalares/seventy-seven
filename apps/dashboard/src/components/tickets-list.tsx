@@ -1,5 +1,6 @@
 import { ticketFiltersCache } from '@/lib/search-params'
 import { ticketsQueries } from '@/queries/tickets'
+import { Icon } from '@seventy-seven/ui/icon'
 import { Skeleton } from '@seventy-seven/ui/skeleton'
 import { TicketListItem } from './ticket-list-item'
 
@@ -18,9 +19,14 @@ export const TicketsList = async () => {
   if (tickets.length === 0) {
     return (
       <div className="h-full flex items-center justify-center">
-        <p className="text-muted-foreground text-2xl">
-          {hasFilters ? 'No tickets matching your filters' : 'No tickets found'}
-        </p>
+        {hasFilters ? (
+          <p className="text-muted-foreground text-2xl flex flex-col items-center gap-2">
+            <Icon name="filterX" className="size-8" />
+            No tickets matching your filters
+          </p>
+        ) : (
+          <p className="text-muted-foreground text-2xl">No tickets found</p>
+        )}
       </div>
     )
   }

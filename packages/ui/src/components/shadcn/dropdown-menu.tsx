@@ -1,7 +1,7 @@
 'use client'
 
 import * as DropdownMenuPrimitive from '@radix-ui/react-dropdown-menu'
-import { Check, ChevronRight, Circle } from 'lucide-react'
+import { Check, ChevronLeft, ChevronRight, Circle } from 'lucide-react'
 import * as React from 'react'
 
 import { type VariantProps, cva } from 'class-variance-authority'
@@ -22,9 +22,10 @@ const DropdownMenuRadioGroup = DropdownMenuPrimitive.RadioGroup
 const DropdownMenuSubTrigger = React.forwardRef<
   React.ElementRef<typeof DropdownMenuPrimitive.SubTrigger>,
   React.ComponentPropsWithoutRef<typeof DropdownMenuPrimitive.SubTrigger> & {
+    arrowPosition?: 'start' | 'end'
     inset?: boolean
   }
->(({ className, inset, children, ...props }, ref) => (
+>(({ className, inset, children, arrowPosition = 'end', ...props }, ref) => (
   <DropdownMenuPrimitive.SubTrigger
     ref={ref}
     className={cn(
@@ -34,8 +35,17 @@ const DropdownMenuSubTrigger = React.forwardRef<
     )}
     {...props}
   >
-    {children}
-    <ChevronRight className="ml-auto h-4 w-4" />
+    {arrowPosition === 'start' ? (
+      <>
+        <ChevronLeft className="mr-auto h-4 w-4" />
+        {children}
+      </>
+    ) : (
+      <>
+        {children}
+        <ChevronRight className="ml-auto h-4 w-4" />
+      </>
+    )}
   </DropdownMenuPrimitive.SubTrigger>
 ))
 DropdownMenuSubTrigger.displayName = DropdownMenuPrimitive.SubTrigger.displayName

@@ -15,6 +15,7 @@ import {
   Dot,
   ExternalLink,
   Filter,
+  FilterX,
   Home,
   Inbox,
   Info,
@@ -143,6 +144,7 @@ const icons = {
   info: Info,
   search: Search,
   mailQuestion: MailQuestion,
+  filterX: FilterX,
 }
 
 export type IconName = keyof typeof icons
