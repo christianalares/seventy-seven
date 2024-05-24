@@ -10,6 +10,7 @@ import {
   DropdownMenuGroup,
   DropdownMenuItem,
   DropdownMenuPortal,
+  DropdownMenuSeparator,
   DropdownMenuSub,
   DropdownMenuSubContent,
   DropdownMenuSubTrigger,
@@ -160,6 +161,26 @@ export const TicketFiltersClient = ({ userTeam }: Props) => {
               </DropdownMenuSubContent>
             </DropdownMenuPortal>
           </DropdownMenuSub>
+
+          {hasFilters && (
+            <>
+              <DropdownMenuSeparator />
+
+              <DropdownMenuGroup>
+                <DropdownMenuItem
+                  onSelect={() =>
+                    setFilter({
+                      assignees: null,
+                      statuses: null,
+                    })
+                  }
+                >
+                  <Icon name="trash" className="size-4 mr-2" />
+                  Clear all filters
+                </DropdownMenuItem>
+              </DropdownMenuGroup>
+            </>
+          )}
         </DropdownMenuGroup>
       </DropdownMenuContent>
     </DropdownMenu>

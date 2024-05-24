@@ -2,6 +2,7 @@ import { ticketFiltersCache } from '@/lib/search-params'
 import { ticketsQueries } from '@/queries/tickets'
 import { Icon } from '@seventy-seven/ui/icon'
 import { Skeleton } from '@seventy-seven/ui/skeleton'
+import { ClearAllFiltersButton } from './clear-all-filters-button'
 import { TicketListItem } from './ticket-list-item'
 
 export const TicketsList = async () => {
@@ -23,6 +24,10 @@ export const TicketsList = async () => {
           <p className="text-muted-foreground text-2xl flex flex-col items-center gap-2">
             <Icon name="filterX" className="size-8" />
             No tickets matching your filters
+            <ClearAllFiltersButton className="gap-2">
+              <Icon name="trash" className="size-4" />
+              Clear all filters
+            </ClearAllFiltersButton>
           </p>
         ) : (
           <p className="text-muted-foreground text-2xl">No tickets found</p>
