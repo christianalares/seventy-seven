@@ -26,7 +26,11 @@ const InboxRootPage = async ({ searchParams }: Props) => {
         </Suspense>
       </div>
 
-      <div className="flex-1">
+      <div
+        className={cn('flex-1', {
+          'hidden md:block': !ticketId.ticketId,
+        })}
+      >
         <Suspense key={ticketId.ticketId} fallback={<SelectedTicketSkeleton />}>
           {ticketId.ticketId ? <SelectedTicket id={ticketId.ticketId} /> : <NoTicketSelected />}
         </Suspense>
