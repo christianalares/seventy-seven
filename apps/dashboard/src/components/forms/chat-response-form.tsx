@@ -1,8 +1,9 @@
 'use client'
 
 import { createMessage } from '@/actions/messages'
+import { zodResolver } from '@hookform/resolvers/zod'
 import { Button } from '@seventy-seven/ui/button'
-import { Form, FormControl, FormField, FormItem, FormLabel } from '@seventy-seven/ui/form'
+import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@seventy-seven/ui/form'
 import { Textarea } from '@seventy-seven/ui/textarea'
 import { useAction } from 'next-safe-action/hooks'
 import { useForm } from 'react-hook-form'
@@ -10,7 +11,10 @@ import { toast } from 'sonner'
 import { z } from 'zod'
 
 const chatResponseFormSchema = z.object({
-  message: z.string().min(1).max(1000),
+  message: z
+    .string({ message: 'A message is required' })
+    .min(1, { message: 'A message is required' })
+    .max(1000, { message: 'Message cannot be longer than 1000 characters' }),
 })
 
 type ChatResponseFormValues = z.infer<typeof chatResponseFormSchema>
@@ -21,6 +25,7 @@ type Props = {
 
 export const ChatResponseForm = ({ ticketId }: Props) => {
   const form = useForm<ChatResponseFormValues>({
+    resolver: zodResolver(chatResponseFormSchema),
     defaultValues: {
       message: '',
     },
@@ -70,8 +75,15 @@ export const ChatResponseForm = ({ ticketId }: Props) => {
           }}
         />
 
-        <div className="mt-4 flex justify-end">
-          <Button loading={action.status === 'executing'} size="sm" type="submit" variant="secondary">
+        <div className="mt-4 flex justify-between items-center">
+          <FormMessage message={form.formState.errors.message?.message} />
+          <Button
+            className="ml-auto"
+            loading={action.status === 'executing'}
+            size="sm"
+            type="submit"
+            variant="secondary"
+          >
             Send response
           </Button>
         </div>
