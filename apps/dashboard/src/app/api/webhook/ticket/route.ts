@@ -12,7 +12,6 @@ const ticketsWebhookPostSchema = z.object({
     .endsWith('@ticket.seventy-seven.dev', { message: 'Invalid email domain' }),
   StrippedTextReply: z
     .string({ required_error: 'StrippedTextReply is required' })
-    .min(1, { message: 'StrippedTextReply must be at least 1 characters' })
     .max(1000, { message: 'StrippedTextReply must be at most 1000 characters' }),
   HtmlBody: z.string({ required_error: 'HtmlBody is required' }),
 })
@@ -73,7 +72,10 @@ export async function POST(req: Request) {
     return NextResponse.json({ error: `No user messages found on ticket #${shortId}` }, { status: 404 })
   }
 
-  const incomingMessage = parseIncomingMessage(parsedBody.data.StrippedTextReply, parsedBody.data.HtmlBody)
+  const { content, unableToParseContent } = parseIncomingMessage(
+    parsedBody.data.StrippedTextReply,
+    parsedBody.data.HtmlBody,
+  )
 
   try {
     const updatedTicket = await prisma.ticket.update({
@@ -84,7 +86,8 @@ export async function POST(req: Request) {
         closed_at: null,
         messages: {
           create: {
-            body: incomingMessage,
+            body: content,
+            unable_to_parse_content: unableToParseContent,
             sent_from_full_name: lastMessageFromUser.sent_from_full_name,
             sent_from_email: lastMessageFromUser.sent_from_email,
             sent_from_avatar_url: lastMessageFromUser.sent_from_avatar_url,

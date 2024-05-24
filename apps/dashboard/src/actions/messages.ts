@@ -148,3 +148,48 @@ export const createMessage = authAction(
     return createdMessage
   },
 )
+
+export const editMessage = authAction(
+  z.object({
+    revalidatePath: z.string().optional(),
+    messageId: z.string().uuid(),
+    body: z
+      .string()
+      .min(1, { message: 'A message body is required' })
+      .max(1000, { message: 'Message cannot be longer than 1000 characters' }),
+  }),
+  async (values, user) => {
+    const updatedMessage = await prisma.message.update({
+      where: {
+        id: values.messageId,
+        // Make sure the user is a member of the team that the ticket belongs to
+        ticket: {
+          team: {
+            members: {
+              some: {
+                user_id: user.id,
+              },
+            },
+          },
+        },
+      },
+      data: {
+        body: values.body,
+        unable_to_parse_content: false,
+      },
+      select: {
+        id: true,
+      },
+    })
+
+    if (!updatedMessage) {
+      throw new Error('Failde to update message')
+    }
+
+    if (values.revalidatePath) {
+      revalidatePath(values.revalidatePath)
+    }
+
+    return updatedMessage
+  },
+)
