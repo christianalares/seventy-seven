@@ -169,6 +169,7 @@ const findById = async (id: string) => {
         select: {
           created_at: true,
           id: true,
+          unable_to_parse_content: true,
           handler: {
             select: {
               id: true,

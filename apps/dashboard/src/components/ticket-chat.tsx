@@ -73,10 +73,12 @@ export const TicketChat = ({ messages }: Props) => {
           return (
             <ChatMessageUser
               key={message.id}
+              id={message.id}
               date={message.created_at}
               name={message.sent_from_full_name ?? ''}
               body={message.body}
               avatar={message.sent_from_avatar_url ?? undefined}
+              unableToParseContent={message.unable_to_parse_content}
             />
           )
         })}

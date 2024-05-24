@@ -14,16 +14,16 @@ export const Modal = ({ children, className, ...restProps }: Props) => {
   )
 }
 
-export const ModalHeader = ({ children }: { children: React.ReactNode }) => {
-  return <DialogHeader className="mb-4">{children}</DialogHeader>
+export const ModalHeader = ({ children, className }: { children: React.ReactNode; className?: string }) => {
+  return <DialogHeader className={cn('mb-4', className)}>{children}</DialogHeader>
 }
 
 export const ModalTitle = ({ children }: { children: React.ReactNode }) => {
   return <DialogTitle className="text-left">{children}</DialogTitle>
 }
 
-export const ModalDescription = ({ children }: { children: React.ReactNode }) => {
-  return <DialogDescription className="text-left">{children}</DialogDescription>
+export const ModalDescription = ({ children, className }: { children: React.ReactNode; className?: string }) => {
+  return <DialogDescription className={cn('text-left', className)}>{children}</DialogDescription>
 }
 
 export const ModalFooter = ({ children, className }: { children: React.ReactNode; className?: string }) => {

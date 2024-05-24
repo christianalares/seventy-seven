@@ -41,6 +41,7 @@ import {
   Sun,
   Tag,
   Trash2,
+  TriangleAlert,
   User,
   UserPlus,
   UserX,
@@ -145,6 +146,7 @@ const icons = {
   search: Search,
   mailQuestion: MailQuestion,
   filterX: FilterX,
+  triangleAlert: TriangleAlert,
 }
 
 export type IconName = keyof typeof icons
