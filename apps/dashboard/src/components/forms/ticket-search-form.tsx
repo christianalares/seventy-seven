@@ -7,7 +7,11 @@ import { cn } from '@seventy-seven/ui/utils'
 import { useForm } from 'react-hook-form'
 import { useTicketFilters } from '../ticket-filters/use-ticket-filters'
 
-export const TicketSearchForm = () => {
+type Props = {
+  className?: string
+}
+
+export const TicketSearchForm = ({ className }: Props) => {
   const { filter, setFilter } = useTicketFilters()
 
   const form = useForm<{ query: string }>({
@@ -23,7 +27,7 @@ export const TicketSearchForm = () => {
   })
 
   return (
-    <form onSubmit={onSubmit} className="flex items-center gap-2 w-full md:w-1/2">
+    <form onSubmit={onSubmit} className={cn('flex items-center gap-2 w-full', className)}>
       <div className="w-full relative">
         <Icon name="search" className="absolute left-3 top-[50%] -translate-y-1/2 rounded-full size-4 text-muted" />
 
