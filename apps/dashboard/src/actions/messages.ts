@@ -159,9 +159,6 @@ export const editMessage = authAction(
       .max(1000, { message: 'Message cannot be longer than 1000 characters' }),
   }),
   async (values, user) => {
-    // await new Promise((resolve) => setTimeout(resolve, 1000))
-    // return { success: true }
-
     const updatedMessage = await prisma.message.update({
       where: {
         id: values.messageId,
