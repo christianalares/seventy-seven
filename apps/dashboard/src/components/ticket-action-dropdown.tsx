@@ -62,6 +62,18 @@ export const TicketActionDropdown = ({ ticket }: Props) => {
           Assign to...
         </DropdownMenuItem>
 
+        {/* <DropdownMenuItem
+          className="gap-2"
+          onSelect={() =>
+            pushModal('ticketTagsModal', {
+              ticket,
+            })
+          }
+        >
+          <Icon name="tag" className="size-4 text-primary" />
+          Edit tags
+        </DropdownMenuItem> */}
+
         <DropdownMenuSeparator />
 
         <DropdownMenuItem

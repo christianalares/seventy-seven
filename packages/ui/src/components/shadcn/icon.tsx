@@ -37,6 +37,7 @@ import {
   Search,
   Send,
   Settings,
+  Shapes,
   Star,
   Sun,
   Tag,
@@ -147,6 +148,7 @@ const icons = {
   mailQuestion: MailQuestion,
   filterX: FilterX,
   triangleAlert: TriangleAlert,
+  shapes: Shapes,
 }
 
 export type IconName = keyof typeof icons
