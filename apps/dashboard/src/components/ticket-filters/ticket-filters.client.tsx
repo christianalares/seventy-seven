@@ -102,7 +102,7 @@ export const TicketFiltersClient = ({ userTeam }: Props) => {
         <DropdownMenuGroup>
           <DropdownMenuSub>
             <DropdownMenuSubTrigger>
-              <Icon name="tag" className="size-4 mr-2" />
+              <Icon name="shapes" className="size-4 mr-2" />
               <span>Status</span>
             </DropdownMenuSubTrigger>
 
