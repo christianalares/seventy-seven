@@ -143,6 +143,13 @@ const findById = async (id: string) => {
       subject: true,
       starred_at: true,
       closed_at: true,
+      tags: {
+        select: {
+          id: true,
+          name: true,
+          color: true,
+        },
+      },
       assigned_to_user: {
         select: {
           id: true,
