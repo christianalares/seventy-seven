@@ -36,7 +36,9 @@ const HelpPage = async () => {
           {
             id: 'sdk',
             label: 'SDK',
-            code: `// @/lib/seventy-seven.ts
+            code: `// first run npm install @seventy-seven/sdk
+            
+// @/lib/seventy-seven.ts
 import { SeventySevenClient } from '@seventy-seven/sdk'
             
 export const seventySevenClient = new SeventySevenClient(process.env.SEVENTY_SEVEN_AUTH_TOKEN)
