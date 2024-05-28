@@ -149,6 +149,9 @@ const findById = async (id: string) => {
           name: true,
           color: true,
         },
+        orderBy: {
+          created_at: 'asc',
+        },
       },
       assigned_to_user: {
         select: {

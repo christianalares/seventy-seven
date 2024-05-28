@@ -1,10 +1,12 @@
 import type { ComponentProps } from 'react'
 import { cn } from '../utils'
-import { DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from './shadcn/dialog'
+import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from './shadcn/dialog'
 
 export { createPushModal } from 'pushmodal'
 
 type Props = ComponentProps<typeof DialogContent>
+
+export const ModalWrapper = Dialog
 
 export const Modal = ({ children, className, ...restProps }: Props) => {
   return (
