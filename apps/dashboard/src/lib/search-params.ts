@@ -1,4 +1,4 @@
-import { createSearchParamsCache, parseAsArrayOf, parseAsString, parseAsStringEnum } from 'nuqs/server'
+import { createSearchParamsCache, parseAsArrayOf, parseAsString, parseAsStringLiteral } from 'nuqs/server'
 
 // TICKET FILTERS
 export const statuses = ['unhandled', 'snoozed', 'starred', 'closed'] as const
@@ -6,7 +6,7 @@ export type Status = (typeof statuses)[number]
 
 export const ticketFiltersParsers = {
   q: parseAsString,
-  statuses: parseAsArrayOf(parseAsStringEnum<Status>([...statuses])),
+  statuses: parseAsArrayOf(parseAsStringLiteral(statuses)),
   assignees: parseAsArrayOf(parseAsString),
 }
 
