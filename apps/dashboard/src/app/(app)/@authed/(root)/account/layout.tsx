@@ -6,11 +6,12 @@ type Props = {
 
 const AccountLayout = ({ children }: Props) => {
   return (
-    <div className="m-8">
-      <AccountSubNav />
-
-      <div className="mt-8">{children}</div>
-    </div>
+    <main className="overflow-y-scroll">
+      <div className="m-8">
+        <AccountSubNav />
+        <div className="mt-8">{children}</div>
+      </div>
+    </main>
   )
 }
 

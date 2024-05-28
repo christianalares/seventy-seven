@@ -6,12 +6,13 @@ type Props = {
 
 const SettingsLayout = ({ children }: Props) => {
   return (
-    <div className="m-8">
-      <h1 className="text-2xl">Team settings</h1>
-      <SettingsSubNav className="mt-8" />
-
-      <div className="mt-8">{children}</div>
-    </div>
+    <main className="overflow-y-scroll">
+      <div className="m-8">
+        <h1 className="text-2xl">Team settings</h1>
+        <SettingsSubNav className="mt-8" />
+        <div className="mt-8">{children}</div>
+      </div>
+    </main>
   )
 }
 

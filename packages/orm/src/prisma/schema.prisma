@@ -48,6 +48,7 @@ model Team {
   is_personal   Boolean      @default(false)
   auth_token    String?
   invites       TeamInvite[]
+  ticket_tags   TicketTag[]
 
   @@map("teams")
 }
@@ -67,12 +68,12 @@ model UserOnTeam {
 }
 
 model Ticket {
-  id                  String    @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
-  short_id            String    @unique
-  created_at          DateTime  @default(now()) @db.Timestamptz(6)
-  updated_at          DateTime? @db.Timestamptz(6)
-  team_id             String    @db.Uuid
-  team                Team      @relation(fields: [team_id], references: [id])
+  id                  String      @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  short_id            String      @unique
+  created_at          DateTime    @default(now()) @db.Timestamptz(6)
+  updated_at          DateTime?   @db.Timestamptz(6)
+  team_id             String      @db.Uuid
+  team                Team        @relation(fields: [team_id], references: [id])
   subject             String
   meta                Json?
   messages            Message[]
@@ -80,8 +81,9 @@ model Ticket {
   closed_at           DateTime?
   event_id            String?
   starred_at          DateTime?
-  assigned_to_user_id String?   @db.Uuid
-  assigned_to_user    User?     @relation(fields: [assigned_to_user_id], references: [id])
+  assigned_to_user_id String?     @db.Uuid
+  assigned_to_user    User?       @relation(fields: [assigned_to_user_id], references: [id])
+  tags                TicketTag[]
 
   @@map("tickets")
 }
@@ -102,6 +104,21 @@ model Message {
   unable_to_parse_content Boolean   @default(false)
 
   @@map("messages")
+}
+
+model TicketTag {
+  id         String    @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  created_at DateTime  @default(now()) @db.Timestamptz(6)
+  updated_at DateTime? @db.Timestamptz(6)
+  name       String
+  color      String
+  team_id    String    @db.Uuid
+  team       Team      @relation(fields: [team_id], references: [id])
+  ticket_id  String    @db.Uuid
+  ticket     Ticket    @relation(fields: [ticket_id], references: [id])
+
+  @@unique([name, ticket_id])
+  @@map("ticket_tags")
 }
 
 model TeamInvite {
