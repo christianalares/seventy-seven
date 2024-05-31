@@ -57,7 +57,6 @@ const statusItems: StatusFilterItem[] = [
 
 type Props = {
   userTeam: UsersGetMyCurrentTeam
-  // tags?: TicketsFindById['tags']
 }
 
 export const TicketFiltersClient = ({ userTeam }: Props) => {

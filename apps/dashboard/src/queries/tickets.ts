@@ -66,16 +66,7 @@ const findMany = async ({ statuses = [], memberIds = [], tags = [], query = '' }
   } satisfies Prisma.TicketSelect
 
   const AND: Prisma.TicketWhereInput['AND'] =
-    memberIds.length === 0
-      ? undefined
-      : [
-          ...(memberIds.length > 0 ? [{ assigned_to_user_id: { in: memberIds } }] : []),
-          // ...insertIf.array(memberIds.length > 0, {
-          //   assigned_to_user_id: {
-          //     in: memberIds,
-          //   },
-          // }),
-        ]
+    memberIds.length === 0 ? undefined : [...(memberIds.length > 0 ? [{ assigned_to_user_id: { in: memberIds } }] : [])]
 
   const OR: Prisma.TicketWhereInput['OR'] =
     statuses.length === 0 && tags.length === 0 && !query
