@@ -100,6 +100,9 @@ export const myCurrentTeam = async () => {
               name: true,
               color: true,
             },
+            orderBy: {
+              created_at: 'asc',
+            },
           },
           members: {
             select: {

@@ -1,7 +1,6 @@
 'use client'
 
 import type { Status } from '@/lib/search-params'
-import { TicketsFindById } from '@/queries/tickets'
 import type { UsersGetMyCurrentTeam } from '@/queries/users'
 import { Button } from '@seventy-seven/ui/button'
 import { Checkbox } from '@seventy-seven/ui/checkbox'

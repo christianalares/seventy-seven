@@ -126,3 +126,47 @@ export const setTags = authAction(
     }
   },
 )
+
+export const updateTag = authAction(
+  z.object({
+    revalidatePath: z.string().optional(),
+    id: z.string().uuid(),
+    name: z
+      .string({ message: 'Name is required' })
+      .min(1, { message: 'Name is required' })
+      .max(30, { message: 'Name can only be maximun 30 characters' }),
+    color: z
+      .string({ message: 'Color is required' })
+      .startsWith('#', { message: 'Invalid color' })
+      .max(7, { message: 'Invalid color' }),
+  }),
+  async (values, user) => {
+    const updatedTag = prisma.ticketTag
+      .update({
+        where: {
+          id: values.id,
+          // Make sure the tag belongs to the users team
+          team: {
+            members: {
+              some: {
+                user_id: user.id,
+              },
+            },
+          },
+        },
+        data: {
+          name: values.name,
+          color: values.color,
+        },
+      })
+      .catch((_err) => {
+        throw new Error('Failed to update tag')
+      })
+
+    if (values.revalidatePath) {
+      revalidatePath(values.revalidatePath)
+    }
+
+    return updatedTag
+  },
+)

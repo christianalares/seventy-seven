@@ -1,5 +1,4 @@
 import type { Status } from '@/lib/search-params'
-import { insertIf } from '@/utils/insertIf'
 import { Prisma, prisma } from '@seventy-seven/orm/prisma'
 import { usersQueries } from './users'
 

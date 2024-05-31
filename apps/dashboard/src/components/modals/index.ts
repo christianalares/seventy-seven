@@ -5,6 +5,7 @@ import { AssignTicketModal } from './assign-ticket-modal'
 import { CreateSeventySevenTicketModal } from './create-seventy-seven-ticket-modal'
 import { CreateTeamModal } from './create-team-modal'
 import { EditOriginalMessageModal } from './edit-original-message-modal'
+import { EditTicketTagModal } from './edit-ticket-tag-modal'
 import { InviteTeamMemberModal } from './invite-team-member-modal'
 import { SnoozeTicketModal } from './snooze-ticket-modal'
 import { TicketTagsModal } from './ticket-tags-modal'
@@ -20,5 +21,6 @@ export const { pushModal, popModal, ModalProvider } = createPushModal({
     ticketTagsModal: TicketTagsModal,
     viewOriginalMessageContentModal: ViewOriginalMessageContentModal,
     editOriginalMessageModal: EditOriginalMessageModal,
+    editTicketTagModal: EditTicketTagModal,
   },
 })
