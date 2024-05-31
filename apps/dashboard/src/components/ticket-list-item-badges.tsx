@@ -15,7 +15,8 @@ export const TicketListItemBadges = ({ ticket }: Props) => {
     !ticket.starred_at &&
     !ticket.closed_at &&
     !ticket.isUnhandled &&
-    !ticket.assigned_to_user
+    !ticket.assigned_to_user &&
+    ticket.tags.length === 0
   ) {
     return null
   }
@@ -73,6 +74,34 @@ export const TicketListItemBadges = ({ ticket }: Props) => {
 
               <TooltipContent asChild>
                 <span className="text-xs">Unanswered message</span>
+              </TooltipContent>
+            </Tooltip>
+          </TooltipProvider>
+        )}
+
+        {ticket.tags.length > 0 && (
+          <TooltipProvider delayDuration={0}>
+            <Tooltip>
+              <TooltipTrigger asChild>
+                <span>
+                  <Icon name="tag" className="size-4" />
+                </span>
+              </TooltipTrigger>
+
+              <TooltipContent asChild>
+                <ul>
+                  {ticket.tags.map(({ tag }) => (
+                    <li key={tag.id} className="text-xs flex items-center gap-2">
+                      <div
+                        className="size-3 rounded-full"
+                        style={{
+                          backgroundColor: tag.color,
+                        }}
+                      />
+                      {tag.name}
+                    </li>
+                  ))}
+                </ul>
               </TooltipContent>
             </Tooltip>
           </TooltipProvider>

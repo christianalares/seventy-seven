@@ -10,19 +10,9 @@ type Props = {
 }
 
 export const ClearAllFiltersButton = ({ children, className }: Props) => {
-  const { setFilter } = useTicketFilters()
+  const { clearFilters } = useTicketFilters()
   return (
-    <Button
-      variant="outline"
-      className={cn(className)}
-      onClick={() =>
-        setFilter({
-          assignees: null,
-          statuses: null,
-          q: null,
-        })
-      }
-    >
+    <Button variant="outline" className={cn(className)} onClick={clearFilters}>
       {children}
     </Button>
   )

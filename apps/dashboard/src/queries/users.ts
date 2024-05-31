@@ -38,6 +38,13 @@ const findMe = async () => {
           id: true,
           name: true,
           image_url: true,
+          ticket_tags: {
+            select: {
+              id: true,
+              name: true,
+              color: true,
+            },
+          },
         },
       },
       teams: {
@@ -87,6 +94,16 @@ export const myCurrentTeam = async () => {
           name: true,
           image_url: true,
           auth_token: true,
+          ticket_tags: {
+            select: {
+              id: true,
+              name: true,
+              color: true,
+            },
+            orderBy: {
+              created_at: 'asc',
+            },
+          },
           members: {
             select: {
               role: true,

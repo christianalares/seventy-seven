@@ -8,6 +8,7 @@ export const ticketFiltersParsers = {
   q: parseAsString,
   statuses: parseAsArrayOf(parseAsStringEnum<Status>([...statuses])),
   assignees: parseAsArrayOf(parseAsString),
+  tags: parseAsArrayOf(parseAsString),
 }
 
 export const ticketFiltersCache = createSearchParamsCache(ticketFiltersParsers)

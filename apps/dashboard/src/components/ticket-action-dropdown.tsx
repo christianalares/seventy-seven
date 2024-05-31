@@ -62,7 +62,7 @@ export const TicketActionDropdown = ({ ticket }: Props) => {
           Assign to...
         </DropdownMenuItem>
 
-        {/* <DropdownMenuItem
+        <DropdownMenuItem
           className="gap-2"
           onSelect={() =>
             pushModal('ticketTagsModal', {
@@ -72,7 +72,7 @@ export const TicketActionDropdown = ({ ticket }: Props) => {
         >
           <Icon name="tag" className="size-4 text-primary" />
           Edit tags
-        </DropdownMenuItem> */}
+        </DropdownMenuItem>
 
         <DropdownMenuSeparator />
 
