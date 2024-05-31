@@ -20,6 +20,7 @@ export const setTags = authAction(
   async (values) => {
     const dbUser = await usersQueries.findMe()
 
+    // Make sure the user belongs to a team that has the ticket
     const userBelongsToTeamWithTicket = dbUser.teams.some(({ team }) => {
       return team.tickets.some((ticket) => ticket.id === values.ticketId)
     })
@@ -28,44 +29,88 @@ export const setTags = authAction(
       throw new Error('You do not have access to this ticket')
     }
 
-    const allExistingTagsOnTicket = await prisma.ticketTag.findMany({
+    // Get the ticket including the tags
+    const dbTicket = await prisma.ticket.findUnique({
       where: {
-        ticket_id: values.ticketId,
+        id: values.ticketId,
+      },
+      select: {
+        tags: {
+          select: {
+            tag: {
+              select: {
+                id: true,
+                name: true,
+              },
+            },
+          },
+        },
       },
     })
 
-    const ticketsToCreate = values.tags.filter(
-      (tag) =>
-        !allExistingTagsOnTicket.some((existingTag) => existingTag.name.toLowerCase() === tag.name.toLowerCase()),
+    // Get the tags that doesn't exist on the team
+    const tagsToCreate = values.tags.filter((tag) => {
+      return !dbUser.current_team.ticket_tags.some(
+        (existingTag) => existingTag.name.toLowerCase() === tag.name.toLowerCase(),
+      )
+    })
+
+    // Get the tags that exists on the team but not on the ticket
+    const tagsToLink = values.tags
+      .filter((tag) => {
+        return !dbTicket?.tags.some((existingTag) => existingTag.tag.name.toLowerCase() === tag.name.toLowerCase())
+      })
+      .map((linkedTag) => {
+        const foundTicket = dbUser.current_team.ticket_tags.find(
+          (tag) => tag.name.toLowerCase() === linkedTag.name.toLowerCase(),
+        )!
+
+        return foundTicket
+      })
+      .filter(Boolean)
+
+    // Then get the tags that needs to be deleted
+    const ticketsToUnlink = (dbTicket?.tags ?? []).filter(
+      (existingTag) => !values.tags.some((tag) => tag.name.toLowerCase() === existingTag.tag.name.toLowerCase()),
     )
 
-    const ticketsToDelete = allExistingTagsOnTicket.filter(
-      (existingTag) => !values.tags.some((tag) => tag.name.toLowerCase() === existingTag.name.toLowerCase()),
-    )
-
-    const [createdTags, deletedTags] = await prisma
-      .$transaction([
-        prisma.ticketTag.createManyAndReturn({
-          data: ticketsToCreate.map((tag) => ({
-            ticket_id: values.ticketId,
-            team_id: dbUser.current_team_id,
+    const { createdTags, createdRelations, unLinedTags } = await prisma
+      .$transaction(async (tx) => {
+        // Create these tags
+        const createdTags = await tx.ticketTag.createManyAndReturn({
+          data: tagsToCreate.map((tag) => ({
             name: tag.name,
             color: tag.color,
+            team_id: dbUser.current_team_id,
           })),
           select: {
             id: true,
-            name: true,
-            color: true,
           },
-        }),
-        prisma.ticketTag.deleteMany({
+        })
+
+        // Create the relation between the ticket and the tags
+        const createdRelations = await tx.ticketTagOnTicket.createMany({
+          data: [...createdTags, ...tagsToLink].map((tag) => ({
+            tag_id: tag.id,
+            ticket_id: values.ticketId,
+          })),
+        })
+
+        // Remove the relation between the ticket and the tags
+        const unLinedTags = await prisma.ticketTagOnTicket.deleteMany({
           where: {
-            id: {
-              in: ticketsToDelete.map((tag) => tag.id),
+            tag_id: {
+              in: ticketsToUnlink.map((tag) => tag.tag.id),
             },
           },
-        }),
-      ])
+        })
+
+        return {
+          createdTags,
+          createdRelations,
+          unLinedTags,
+        }
+      })
       .catch((_err) => {
         throw new Error('Failed to set tags')
       })
@@ -76,7 +121,8 @@ export const setTags = authAction(
 
     return {
       createdTags,
-      deletedTags,
+      createdRelations,
+      unLinedTags,
     }
   },
 )

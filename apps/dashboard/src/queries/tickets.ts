@@ -25,9 +25,13 @@ const findMany = async ({ statuses = [], memberIds = [], tags = [], query = '' }
     closed_at: true,
     tags: {
       select: {
-        id: true,
-        name: true,
-        color: true,
+        tag: {
+          select: {
+            id: true,
+            name: true,
+            color: true,
+          },
+        },
       },
       orderBy: {
         created_at: 'asc',
@@ -87,8 +91,10 @@ const findMany = async ({ statuses = [], memberIds = [], tags = [], query = '' }
                 {
                   tags: {
                     some: {
-                      id: {
-                        in: tags,
+                      tag: {
+                        id: {
+                          in: tags,
+                        },
                       },
                     },
                   },
@@ -170,9 +176,13 @@ const findById = async (id: string) => {
       closed_at: true,
       tags: {
         select: {
-          id: true,
-          name: true,
-          color: true,
+          tag: {
+            select: {
+              id: true,
+              name: true,
+              color: true,
+            },
+          },
         },
         orderBy: {
           created_at: 'asc',

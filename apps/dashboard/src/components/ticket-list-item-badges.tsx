@@ -24,34 +24,6 @@ export const TicketListItemBadges = ({ ticket }: Props) => {
   return (
     <>
       <div className="absolute top-2 right-2 flex items-center gap-2">
-        {ticket.tags.length > 0 && (
-          <TooltipProvider delayDuration={0}>
-            <Tooltip>
-              <TooltipTrigger asChild>
-                <span>
-                  <Icon name="tag" className="size-4" />
-                </span>
-              </TooltipTrigger>
-
-              <TooltipContent asChild>
-                <ul>
-                  {ticket.tags.map((tag) => (
-                    <li key={tag.id} className="text-xs flex items-center gap-2">
-                      <div
-                        className="size-3 rounded-full"
-                        style={{
-                          backgroundColor: tag.color,
-                        }}
-                      />
-                      {tag.name}
-                    </li>
-                  ))}
-                </ul>
-              </TooltipContent>
-            </Tooltip>
-          </TooltipProvider>
-        )}
-
         {ticket.snoozed_until && (
           <Badge variant="outline" className="gap-2 font-normal items-center text-muted-foreground">
             {format(ticket.snoozed_until, isToday(ticket.snoozed_until) ? 'HH:mm' : 'MMM dd (HH:mm)')}
@@ -102,6 +74,34 @@ export const TicketListItemBadges = ({ ticket }: Props) => {
 
               <TooltipContent asChild>
                 <span className="text-xs">Unanswered message</span>
+              </TooltipContent>
+            </Tooltip>
+          </TooltipProvider>
+        )}
+
+        {ticket.tags.length > 0 && (
+          <TooltipProvider delayDuration={0}>
+            <Tooltip>
+              <TooltipTrigger asChild>
+                <span>
+                  <Icon name="tag" className="size-4" />
+                </span>
+              </TooltipTrigger>
+
+              <TooltipContent asChild>
+                <ul>
+                  {ticket.tags.map(({ tag }) => (
+                    <li key={tag.id} className="text-xs flex items-center gap-2">
+                      <div
+                        className="size-3 rounded-full"
+                        style={{
+                          backgroundColor: tag.color,
+                        }}
+                      />
+                      {tag.name}
+                    </li>
+                  ))}
+                </ul>
               </TooltipContent>
             </Tooltip>
           </TooltipProvider>

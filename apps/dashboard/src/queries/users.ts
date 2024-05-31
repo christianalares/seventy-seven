@@ -38,6 +38,13 @@ const findMe = async () => {
           id: true,
           name: true,
           image_url: true,
+          ticket_tags: {
+            select: {
+              id: true,
+              name: true,
+              color: true,
+            },
+          },
         },
       },
       teams: {

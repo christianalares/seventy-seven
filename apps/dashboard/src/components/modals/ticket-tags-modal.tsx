@@ -49,7 +49,11 @@ export const TicketTagsModal = ({ ticket }: Props) => {
   const form = useForm<TagFormValues>({
     resolver: zodResolver(tagsFormSchema),
     defaultValues: {
-      tags: ticket.tags,
+      tags: ticket.tags.map(({ tag }) => ({
+        id: tag.id,
+        name: tag.name,
+        color: tag.color,
+      })),
     },
   })
 
