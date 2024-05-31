@@ -28,17 +28,18 @@ export const setTags = authAction(
       throw new Error('You do not have access to this ticket')
     }
 
-    const allExistingTags = await prisma.ticketTag.findMany({
+    const allExistingTagsOnTicket = await prisma.ticketTag.findMany({
       where: {
         ticket_id: values.ticketId,
       },
     })
 
     const ticketsToCreate = values.tags.filter(
-      (tag) => !allExistingTags.some((existingTag) => existingTag.name.toLowerCase() === tag.name.toLowerCase()),
+      (tag) =>
+        !allExistingTagsOnTicket.some((existingTag) => existingTag.name.toLowerCase() === tag.name.toLowerCase()),
     )
 
-    const ticketsToDelete = allExistingTags.filter(
+    const ticketsToDelete = allExistingTagsOnTicket.filter(
       (existingTag) => !values.tags.some((tag) => tag.name.toLowerCase() === existingTag.name.toLowerCase()),
     )
 

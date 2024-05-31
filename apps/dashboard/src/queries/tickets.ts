@@ -9,10 +9,11 @@ export type TicketsFindById = NonNullable<Awaited<ReturnType<typeof findById>>>
 type FindManyFilters = {
   statuses?: Status[]
   memberIds?: string[]
+  tags?: string[]
   query?: string
 }
 
-const findMany = async ({ statuses = [], memberIds = [], query = '' }: FindManyFilters) => {
+const findMany = async ({ statuses = [], memberIds = [], tags = [], query = '' }: FindManyFilters) => {
   const user = await usersQueries.findMe()
 
   const SELECT = {
@@ -22,6 +23,16 @@ const findMany = async ({ statuses = [], memberIds = [], query = '' }: FindManyF
     snoozed_until: true,
     starred_at: true,
     closed_at: true,
+    tags: {
+      select: {
+        id: true,
+        name: true,
+        color: true,
+      },
+      orderBy: {
+        created_at: 'asc',
+      },
+    },
     assigned_to_user: {
       select: {
         id: true,
@@ -55,21 +66,35 @@ const findMany = async ({ statuses = [], memberIds = [], query = '' }: FindManyF
     memberIds.length === 0
       ? undefined
       : [
-          ...insertIf.array(memberIds.length > 0, {
-            assigned_to_user_id: {
-              in: memberIds,
-            },
-          }),
+          ...(memberIds.length > 0 ? [{ assigned_to_user_id: { in: memberIds } }] : []),
+          // ...insertIf.array(memberIds.length > 0, {
+          //   assigned_to_user_id: {
+          //     in: memberIds,
+          //   },
+          // }),
         ]
 
   const OR: Prisma.TicketWhereInput['OR'] =
-    statuses.length === 0 && !query
+    statuses.length === 0 && tags.length === 0 && !query
       ? undefined
       : [
           ...(statuses.includes('unhandled') ? [{ closed_at: null }] : []),
           ...(statuses.includes('starred') ? [{ starred_at: { not: null } }] : []),
           ...(statuses.includes('snoozed') ? [{ snoozed_until: { not: null } }] : []),
           ...(statuses.includes('closed') ? [{ closed_at: { not: null } }] : []),
+          ...(tags.length > 0
+            ? [
+                {
+                  tags: {
+                    some: {
+                      id: {
+                        in: tags,
+                      },
+                    },
+                  },
+                },
+              ]
+            : []),
           ...(query.length > 0
             ? [
                 {

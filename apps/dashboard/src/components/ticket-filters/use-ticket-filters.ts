@@ -10,8 +10,16 @@ export const useTicketFilters = () => {
   })
 
   const hasFilters = Object.entries(filter)
-    .filter(([key]) => ['statuses', 'assignees'].includes(key))
+    .filter(([key]) => ['statuses', 'assignees', 'tags'].includes(key))
     .some(([_key, value]) => value !== null)
 
-  return { filter, setFilter, hasFilters }
+  const clearFilters = () => {
+    setFilter({
+      assignees: null,
+      statuses: null,
+      tags: null,
+    })
+  }
+
+  return { filter, setFilter, clearFilters, hasFilters }
 }

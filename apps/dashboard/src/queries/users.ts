@@ -87,6 +87,13 @@ export const myCurrentTeam = async () => {
           name: true,
           image_url: true,
           auth_token: true,
+          ticket_tags: {
+            select: {
+              id: true,
+              name: true,
+              color: true,
+            },
+          },
           members: {
             select: {
               role: true,

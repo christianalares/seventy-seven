@@ -1,6 +1,7 @@
 'use client'
 
 import type { Status } from '@/lib/search-params'
+import { TicketsFindById } from '@/queries/tickets'
 import type { UsersGetMyCurrentTeam } from '@/queries/users'
 import { Button } from '@seventy-seven/ui/button'
 import { Checkbox } from '@seventy-seven/ui/checkbox'
@@ -57,10 +58,11 @@ const statusItems: StatusFilterItem[] = [
 
 type Props = {
   userTeam: UsersGetMyCurrentTeam
+  // tags?: TicketsFindById['tags']
 }
 
 export const TicketFiltersClient = ({ userTeam }: Props) => {
-  const { filter, hasFilters, setFilter } = useTicketFilters()
+  const { filter, hasFilters, setFilter, clearFilters } = useTicketFilters()
 
   const assigneeItems = userTeam.current_team.members.map((member) => ({
     id: member.user.id,
@@ -85,6 +87,16 @@ export const TicketFiltersClient = ({ userTeam }: Props) => {
 
     setFilter({
       assignees: newAssignees.length === 0 ? null : newAssignees,
+    })
+  }
+
+  const handleTagChange = (tagId: string) => {
+    const newTags = filter.tags?.includes(tagId)
+      ? filter.tags.filter((id) => id !== tagId)
+      : [...(filter.tags ?? []), tagId]
+
+    setFilter({
+      tags: newTags.length === 0 ? null : newTags,
     })
   }
 
@@ -162,19 +174,48 @@ export const TicketFiltersClient = ({ userTeam }: Props) => {
             </DropdownMenuPortal>
           </DropdownMenuSub>
 
+          <DropdownMenuSub>
+            <DropdownMenuSubTrigger>
+              <Icon name="tag" className="size-4 mr-2" />
+              <span>Tags</span>
+            </DropdownMenuSubTrigger>
+
+            <DropdownMenuPortal>
+              <DropdownMenuSubContent>
+                {userTeam.current_team.ticket_tags.map((tag) => {
+                  const isChecked = !!filter.tags?.includes(tag.id)
+
+                  return (
+                    <DropdownMenuItem
+                      key={tag.id}
+                      onSelect={(e) => {
+                        e.preventDefault()
+                        handleTagChange(tag.id)
+                      }}
+                    >
+                      <Checkbox className="mr-2 border-muted" checked={isChecked} />
+
+                      <div
+                        className="size-3 rounded-full mr-2 border"
+                        style={{
+                          backgroundColor: tag.color,
+                        }}
+                      />
+
+                      <span>{tag.name}</span>
+                    </DropdownMenuItem>
+                  )
+                })}
+              </DropdownMenuSubContent>
+            </DropdownMenuPortal>
+          </DropdownMenuSub>
+
           {hasFilters && (
             <>
               <DropdownMenuSeparator />
 
               <DropdownMenuGroup>
-                <DropdownMenuItem
-                  onSelect={() =>
-                    setFilter({
-                      assignees: null,
-                      statuses: null,
-                    })
-                  }
-                >
+                <DropdownMenuItem onSelect={clearFilters}>
                   <Icon name="trash" className="size-4 mr-2" />
                   Clear all filters
                 </DropdownMenuItem>
