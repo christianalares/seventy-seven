@@ -1,6 +1,7 @@
 import { opServerClient } from '@/lib/openpanel'
 import { shortId } from '@/utils/shortId'
 import { prisma } from '@seventy-seven/orm/prisma'
+import { waitUntil } from '@vercel/functions'
 import { NextResponse } from 'next/server'
 import { z } from 'zod'
 
@@ -72,11 +73,13 @@ export async function POST(req: Request) {
     },
   })
 
-  opServerClient.event('created_ticket', {
-    team_id: foundTeam.id,
-    ticket_id: createdTicket.id,
-    subject: createdTicket.subject,
-  })
+  waitUntil(
+    opServerClient.event('created_ticket', {
+      team_id: foundTeam.id,
+      ticket_id: createdTicket.id,
+      subject: createdTicket.subject,
+    }),
+  )
 
   return NextResponse.json(createdTicket, { status: 201 })
 }

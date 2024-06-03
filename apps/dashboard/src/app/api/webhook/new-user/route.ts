@@ -1,5 +1,6 @@
 import { opServerClient } from '@/lib/openpanel'
 import { createResendClient } from '@seventy-seven/email'
+import { waitUntil } from '@vercel/functions'
 import { headers } from 'next/headers'
 import { NextResponse } from 'next/server'
 import { z } from 'zod'
@@ -54,11 +55,13 @@ export async function POST(req: Request) {
     audienceId: 'f90d06f7-da55-4db8-a55d-7bdbecdcba33',
   })
 
-  opServerClient.event('new_user', {
-    email: parsedBody.data.record.email,
-    full_name: parsedBody.data.record.full_name,
-    profileId: parsedBody.data.record.id,
-  })
+  waitUntil(
+    opServerClient.event('new_user', {
+      email: parsedBody.data.record.email,
+      full_name: parsedBody.data.record.full_name,
+      profileId: parsedBody.data.record.id,
+    }),
+  )
 
   return NextResponse.json({ success: true }, { status: 200 })
 }

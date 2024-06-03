@@ -4,6 +4,7 @@ import { opServerClient } from '@/lib/openpanel'
 import { authAction } from '@/lib/safe-action'
 import { usersQueries } from '@/queries/users'
 import { TEAM_ROLE_ENUM, prisma } from '@seventy-seven/orm/prisma'
+import { waitUntil } from '@vercel/functions'
 import { revalidatePath } from 'next/cache'
 import { uuid } from 'uuidv4'
 import { z } from 'zod'
@@ -25,13 +26,15 @@ export const createTeam = authAction(
       },
     })
 
-    opServerClient.event('team_created', {
-      team_id: createdTeam.id,
-      profileId: user.id,
-      team_name: createdTeam.name,
-    })
-
     revalidatePath('/account/teams')
+
+    waitUntil(
+      opServerClient.event('team_created', {
+        team_id: createdTeam.id,
+        profileId: user.id,
+        team_name: createdTeam.name,
+      }),
+    )
 
     return createdTeam
   },
@@ -66,14 +69,16 @@ export const setCurrentTeam = authAction(
       },
     })
 
-    opServerClient.event('team_switched', {
-      team_id: values.teamId,
-      profileId: user.id,
-    })
-
     if (values.revalidatePath) {
       revalidatePath(values.revalidatePath)
     }
+
+    waitUntil(
+      opServerClient.event('team_switched', {
+        team_id: values.teamId,
+        profileId: user.id,
+      }),
+    )
 
     return updatedUser
   },
@@ -173,14 +178,16 @@ export const leaveTeam = authAction(
       return { leftTeam, updatedUser }
     })
 
-    opServerClient.event('team_left', {
-      team_id: leftTeam.team.id,
-      profileId: user.id,
-    })
-
     if (values.revalidatePath) {
       revalidatePath(values.revalidatePath)
     }
+
+    waitUntil(
+      opServerClient.event('team_left', {
+        team_id: leftTeam.team.id,
+        profileId: user.id,
+      }),
+    )
 
     return leftTeam
   },
@@ -246,14 +253,16 @@ export const removeMember = authAction(
       },
     })
 
-    opServerClient.event('team_member_removed', {
-      team_id: dbTeam.id,
-      profileId: user.id,
-    })
-
     if (values.revalidatePath) {
       revalidatePath(values.revalidatePath)
     }
+
+    waitUntil(
+      opServerClient.event('team_member_removed', {
+        team_id: dbTeam.id,
+        profileId: user.id,
+      }),
+    )
 
     return deletedUserOnTeam
   },
@@ -281,14 +290,16 @@ export const updateTeamName = authAction(
       },
     })
 
-    opServerClient.event('team_name_updated', {
-      team_id: values.teamId,
-      profileId: user.id,
-    })
-
     if (!updatedTeam) {
       throw new Error('Could not update team name')
     }
+
+    waitUntil(
+      opServerClient.event('team_name_updated', {
+        team_id: values.teamId,
+        profileId: user.id,
+      }),
+    )
 
     return updatedTeam
   },
@@ -395,14 +406,16 @@ export const generateAuthToken = authAction(
         throw new Error('Could not generate auth token')
       })
 
-    opServerClient.event('auth_token_generated', {
-      team_id: usresCurrentTeam.current_team.id,
-      profileId: user.id,
-    })
-
     if (values.revalidatePath) {
       revalidatePath(values.revalidatePath)
     }
+
+    waitUntil(
+      opServerClient.event('auth_token_generated', {
+        team_id: usresCurrentTeam.current_team.id,
+        profileId: user.id,
+      }),
+    )
 
     return {
       isNew: !usresCurrentTeam.current_team.auth_token,
