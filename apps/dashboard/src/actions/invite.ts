@@ -8,6 +8,7 @@ import { shortId } from '@/utils/shortId'
 import { componentToPlainText, createResendClient } from '@seventy-seven/email'
 import TeamInvite from '@seventy-seven/email/emails/team-invite'
 import { prisma } from '@seventy-seven/orm/prisma'
+import { waitUntil } from '@vercel/functions'
 import { revalidatePath } from 'next/cache'
 import { z } from 'zod'
 
@@ -132,11 +133,13 @@ export const inviteTeamMembers = authAction(
       revalidatePath(values.revalidatePath)
     }
 
-    opServerClient.event('team_members_invited', {
-      team_id: usersTeam.id,
-      profileId: user.id,
-      number_of_invites: createdInvites.length,
-    })
+    waitUntil(
+      opServerClient.event('team_members_invited', {
+        team_id: usersTeam.id,
+        profileId: user.id,
+        number_of_invites: createdInvites.length,
+      }),
+    )
 
     return createdInvites.length
   },
@@ -212,12 +215,14 @@ export const acceptInvitation = authAction(
       }
     })
 
-    opServerClient.event('team_member_invite_accepted', {
-      team_id: values.teamId,
-      profileId: dbUser.id,
-    })
-
     revalidatePath('/settings/members')
+
+    waitUntil(
+      opServerClient.event('team_member_invite_accepted', {
+        team_id: values.teamId,
+        profileId: dbUser.id,
+      }),
+    )
 
     return { success: true }
   },
@@ -253,13 +258,15 @@ export const revokeInvitation = authAction(
         throw new Error('Could not revoke invite')
       })
 
-    opServerClient.event('team_member_invite_revoked', {
-      team_id: deletedInvite.team_id,
-      email: deletedInvite.email,
-      profileId: user.id,
-    })
-
     revalidatePath('/settings/members/pending')
+
+    waitUntil(
+      opServerClient.event('team_member_invite_revoked', {
+        team_id: deletedInvite.team_id,
+        email: deletedInvite.email,
+        profileId: user.id,
+      }),
+    )
 
     return deletedInvite
   },

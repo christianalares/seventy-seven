@@ -8,6 +8,7 @@ import TicketClosed from '@seventy-seven/email/emails/ticket-closed'
 import { Events } from '@seventy-seven/jobs/constants'
 import { jobsClient } from '@seventy-seven/jobs/jobsClient'
 import { prisma } from '@seventy-seven/orm/prisma'
+import { waitUntil } from '@vercel/functions'
 import { isFuture } from 'date-fns'
 import { revalidatePath } from 'next/cache'
 import { z } from 'zod'
@@ -77,14 +78,16 @@ export const snoozeTicket = authAction(
       throw new Error('Failed to snooze ticket, something went wrong 😢')
     }
 
-    opServerClient.event('snoozed_ticket', {
-      ticket_id: updatedTicket.id,
-      user_id: user.id,
-    })
-
     revalidatePath('/inbox')
     revalidatePath(`/inbox/${updatedTicket.id}`)
     revalidatePath(`/inbox/snoozed/${updatedTicket.id}`)
+
+    waitUntil(
+      opServerClient.event('snoozed_ticket', {
+        ticket_id: updatedTicket.id,
+        user_id: user.id,
+      }),
+    )
 
     return updatedTicket
   },
@@ -121,20 +124,24 @@ export const toggleStar = authAction(
       throw new Error(`Failed to ${values.star ? 'star' : 'unstar'} ticket, something went wrong 😢`)
     }
 
-    if (values.star) {
-      opServerClient.event('starred_ticket', {
-        ticket_id: updatedTicket.id,
-        user_id: user.id,
-      })
-    } else {
-      opServerClient.event('unstarred_ticket', {
-        ticket_id: updatedTicket.id,
-        user_id: user.id,
-      })
-    }
-
     revalidatePath('/inbox')
     revalidatePath('/inbox/starred')
+
+    if (values.star) {
+      waitUntil(
+        opServerClient.event('starred_ticket', {
+          ticket_id: updatedTicket.id,
+          user_id: user.id,
+        }),
+      )
+    } else {
+      waitUntil(
+        opServerClient.event('unstarred_ticket', {
+          ticket_id: updatedTicket.id,
+          user_id: user.id,
+        }),
+      )
+    }
 
     return {
       ...updatedTicket,
@@ -239,13 +246,15 @@ export const closeTicket = authAction(
       console.log('Error sending email', error)
     }
 
-    opServerClient.event('closed_ticket', {
-      ticket_id: updatedTicket.id,
-      closed_by_user_id: user.id,
-    })
-
     revalidatePath('/inbox')
     revalidatePath('/inbox/closed')
+
+    waitUntil(
+      opServerClient.event('closed_ticket', {
+        ticket_id: updatedTicket.id,
+        closed_by_user_id: user.id,
+      }),
+    )
 
     return updatedTicket
   },
@@ -300,13 +309,15 @@ export const assignToMember = authAction(
       },
     })
 
-    opServerClient.event('assigned_ticket', {
-      ticket_id: values.ticketId,
-      assigned_by_user_id: user.id,
-      assigned_to_user_id: values.memberId,
-    })
-
     revalidatePath('/inbox')
+
+    waitUntil(
+      opServerClient.event('assigned_ticket', {
+        ticket_id: values.ticketId,
+        assigned_by_user_id: user.id,
+        assigned_to_user_id: values.memberId,
+      }),
+    )
 
     return updatedTicket
   },
@@ -338,12 +349,14 @@ export const unassignTicket = authAction(
         throw new Error('Failed to unassign ticket')
       })
 
-    opServerClient.event('unassigned_ticket', {
-      ticket_id: values.ticketId,
-      user_id: user.id,
-    })
-
     revalidatePath(values.revalidatePath)
+
+    waitUntil(
+      opServerClient.event('unassigned_ticket', {
+        ticket_id: values.ticketId,
+        user_id: user.id,
+      }),
+    )
 
     return { success: true }
   },
