@@ -98,7 +98,7 @@ model TicketTag {
   team        Team                @relation(fields: [team_id], references: [id])
   ticket_tags TicketTagOnTicket[]
 
-  @@unique([name])
+  @@unique([name, team_id])
   @@map("ticket_tags")
 }
 
@@ -112,6 +112,7 @@ model TicketTagOnTicket {
   tag    TicketTag @relation(fields: [tag_id], references: [id])
 
   @@id([ticket_id, tag_id])
+  @@unique([ticket_id, tag_id])
   @@map("ticket_tags_on_tickets")
 }
 
