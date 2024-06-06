@@ -94,8 +94,6 @@ const NewTicket = ({ company, shortId, subject, message, ticketUrl }: Props) => 
               <Text className="text-4xl">{company.name}</Text>
             )}
 
-            {/* <Img src={`${baseUrl}/77-logo.png`} alt="77" className="w-12" /> */}
-
             <Text className="font-maven-pro text-2xl">You have a new incoming ticket</Text>
             <Text className="font-maven-pro text-lg flex items-center gap-4 mb-0 mt-8">{subject}</Text>
 
