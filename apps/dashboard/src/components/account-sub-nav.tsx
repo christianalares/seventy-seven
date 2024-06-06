@@ -43,6 +43,7 @@ export const AccountSubNav = () => {
       <ul className="flex items-center gap-4">
         <SubLinkItem href="/account" label="General" />
         <SubLinkItem href="/account/teams" label="Teams" />
+        <SubLinkItem href="/account/notifications" label="Notifications" />
       </ul>
     </nav>
   )

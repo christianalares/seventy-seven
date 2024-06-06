@@ -1,5 +1,7 @@
 import { opServerClient } from '@/lib/openpanel'
 import { shortId } from '@/utils/shortId'
+import { componentToPlainText, createResendClient } from '@seventy-seven/email'
+import NewTicket from '@seventy-seven/email/emails/new-ticket'
 import { prisma } from '@seventy-seven/orm/prisma'
 import { waitUntil } from '@vercel/functions'
 import { NextResponse } from 'next/server'
@@ -45,6 +47,19 @@ export async function POST(req: Request) {
     select: {
       id: true,
       auth_token: true,
+      name: true,
+      image_url: true,
+      members: {
+        select: {
+          user: {
+            select: {
+              full_name: true,
+              email: true,
+              notification_email_new_ticket: true,
+            },
+          },
+        },
+      },
     },
   })
 
@@ -70,8 +85,48 @@ export async function POST(req: Request) {
       id: true,
       subject: true,
       meta: true,
+      short_id: true,
+      created_at: true,
     },
   })
+
+  const to = foundTeam.members
+    .filter((member) => member.user.notification_email_new_ticket)
+    .map((member) => `${member.user.full_name} <${member.user.email}>`)
+
+  // Only send email if there are recipients to send to
+  if (to.length > 0) {
+    const resend = createResendClient()
+
+    const template = NewTicket({
+      company: {
+        name: foundTeam.name,
+        imageUrl: foundTeam.image_url ?? undefined,
+      },
+      message: {
+        fullName: parsedBody.data.senderFullName,
+        avatarUrl: parsedBody.data.senderAvatarUrl,
+        body: parsedBody.data.body,
+        createdAt: createdTicket.created_at,
+      },
+      shortId: createdTicket.short_id,
+      subject: createdTicket.subject,
+      ticketUrl: `https://app.seventy-seven.dev/inbox?ticketId=${createdTicket.id}`,
+    })
+
+    const { error } = await resend.emails.send({
+      from: `${parsedBody.data.senderFullName} <seventy-seven@seventy-seven.dev>`,
+      to,
+      subject: `Incoming ticket to team ${foundTeam.name} from ${parsedBody.data.senderFullName}`,
+      react: template,
+      text: componentToPlainText(template),
+    })
+
+    if (error) {
+      // biome-ignore lint/suspicious/noConsoleLog: Log here
+      console.log('Error sending email', error)
+    }
+  }
 
   waitUntil(
     opServerClient.event('created_ticket', {
@@ -81,5 +136,12 @@ export async function POST(req: Request) {
     }),
   )
 
-  return NextResponse.json(createdTicket, { status: 201 })
+  return NextResponse.json(
+    {
+      id: createdTicket.id,
+      subject: createdTicket.subject,
+      meta: createdTicket.meta,
+    },
+    { status: 201 },
+  )
 }
