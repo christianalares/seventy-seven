@@ -46,7 +46,7 @@ export const EditTicketTagModal = ({ tag }: Props) => {
             color: values.color,
           })
         }}
-        onClose={() => {}}
+        onClose={() => popModal('editTicketTagModal')}
         isLoading={action.status === 'executing'}
         ctaText="Save tag"
       />

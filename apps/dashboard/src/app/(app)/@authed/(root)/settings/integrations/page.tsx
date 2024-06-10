@@ -1,8 +1,8 @@
 import { PageWrapper } from '@/components/page-wrapper'
-import { usersQueries } from '@/queries/users'
+// import { usersQueries } from '@/queries/users'
 
 const IntegrationsPage = async () => {
-  const user = await usersQueries.myCurrentTeam()
+  // const user = await usersQueries.myCurrentTeam()
 
   return (
     <PageWrapper>

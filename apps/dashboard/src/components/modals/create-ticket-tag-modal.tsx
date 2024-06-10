@@ -43,7 +43,6 @@ export const CreateTicketTagModal = () => {
         }}
         onClose={() => popModal('createTicketTagModal')}
         isLoading={action.status === 'executing'}
-        placeholder="Name of the tag"
         ctaText="Create tag"
       />
     </Modal>

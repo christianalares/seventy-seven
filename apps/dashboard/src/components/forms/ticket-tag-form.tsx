@@ -1,4 +1,3 @@
-import { action } from '@/lib/safe-action'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { Button } from '@seventy-seven/ui/button'
 import { Form, FormControl, FormField, FormItem } from '@seventy-seven/ui/form'
@@ -6,7 +5,6 @@ import { Input } from '@seventy-seven/ui/input'
 import { ModalFooter } from '@seventy-seven/ui/modal'
 import { type DefaultValues, useForm } from 'react-hook-form'
 import { z } from 'zod'
-import { popModal } from '../modals'
 
 const tagFormSchema = z.object({
   name: z
@@ -27,10 +25,9 @@ type Props = {
   isLoading?: boolean
   onClose: () => void
   ctaText: React.ReactNode
-  placeholder?: string
 }
 
-export const TicketTagForm = ({ defaultValues, onSubmit, isLoading, onClose, ctaText, placeholder }: Props) => {
+export const TicketTagForm = ({ defaultValues, onSubmit, isLoading, onClose, ctaText }: Props) => {
   const form = useForm<TagFormValues>({
     resolver: zodResolver(tagFormSchema),
     defaultValues,
@@ -61,7 +58,7 @@ export const TicketTagForm = ({ defaultValues, onSubmit, isLoading, onClose, cta
             }}
           />
 
-          <Input placeholder={placeholder} {...form.register('name')} />
+          <Input placeholder="Name of the tag" {...form.register('name')} />
         </div>
 
         <ModalFooter className="mt-4">
