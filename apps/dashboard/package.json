@@ -3,7 +3,6 @@
   "version": "0.0.0",
   "private": true,
   "scripts": {
-    "hej": "next build",
     "dev": "next dev --port 3000",
     "build": "next build",
     "start": "next start",
@@ -20,6 +19,8 @@
     "@seventy-seven/sdk": "workspace:*",
     "@seventy-seven/supabase": "workspace:*",
     "@seventy-seven/ui": "workspace:*",
+    "@slack/bolt": "^3.18.0",
+    "@slack/oauth": "^3.0.0",
     "@trigger.dev/nextjs": "^2.3.18",
     "@trigger.dev/react": "^2.3.18",
     "@trigger.dev/sdk": "^2.3.18",

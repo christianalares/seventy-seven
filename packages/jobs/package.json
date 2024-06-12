@@ -13,6 +13,7 @@
   "dependencies": {
     "@seventy-seven/email": "workspace:*",
     "@seventy-seven/orm": "workspace:*",
+    "@slack/bolt": "^3.18.0",
     "@trigger.dev/nextjs": "^2.3.18",
     "@trigger.dev/react": "^2.3.18",
     "@trigger.dev/resend": "^2.3.18",

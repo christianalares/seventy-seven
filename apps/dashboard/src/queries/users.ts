@@ -120,6 +120,14 @@ export const myCurrentTeam = async () => {
               created_at: 'asc',
             },
           },
+          integration_slack: {
+            select: {
+              id: true,
+              created_at: true,
+              slack_channel: true,
+              slack_team_name: true,
+            },
+          },
         },
       },
     },
