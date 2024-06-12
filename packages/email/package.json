@@ -8,7 +8,8 @@
     "./emails/ticket-message-response": "./emails/ticket-message-response.tsx",
     "./emails/snooze-expired": "./emails/snooze-expired.tsx",
     "./emails/ticket-closed": "./emails/ticket-closed.tsx",
-    "./emails/team-invite": "./emails/team-invite.tsx"
+    "./emails/team-invite": "./emails/team-invite.tsx",
+    "./emails/new-ticket": "./emails/new-ticket.tsx"
   },
   "scripts": {
     "lint": "biome check .",
