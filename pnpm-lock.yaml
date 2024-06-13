@@ -56,12 +56,6 @@ importers:
       '@seventy-seven/ui':
         specifier: workspace:*
         version: link:../../packages/ui
-      '@slack/bolt':
-        specifier: ^3.18.0
-        version: 3.18.0
-      '@slack/oauth':
-        specifier: ^3.0.0
-        version: 3.0.0
       '@trigger.dev/nextjs':
         specifier: ^2.3.18
         version: 2.3.18(@trigger.dev/sdk@2.3.18)(next@14.2.2)
