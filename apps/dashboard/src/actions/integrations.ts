@@ -1,7 +1,7 @@
 'use server'
 
 import { authAction } from '@/lib/safe-action'
-import { usersQueries } from '@/queries/users'
+import { integrationsQueries } from '@/queries/integrations'
 import { createSlackApp } from '@seventy-seven/integrations/slack'
 import { prisma } from '@seventy-seven/orm/prisma'
 import { revalidatePath } from 'next/cache'
@@ -17,16 +17,16 @@ export const revokeSlackIntegration = authAction(
       .optional(),
   ]),
   async (values) => {
-    const currentTeam = await usersQueries.myCurrentTeam()
+    const slackIntegration = await integrationsQueries.getCurrentTeamsSlackIntegration()
 
-    if (!currentTeam.current_team.integration_slack) {
+    if (!slackIntegration) {
       throw new Error('No Slack integration to revoke')
     }
 
     try {
       const slackApp = createSlackApp({
-        token: currentTeam.current_team.integration_slack.slack_access_token,
-        botId: currentTeam.current_team.integration_slack.slack_bot_user_id,
+        token: slackIntegration.slack_access_token,
+        botId: slackIntegration.slack_bot_user_id,
       })
 
       await Promise.all([
@@ -35,7 +35,7 @@ export const revokeSlackIntegration = authAction(
         }),
         prisma.integrationSlack.delete({
           where: {
-            id: currentTeam.current_team.integration_slack.id,
+            id: slackIntegration.id,
           },
           select: {
             slack_team_name: true,

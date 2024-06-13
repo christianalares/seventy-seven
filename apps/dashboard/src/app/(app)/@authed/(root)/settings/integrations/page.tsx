@@ -1,6 +1,7 @@
 import { AddSlackIntegrationButton } from '@/components/add-slack-integration-button'
 import { PageWrapper } from '@/components/page-wrapper'
 import { RevokeSlackIntegrationButton } from '@/components/revoke-slack-integration-button'
+import { integrationsQueries } from '@/queries/integrations'
 import { usersQueries } from '@/queries/users'
 import { getInstallUrl } from '@seventy-seven/integrations/slack'
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@seventy-seven/ui/card'
@@ -8,8 +9,9 @@ import { Icon } from '@seventy-seven/ui/icon'
 
 const IntegrationsPage = async () => {
   const user = await usersQueries.myCurrentTeam()
+  const slackIntegration = await integrationsQueries.getCurrentTeamsSlackIntegration()
 
-  if (user.current_team.integration_slack) {
+  if (slackIntegration) {
     return (
       <PageWrapper>
         <Card>
@@ -26,8 +28,8 @@ const IntegrationsPage = async () => {
           <CardContent>
             <p className="text-muted-foreground">
               Seventy Seven is connected to the channel{' '}
-              <span className="text-primary">{user.current_team.integration_slack.slack_channel}</span> in{' '}
-              <span className="text-primary">{user.current_team.integration_slack.slack_team_name}</span>
+              <span className="text-primary">{slackIntegration.slack_channel}</span> in{' '}
+              <span className="text-primary">{slackIntegration.slack_team_name}</span>
             </p>
           </CardContent>
 
