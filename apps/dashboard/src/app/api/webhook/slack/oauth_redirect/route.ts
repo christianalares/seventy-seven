@@ -129,9 +129,9 @@ export async function GET(request: NextRequest) {
         requestUrl.protocol = 'http'
       }
 
-      // This window will be in a popup so we redirect to the close-window route which closes the window
+      // This window will be in a popup so we redirect to the close route which closes the window
       // and then sends a browser event to the parent window. Actions can be taken based on this event.
-      return NextResponse.redirect(`${requestUrl.origin}/close-window?event=slack_oauth_completed`)
+      return NextResponse.redirect(`${requestUrl.origin}/close?event=slack_oauth_completed`)
       // return NextResponse.redirect(`${requestUrl.origin}/settings/integrations`)
     }
   } catch (err) {
