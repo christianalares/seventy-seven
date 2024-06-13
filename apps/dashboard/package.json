@@ -19,6 +19,7 @@
     "@seventy-seven/sdk": "workspace:*",
     "@seventy-seven/supabase": "workspace:*",
     "@seventy-seven/ui": "workspace:*",
+    "@seventy-seven/integrations": "workspace:*",
     "@slack/bolt": "^3.18.0",
     "@slack/oauth": "^3.0.0",
     "@trigger.dev/nextjs": "^2.3.18",

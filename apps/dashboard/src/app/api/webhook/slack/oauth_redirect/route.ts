@@ -1,4 +1,4 @@
-import { slackInstaller } from '@/lib/slack'
+import { createSlackApp, slackInstaller } from '@seventy-seven/integrations/slack'
 import { prisma } from '@seventy-seven/orm/prisma'
 import { type NextRequest, NextResponse } from 'next/server'
 import { z } from 'zod'
@@ -97,20 +97,41 @@ export async function GET(request: NextRequest) {
           slack_url: parsedJson.data.incoming_webhook.url,
           slack_bot_user_id: parsedJson.data.bot_user_id,
         },
+        select: {
+          slack_access_token: true,
+          slack_bot_user_id: true,
+          slack_channel_id: true,
+          team: {
+            select: {
+              name: true,
+            },
+          },
+        },
       })
       .catch((_err) => {
         throw new Error('Failed to create slack integration')
       })
 
     if (createdSlackIntegration) {
+      const slackApp = createSlackApp({
+        token: createdSlackIntegration.slack_access_token,
+        botId: createdSlackIntegration.slack_bot_user_id,
+      })
+
+      slackApp.client.chat.postMessage({
+        channel: createdSlackIntegration.slack_channel_id,
+        text: `👋 Hello, I'm Seventy Seven. I'll send notifications in this channel for the *${createdSlackIntegration.team.name}* team`,
+      })
+
       const requestUrl = new URL(request.url)
 
       if (process.env.NODE_ENV === 'development') {
         requestUrl.protocol = 'http'
       }
 
-      // Is this reasonable?
-      return NextResponse.redirect(`${requestUrl.origin}/auto-close`)
+      // This window will be in a popup so we redirect to the close-window route which closes the window
+      // and then sends a browser event to the parent window. Actions can be taken based on this event.
+      return NextResponse.redirect(`${requestUrl.origin}/close-window?event=slack_oauth_completed`)
       // return NextResponse.redirect(`${requestUrl.origin}/settings/integrations`)
     }
   } catch (err) {

@@ -1,8 +1,8 @@
 import { AddSlackIntegrationButton } from '@/components/add-slack-integration-button'
 import { PageWrapper } from '@/components/page-wrapper'
 import { RevokeSlackIntegrationButton } from '@/components/revoke-slack-integration-button'
-import { getInstallUrl } from '@/lib/slack'
 import { usersQueries } from '@/queries/users'
+import { getInstallUrl } from '@seventy-seven/integrations/slack'
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@seventy-seven/ui/card'
 import { Icon } from '@seventy-seven/ui/icon'
 

@@ -20,7 +20,7 @@ const HelpPage = async () => {
       </p>
       <h2 className="mt-4 text-xl">Step 1</h2>
       <Button asChild>
-        <Link href="/settings/security" className="mt-2">
+        <Link prefetch href="/settings/security" className="mt-2">
           Create an authorization token
         </Link>
       </Button>

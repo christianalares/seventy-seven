@@ -1,7 +1,7 @@
 import { componentToPlainText } from '@seventy-seven/email'
 import SnoozeExpired from '@seventy-seven/email/emails/snooze-expired'
 import { prisma } from '@seventy-seven/orm/prisma'
-import { App as SlackApp } from '@slack/bolt'
+// import { App as SlackApp } from '@slack/bolt'
 import { Resend } from '@trigger.dev/resend'
 import { eventTrigger } from '@trigger.dev/sdk'
 import { z } from 'zod'
@@ -71,39 +71,39 @@ jobsClient.defineJob({
       },
     })
 
-    const ticketWithTeam = await prisma.ticket.findUnique({
-      where: {
-        id: payload.ticketId,
-      },
-      select: {
-        id: true,
-        snoozed_until: true,
-        team: {
-          select: {
-            integration_slack: {
-              select: {
-                slack_access_token: true,
-                slack_channel_id: true,
-                slack_bot_user_id: true,
-              },
-            },
-          },
-        },
-      },
-    })
+    // const ticketWithTeam = await prisma.ticket.findUnique({
+    //   where: {
+    //     id: payload.ticketId,
+    //   },
+    //   select: {
+    //     id: true,
+    //     snoozed_until: true,
+    //     team: {
+    //       select: {
+    //         integration_slack: {
+    //           select: {
+    //             slack_access_token: true,
+    //             slack_channel_id: true,
+    //             slack_bot_user_id: true,
+    //           },
+    //         },
+    //       },
+    //     },
+    //   },
+    // })
 
-    if (ticketWithTeam?.team.integration_slack) {
-      const slackApp = new SlackApp({
-        signingSecret: process.env.SLACK_SIGNING_SECRET,
-        token: ticketWithTeam.team.integration_slack.slack_access_token,
-        botId: ticketWithTeam.team.integration_slack.slack_bot_user_id,
-      })
+    // if (ticketWithTeam?.team.integration_slack) {
+    //   const slackApp = new SlackApp({
+    //     signingSecret: process.env.SLACK_SIGNING_SECRET,
+    //     token: ticketWithTeam.team.integration_slack.slack_access_token,
+    //     botId: ticketWithTeam.team.integration_slack.slack_bot_user_id,
+    //   })
 
-      slackApp.client.chat.postMessage({
-        channel: ticketWithTeam.team.integration_slack.slack_channel_id,
-        text: `⚠️ Snoozed ticket alert! Ticket with the id ${ticketWithTeam.id} has been unsnoozed}`,
-      })
-    }
+    //   slackApp.client.chat.postMessage({
+    //     channel: ticketWithTeam.team.integration_slack.slack_channel_id,
+    //     text: `⚠️ Snoozed ticket alert! Ticket with the id ${ticketWithTeam.id} has been unsnoozed}`,
+    //   })
+    // }
 
     const template = SnoozeExpired({
       shortId: updatedTicket.short_id,

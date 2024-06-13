@@ -61,7 +61,9 @@ export const TeamActionsMenu = ({ teamId, isCurrent }: Props) => {
 
         {isCurrent && (
           <DropdownMenuItem asChild>
-            <Link href="/settings">Manage team</Link>
+            <Link prefetch href="/settings">
+              Manage team
+            </Link>
           </DropdownMenuItem>
         )}
 

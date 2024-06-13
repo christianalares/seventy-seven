@@ -1,0 +1,22 @@
+{
+  "name": "@seventy-seven/integrations",
+  "version": "1.0.0",
+  "private": true,
+  "sideEffects": false,
+  "scripts": {
+    "lint": "biome check .",
+    "check:types": "tsc --noEmit"
+  },
+  "dependencies": {
+    "@slack/bolt": "^3.18.0",
+    "@slack/oauth": "^3.0.0"
+  },
+  "devDependencies": {
+    "@seventy-seven/typescript-config": "workspace:*",
+    "@types/node": "^20.14.2",
+    "typescript": "^5.4.5"
+  },
+  "exports": {
+    "./slack": "./src/slack/index.ts"
+  }
+}

@@ -2,12 +2,15 @@
 
 import { Button } from '@seventy-seven/ui/button'
 import { Icon } from '@seventy-seven/ui/icon'
+import { useRouter } from 'next/navigation'
 
 type Props = {
   url: string
 }
 
 export const AddSlackIntegrationButton = ({ url }: Props) => {
+  const router = useRouter()
+
   const openPopup = () => {
     const width = 600
     const height = 800
@@ -23,12 +26,23 @@ export const AddSlackIntegrationButton = ({ url }: Props) => {
     // The popup might have been blocked, so we redirect the user to the URL instead
     if (!popup) {
       window.location.href = url
+      return
     }
+
+    const listener = (e: MessageEvent) => {
+      if (e.data === 'slack_oauth_completed') {
+        router.refresh()
+        window.removeEventListener('message', listener)
+        popup.close()
+      }
+    }
+
+    window.addEventListener('message', listener)
   }
 
   return (
     <Button
-      // className="gap-2"
+      className="gap-2"
       onClick={() => {
         openPopup()
       }}

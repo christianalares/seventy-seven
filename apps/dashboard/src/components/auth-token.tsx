@@ -40,7 +40,7 @@ export const AuthToken = ({ authToken }: Props) => {
           This token needs to be provided when creating tickets via the API.
           <br />
           You can read more about that on the{' '}
-          <Link className="text-primary font-semibold hover:underline" href="/help">
+          <Link prefetch className="text-primary font-semibold hover:underline" href="/help">
             help section
           </Link>
           . Do not share this key and make sure to only store it in a .env file

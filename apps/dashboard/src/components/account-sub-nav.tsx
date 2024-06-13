@@ -19,6 +19,7 @@ const SubLinkItem = ({ href, label }: SubLinkItemProps) => {
   return (
     <li className="relative">
       <Link
+        prefetch
         href={href}
         className={cn('transition-colors', {
           'text-foreground': isActive,

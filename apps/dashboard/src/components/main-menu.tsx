@@ -27,7 +27,7 @@ const LinkItem = ({ href, label, icon, className }: LinkItemProps) => {
           'text-foreground bg-accent': isActive,
         })}
       >
-        <Link href={href}>
+        <Link prefetch href={href}>
           {icon && <Icon className="size-4" name={icon} />}
           <span className="sr-only sm:not-sr-only">{label}</span>
         </Link>
