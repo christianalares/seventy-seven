@@ -1,6 +1,6 @@
 'use server'
 
-import { opServerClient } from '@/lib/openpanel'
+import { analyticsClient } from '@/lib/analytics'
 import { authAction } from '@/lib/safe-action'
 import { usersQueries } from '@/queries/users'
 import { componentToPlainText, createResendClient } from '@seventy-seven/email'
@@ -8,7 +8,6 @@ import TicketClosed from '@seventy-seven/email/emails/ticket-closed'
 import { Events } from '@seventy-seven/jobs/constants'
 import { jobsClient } from '@seventy-seven/jobs/jobsClient'
 import { prisma } from '@seventy-seven/orm/prisma'
-import { waitUntil } from '@vercel/functions'
 import { isFuture } from 'date-fns'
 import { revalidatePath } from 'next/cache'
 import { z } from 'zod'
@@ -82,12 +81,10 @@ export const snoozeTicket = authAction(
     revalidatePath(`/inbox/${updatedTicket.id}`)
     revalidatePath(`/inbox/snoozed/${updatedTicket.id}`)
 
-    waitUntil(
-      opServerClient.event('snoozed_ticket', {
-        ticket_id: updatedTicket.id,
-        user_id: user.id,
-      }),
-    )
+    analyticsClient.event('snoozed_ticket', {
+      ticket_id: updatedTicket.id,
+      user_id: user.id,
+    })
 
     return updatedTicket
   },
@@ -128,19 +125,15 @@ export const toggleStar = authAction(
     revalidatePath('/inbox/starred')
 
     if (values.star) {
-      waitUntil(
-        opServerClient.event('starred_ticket', {
-          ticket_id: updatedTicket.id,
-          user_id: user.id,
-        }),
-      )
+      analyticsClient.event('starred_ticket', {
+        ticket_id: updatedTicket.id,
+        user_id: user.id,
+      })
     } else {
-      waitUntil(
-        opServerClient.event('unstarred_ticket', {
-          ticket_id: updatedTicket.id,
-          user_id: user.id,
-        }),
-      )
+      analyticsClient.event('unstarred_ticket', {
+        ticket_id: updatedTicket.id,
+        user_id: user.id,
+      })
     }
 
     return {
@@ -249,12 +242,10 @@ export const closeTicket = authAction(
     revalidatePath('/inbox')
     revalidatePath('/inbox/closed')
 
-    waitUntil(
-      opServerClient.event('closed_ticket', {
-        ticket_id: updatedTicket.id,
-        closed_by_user_id: user.id,
-      }),
-    )
+    analyticsClient.event('closed_ticket', {
+      ticket_id: updatedTicket.id,
+      closed_by_user_id: user.id,
+    })
 
     return updatedTicket
   },
@@ -311,13 +302,11 @@ export const assignToMember = authAction(
 
     revalidatePath('/inbox')
 
-    waitUntil(
-      opServerClient.event('assigned_ticket', {
-        ticket_id: values.ticketId,
-        assigned_by_user_id: user.id,
-        assigned_to_user_id: values.memberId,
-      }),
-    )
+    analyticsClient.event('assigned_ticket', {
+      ticket_id: values.ticketId,
+      assigned_by_user_id: user.id,
+      assigned_to_user_id: values.memberId,
+    })
 
     return updatedTicket
   },
@@ -351,12 +340,10 @@ export const unassignTicket = authAction(
 
     revalidatePath(values.revalidatePath)
 
-    waitUntil(
-      opServerClient.event('unassigned_ticket', {
-        ticket_id: values.ticketId,
-        user_id: user.id,
-      }),
-    )
+    analyticsClient.event('unassigned_ticket', {
+      ticket_id: values.ticketId,
+      user_id: user.id,
+    })
 
     return { success: true }
   },

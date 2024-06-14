@@ -1,4 +1,4 @@
-import { OpenpanelSdk } from '@openpanel/nextjs'
+import { createAnalyticsClient } from '@seventy-seven/analytics'
 
 const NEXT_PUBLIC_OPENPANEL_DASHBOARD_CLIENT_ID = process.env.NEXT_PUBLIC_OPENPANEL_DASHBOARD_CLIENT_ID
 const OPENPANEL_DASHBOARD_CLIENT_SECRET = process.env.OPENPANEL_DASHBOARD_CLIENT_SECRET
@@ -11,7 +11,7 @@ if (!OPENPANEL_DASHBOARD_CLIENT_SECRET) {
   throw new Error('OPENPANEL_DASHBOARD_CLIENT_SECRET is required')
 }
 
-export const opServerClient = new OpenpanelSdk({
+export const analyticsClient = createAnalyticsClient({
   clientId: NEXT_PUBLIC_OPENPANEL_DASHBOARD_CLIENT_ID,
   clientSecret: OPENPANEL_DASHBOARD_CLIENT_SECRET,
 })

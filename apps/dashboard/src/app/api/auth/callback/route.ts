@@ -1,7 +1,6 @@
-import { opServerClient } from '@/lib/openpanel'
+import { analyticsClient } from '@/lib/analytics'
 import { usersQueries } from '@/queries/users'
 import { createClient } from '@seventy-seven/supabase/clients/server'
-import { waitUntil } from '@vercel/functions'
 import { NextResponse } from 'next/server'
 
 export async function GET(request: Request) {
@@ -17,13 +16,11 @@ export async function GET(request: Request) {
 
     const user = await usersQueries.findMe()
 
-    waitUntil(
-      opServerClient.event('login', {
-        email: user.email,
-        full_name: user.full_name,
-        profileId: user.id,
-      }),
-    )
+    analyticsClient.event('login', {
+      email: user.email,
+      full_name: user.full_name,
+      profileId: user.id,
+    })
   }
 
   if (returnTo) {
