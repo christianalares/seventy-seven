@@ -13,7 +13,7 @@ export const InviteTeamMemberButton = ({ team }: Props) => {
   return (
     <Button className="gap-2" onClick={() => pushModal('inviteTeamMemberModal', { team })}>
       <Icon name="userPlus" className="size-5" />
-      Invite Team Member
+      Invite member
     </Button>
   )
 }

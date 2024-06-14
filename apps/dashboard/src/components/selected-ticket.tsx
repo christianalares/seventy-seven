@@ -28,7 +28,7 @@ export const SelectedTicket = async ({ id }: Props) => {
       <TicketChatHeader ticket={ticket} />
       <TicketChat messages={ticket.messages} />
 
-      <div className="min-h-60 h-[15vh] border-t">
+      <div className="border-t">
         <ChatResponseForm ticketId={ticket.id} />
       </div>
     </div>
@@ -37,8 +37,8 @@ export const SelectedTicket = async ({ id }: Props) => {
 
 export const SelectedTicketSkeleton = () => {
   return (
-    <div className="flex flex-col h-[calc(100vh-theme(spacing.36))] overflow-hidden">
-      <header className="border-b p-4 flex items-center gap-2">
+    <div className="flex-1 flex flex-col h-full">
+      <header className="border-b p-2 md:p-4 flex items-center gap-2">
         <div className="flex-1">
           {/* Subject */}
           <Skeleton className="h-5 w-24" />
@@ -52,9 +52,9 @@ export const SelectedTicketSkeleton = () => {
         </div>
       </header>
 
-      <ul className="flex flex-col gap-4 m-8 flex-1">
+      <ul className="flex flex-col gap-4 m-2 md:m-8 flex-1">
         {/* User message */}
-        <li className="border rounded-md p-4 w-[80%] max-w-4xl self-start">
+        <li className="border rounded-md p-2 md:p-4 w-[80%] max-w-4xl self-start">
           <div className="flex justify-between text-xs font-medium items-center gap-2">
             <div className="flex items-center gap-2 w-full">
               {/* Avatar */}
@@ -74,7 +74,7 @@ export const SelectedTicketSkeleton = () => {
         </li>
 
         {/* Handler message */}
-        <li className="border rounded-md p-4 w-[80%] max-w-4xl self-end">
+        <li className="border rounded-md p-2 md:p-4 w-[80%] max-w-4xl self-end">
           <div className="flex justify-between text-xs font-medium items-center gap-2">
             <div className="flex items-center gap-2 w-full">
               {/* Avatar */}
@@ -96,7 +96,7 @@ export const SelectedTicketSkeleton = () => {
         </li>
 
         {/* User message */}
-        <li className="border rounded-md p-4 w-[80%] max-w-4xl self-start">
+        <li className="border rounded-md p-2 md:p-4 w-[80%] max-w-4xl self-start">
           <div className="flex justify-between text-xs font-medium items-center gap-2">
             <div className="flex items-center gap-2 w-full">
               {/* Avatar */}
