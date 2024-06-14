@@ -43,7 +43,7 @@ export const SettingsSubNav = ({ className }: Props) => {
 
   return (
     <nav className={cn(className)}>
-      <ul className="flex items-center gap-4">
+      <ul className="flex items-center pb-2 gap-3 overflow-y-auto overflow-x-visible">
         <SubLinkItem isActive={segment === null} href="/settings" label="General" />
         <SubLinkItem isActive={segment === 'members'} href="/settings/members" label="Members" />
         <SubLinkItem isActive={segment === 'tags'} href="/settings/tags" label="Tags" />

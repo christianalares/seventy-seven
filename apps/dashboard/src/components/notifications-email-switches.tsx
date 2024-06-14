@@ -44,7 +44,7 @@ export const NotificationsEmailSwitches = ({ user }: Props) => {
     },
     {
       onSuccess: (_updatedUser) => {
-        toast.success('Settings updated')
+        toast.success('Notification settings updated')
       },
     },
   )

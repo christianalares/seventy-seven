@@ -4,6 +4,7 @@ import { createMessage } from '@/actions/messages'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { Button } from '@seventy-seven/ui/button'
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@seventy-seven/ui/form'
+import { Icon } from '@seventy-seven/ui/icon'
 import { Textarea } from '@seventy-seven/ui/textarea'
 import { useAction } from 'next-safe-action/hooks'
 import { useForm } from 'react-hook-form'
@@ -59,34 +60,39 @@ export const ChatResponseForm = ({ ticketId }: Props) => {
 
   return (
     <Form {...form}>
-      <form onSubmit={onSubmit} className="p-4 flex flex-col h-full">
-        <FormField
-          control={form.control}
-          name="message"
-          render={({ field }) => {
-            return (
-              <FormItem className="flex-1 flex flex-col gap-2">
-                <FormLabel>Write a response</FormLabel>
-                <FormControl>
-                  <Textarea className="rounded-none mt-0 flex-1" {...field} />
-                </FormControl>
-              </FormItem>
-            )
-          }}
-        />
+      <form onSubmit={onSubmit} className="p-2 flex flex-col">
+        <div className="relative group">
+          <FormField
+            control={form.control}
+            name="message"
+            render={({ field }) => {
+              return (
+                <FormItem className="space-y-0">
+                  <FormLabel className="sr-only">Write a response</FormLabel>
+                  <FormControl>
+                    <Textarea
+                      placeholder="Write a response"
+                      className="rounded-none p-4 min-h-0 h-12 group-has-[:focus]:h-[20vh] transition-[height] duration-300 resize-none"
+                      {...field}
+                    />
+                  </FormControl>
+                </FormItem>
+              )
+            }}
+          />
 
-        <div className="mt-4 flex justify-between items-center">
-          <FormMessage message={form.formState.errors.message?.message} />
           <Button
-            className="ml-auto"
+            className="absolute bottom-2 right-2"
             loading={action.status === 'executing'}
-            size="sm"
+            size="icon-sm"
             type="submit"
-            variant="secondary"
           >
-            Send response
+            <Icon name="send" className="size-4" />
+            <span className="sr-only">Send response</span>
           </Button>
         </div>
+
+        <FormMessage className="my-2" message={form.formState.errors.message?.message} />
       </form>
     </Form>
   )

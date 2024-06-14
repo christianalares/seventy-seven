@@ -57,7 +57,7 @@ export const TicketChat = ({ messages }: Props) => {
 
   return (
     <div ref={ref} className="flex-1 overflow-scroll">
-      <ul className="flex flex-col gap-4 m-8">
+      <ul className="flex flex-col gap-4 m-2 md:m-8">
         {messages.map((message) => {
           if (message.handler) {
             return (

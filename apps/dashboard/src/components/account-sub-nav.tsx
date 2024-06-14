@@ -41,7 +41,7 @@ const SubLinkItem = ({ href, label }: SubLinkItemProps) => {
 export const AccountSubNav = () => {
   return (
     <nav>
-      <ul className="flex items-center gap-4">
+      <ul className="flex items-center gap-3">
         <SubLinkItem href="/account" label="General" />
         <SubLinkItem href="/account/teams" label="Teams" />
         <SubLinkItem href="/account/notifications" label="Notifications" />

@@ -18,7 +18,7 @@ type Props = {
 
 export const ChatMessageUser = ({ id, name, avatar, body, date, unableToParseContent }: Props) => {
   return (
-    <li className="border rounded-md p-4 w-[80%] max-w-4xl self-start">
+    <li className="border rounded-md p-2 md:p-4 w-[80%] max-w-4xl self-start">
       <div className="flex justify-between text-xs font-medium items-center gap-2">
         <div className="flex items-center gap-2">
           <Avatar name={name} imageUrl={avatar} className="size-8 border" />
@@ -43,7 +43,7 @@ export const ChatMessageUser = ({ id, name, avatar, body, date, unableToParseCon
       </div>
 
       {unableToParseContent ? (
-        <div className="flex flex-col mt-2 p-4 rounded-md bg-yellow-100/40">
+        <div className="flex flex-col mt-2 p-2 md:p-4 rounded-md bg-yellow-100/40">
           <Icon name="triangleAlert" className="text-yellow-600 size-5" />
           <p className="text-sm inline-block mt-2">This message contains content that the parser could not extract.</p>
           <Button
