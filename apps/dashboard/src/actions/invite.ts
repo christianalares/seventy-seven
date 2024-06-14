@@ -1,6 +1,6 @@
 'use server'
 
-import { opServerClient } from '@/lib/openpanel'
+import { analyticsClient } from '@/lib/analytics'
 import { authAction } from '@/lib/safe-action'
 import { usersQueries } from '@/queries/users'
 import { sentencifyArray } from '@/utils/sentencifyArray'
@@ -8,7 +8,6 @@ import { shortId } from '@/utils/shortId'
 import { componentToPlainText, createResendClient } from '@seventy-seven/email'
 import TeamInvite from '@seventy-seven/email/emails/team-invite'
 import { prisma } from '@seventy-seven/orm/prisma'
-import { waitUntil } from '@vercel/functions'
 import { revalidatePath } from 'next/cache'
 import { z } from 'zod'
 
@@ -133,13 +132,11 @@ export const inviteTeamMembers = authAction(
       revalidatePath(values.revalidatePath)
     }
 
-    waitUntil(
-      opServerClient.event('team_members_invited', {
-        team_id: usersTeam.id,
-        profileId: user.id,
-        number_of_invites: createdInvites.length,
-      }),
-    )
+    analyticsClient.event('team_members_invited', {
+      team_id: usersTeam.id,
+      profileId: user.id,
+      number_of_invites: createdInvites.length,
+    })
 
     return createdInvites.length
   },
@@ -217,12 +214,10 @@ export const acceptInvitation = authAction(
 
     revalidatePath('/settings/members')
 
-    waitUntil(
-      opServerClient.event('team_member_invite_accepted', {
-        team_id: values.teamId,
-        profileId: dbUser.id,
-      }),
-    )
+    analyticsClient.event('team_member_invite_accepted', {
+      team_id: values.teamId,
+      profileId: dbUser.id,
+    })
 
     return { success: true }
   },
@@ -260,13 +255,11 @@ export const revokeInvitation = authAction(
 
     revalidatePath('/settings/members/pending')
 
-    waitUntil(
-      opServerClient.event('team_member_invite_revoked', {
-        team_id: deletedInvite.team_id,
-        email: deletedInvite.email,
-        profileId: user.id,
-      }),
-    )
+    analyticsClient.event('team_member_invite_revoked', {
+      team_id: deletedInvite.team_id,
+      email: deletedInvite.email,
+      profileId: user.id,
+    })
 
     return deletedInvite
   },

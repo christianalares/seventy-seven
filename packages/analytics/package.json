@@ -1,0 +1,20 @@
+{
+  "name": "@seventy-seven/analytics",
+  "version": "0.0.0",
+  "private": true,
+  "sideEffects": false,
+  "main": "src/index.tsx",
+  "scripts": {
+    "lint": "biome check .",
+    "check:types": "tsc --noEmit"
+  },
+  "dependencies": {
+    "@openpanel/nextjs": "0.0.10-beta",
+    "@vercel/functions": "^1.0.2"
+  },
+  "devDependencies": {
+    "@seventy-seven/typescript-config": "workspace:*",
+    "@types/node": "^20.14.2",
+    "typescript": "^5.4.5"
+  }
+}

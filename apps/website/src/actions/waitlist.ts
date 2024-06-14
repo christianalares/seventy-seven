@@ -1,5 +1,5 @@
 'use server'
-import { opServerClient } from '@/utils/openpanel'
+import { opServerClient } from '@/utils/analytics'
 import { action } from '@/utils/safe-action'
 import { componentToPlainText, createResendClient } from '@seventy-seven/email'
 import WaitlistConfirmation from '@seventy-seven/email/emails/waitlist-confirmation'

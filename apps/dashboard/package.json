@@ -12,7 +12,7 @@
   "dependencies": {
     "@faker-js/faker": "^8.4.1",
     "@hookform/resolvers": "^3.3.4",
-    "@openpanel/nextjs": "0.0.10-beta",
+    "@seventy-seven/analytics": "workspace:*",
     "@seventy-seven/email": "workspace:*",
     "@seventy-seven/integrations": "workspace:*",
     "@seventy-seven/jobs": "workspace:*",

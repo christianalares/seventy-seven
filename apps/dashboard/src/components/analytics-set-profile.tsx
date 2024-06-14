@@ -1,14 +1,14 @@
 'use client'
 
 import type { UsersFindMaybeMe } from '@/queries/users'
-import { setProfile } from '@openpanel/nextjs'
+import { setProfile } from '@seventy-seven/analytics'
 import { useEffect } from 'react'
 
 type Props = {
   user?: UsersFindMaybeMe
 }
 
-export const OpenpanelSetProfile = ({ user }: Props) => {
+export const AnalyticsSetProfile = ({ user }: Props) => {
   useEffect(() => {
     if (!user) {
       return

@@ -1,7 +1,7 @@
 import { ConfettiRain } from '@/components/confetti-rain'
 import { Header } from '@/components/header'
 import { ThemeProvider } from '@/components/theme-provider'
-import { OpenpanelProvider } from '@openpanel/nextjs'
+import { AnalyticsProvider } from '@seventy-seven/analytics'
 import '@seventy-seven/ui/globals.css'
 import { cn } from '@seventy-seven/ui/utils'
 import type { Metadata, Viewport } from 'next'
@@ -73,7 +73,8 @@ if (!NEXT_PUBLIC_OPENPANEL_WEBSITE_CLIENT_ID) {
 const RootLayout = async ({ children }: Props) => {
   return (
     <html lang="en" className="h-full" suppressHydrationWarning>
-      <OpenpanelProvider clientId={NEXT_PUBLIC_OPENPANEL_WEBSITE_CLIENT_ID} trackScreenViews trackOutgoingLinks />
+      <AnalyticsProvider clientId={NEXT_PUBLIC_OPENPANEL_WEBSITE_CLIENT_ID} />
+
       <body
         className={cn('h-full flex flex-col', mavenPro.variable, abel.variable, roboto.variable)}
         suppressHydrationWarning

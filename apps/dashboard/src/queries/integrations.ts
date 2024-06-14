@@ -30,6 +30,7 @@ export const getCurrentTeamsSlackIntegration = async () => {
       slack_access_token: true,
       slack_bot_user_id: true,
       slack_channel_id: true,
+      team_id: true,
     },
   })
 

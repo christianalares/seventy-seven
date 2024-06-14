@@ -1,10 +1,9 @@
-import { opServerClient } from '@/lib/openpanel'
+import { analyticsClient } from '@/lib/analytics'
 import { shortId } from '@/utils/shortId'
 import { componentToPlainText, createResendClient } from '@seventy-seven/email'
 import NewTicket from '@seventy-seven/email/emails/new-ticket'
 import { createSlackApp } from '@seventy-seven/integrations/slack'
 import { prisma } from '@seventy-seven/orm/prisma'
-import { waitUntil } from '@vercel/functions'
 import { NextResponse } from 'next/server'
 import { z } from 'zod'
 
@@ -192,13 +191,11 @@ export async function POST(req: Request) {
     }
   }
 
-  waitUntil(
-    opServerClient.event('created_ticket', {
-      team_id: foundTeam.id,
-      ticket_id: createdTicket.id,
-      subject: createdTicket.subject,
-    }),
-  )
+  analyticsClient.event('created_ticket', {
+    team_id: foundTeam.id,
+    ticket_id: createdTicket.id,
+    subject: createdTicket.subject,
+  })
 
   return NextResponse.json(
     {

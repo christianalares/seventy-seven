@@ -7,7 +7,7 @@
     "dev": "dotenv -- turbo dev",
     "dev:trigger": "@trigger.dev/cli@latest dev",
     "lint": "turbo lint",
-    "check:types": "turbo check:types",
+    "check:types": "turbo check:types --concurrency 20",
     "prisma:generate": "turbo prisma:generate"
   },
   "devDependencies": {

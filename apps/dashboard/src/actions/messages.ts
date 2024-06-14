@@ -1,12 +1,11 @@
 'use server'
 
-import { opServerClient } from '@/lib/openpanel'
+import { analyticsClient } from '@/lib/analytics'
 import { authAction } from '@/lib/safe-action'
 import { usersQueries } from '@/queries/users'
 import { componentToPlainText, createResendClient } from '@seventy-seven/email'
 import TicketMessageResponse from '@seventy-seven/email/emails/ticket-message-response'
 import { prisma } from '@seventy-seven/orm/prisma'
-import { waitUntil } from '@vercel/functions'
 import { revalidatePath } from 'next/cache'
 import { z } from 'zod'
 
@@ -140,13 +139,11 @@ export const createMessage = authAction(
 
     revalidatePath(`/inbox/${createdMessage.ticket.id}`)
 
-    waitUntil(
-      opServerClient.event('message_created', {
-        team_id: createdMessage.ticket.team.id,
-        ticket_id: createdMessage.ticket.id,
-        profileId: user.id,
-      }),
-    )
+    analyticsClient.event('message_created', {
+      team_id: createdMessage.ticket.team.id,
+      ticket_id: createdMessage.ticket.id,
+      profileId: user.id,
+    })
 
     return createdMessage
   },
@@ -192,6 +189,10 @@ export const editMessage = authAction(
     if (values.revalidatePath) {
       revalidatePath(values.revalidatePath)
     }
+
+    analyticsClient.event('message_edited', {
+      message_id: updatedMessage.id,
+    })
 
     return updatedMessage
   },

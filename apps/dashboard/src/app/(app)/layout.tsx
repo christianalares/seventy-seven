@@ -1,4 +1,4 @@
-import { OpenpanelSetProfile } from '@/components/openpanel-set-profile'
+import { AnalyticsSetProfile } from '@/components/analytics-set-profile'
 import { usersQueries } from '@/queries/users'
 
 type Props = {
@@ -11,7 +11,7 @@ const AppLayout = async ({ authed, unauthed }: Props) => {
 
   return user ? (
     <>
-      <OpenpanelSetProfile user={user} />
+      <AnalyticsSetProfile user={user} />
       {authed}
     </>
   ) : (

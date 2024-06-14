@@ -1,5 +1,6 @@
 'use server'
 
+import { analyticsClient } from '@/lib/analytics'
 import { authAction } from '@/lib/safe-action'
 import { usersQueries } from '@/queries/users'
 import { prisma } from '@seventy-seven/orm/prisma'
@@ -141,7 +142,7 @@ export const updateTag = authAction(
       .max(7, { message: 'Invalid color' }),
   }),
   async (values, user) => {
-    const updatedTag = prisma.ticketTag
+    const updatedTag = await prisma.ticketTag
       .update({
         where: {
           id: values.id,
@@ -166,6 +167,12 @@ export const updateTag = authAction(
     if (values.revalidatePath) {
       revalidatePath(values.revalidatePath)
     }
+
+    analyticsClient.event('ticket_tag_updated', {
+      tag_id: values.id,
+      tag_name_from: values.name,
+      tag_name_to: updatedTag.name,
+    })
 
     return updatedTag
   },
@@ -202,6 +209,11 @@ export const createTag = authAction(
     if (values.revalidatePath) {
       revalidatePath(values.revalidatePath)
     }
+
+    analyticsClient.event('ticket_tag_created', {
+      tag_id: createdTag.id,
+      tag_name: createdTag.name,
+    })
 
     return createdTag
   },

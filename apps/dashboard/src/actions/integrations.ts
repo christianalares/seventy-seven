@@ -1,5 +1,6 @@
 'use server'
 
+import { analyticsClient } from '@/lib/analytics'
 import { authAction } from '@/lib/safe-action'
 import { integrationsQueries } from '@/queries/integrations'
 import { createSlackApp } from '@seventy-seven/integrations/slack'
@@ -46,6 +47,10 @@ export const revokeSlackIntegration = authAction(
       if (values?.revalidatePath) {
         revalidatePath(values.revalidatePath)
       }
+
+      analyticsClient.event('slack_integration_revoked', {
+        team_id: slackIntegration.team_id,
+      })
 
       return {
         success: true,
