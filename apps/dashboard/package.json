@@ -3,7 +3,6 @@
   "version": "0.0.0",
   "private": true,
   "scripts": {
-    "hej": "next build",
     "dev": "next dev --port 3000",
     "build": "next build",
     "start": "next start",
@@ -15,6 +14,7 @@
     "@hookform/resolvers": "^3.3.4",
     "@openpanel/nextjs": "0.0.10-beta",
     "@seventy-seven/email": "workspace:*",
+    "@seventy-seven/integrations": "workspace:*",
     "@seventy-seven/jobs": "workspace:*",
     "@seventy-seven/orm": "workspace:*",
     "@seventy-seven/sdk": "workspace:*",

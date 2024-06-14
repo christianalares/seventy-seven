@@ -170,3 +170,39 @@ export const updateTag = authAction(
     return updatedTag
   },
 )
+
+export const createTag = authAction(
+  z.object({
+    revalidatePath: z.string().optional(),
+    name: z
+      .string({ message: 'Name is required' })
+      .min(1, { message: 'Name is required' })
+      .max(30, { message: 'Name can only be maximun 30 characters' }),
+    color: z
+      .string({ message: 'Color is required' })
+      .startsWith('#', { message: 'Invalid color' })
+      .max(7, { message: 'Invalid color' }),
+  }),
+  async (values) => {
+    const dbUser = await usersQueries.findMe()
+
+    const createdTag = await prisma.ticketTag.create({
+      data: {
+        name: values.name,
+        color: values.color,
+        team_id: dbUser.current_team_id,
+      },
+      select: {
+        id: true,
+        name: true,
+        color: true,
+      },
+    })
+
+    if (values.revalidatePath) {
+      revalidatePath(values.revalidatePath)
+    }
+
+    return createdTag
+  },
+)

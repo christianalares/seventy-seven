@@ -78,7 +78,7 @@ export async function POST(req: Request) {
   )
 
   try {
-    const updatedTicket = await prisma.ticket.update({
+    await prisma.ticket.update({
       where: {
         short_id: foundTicket.short_id,
       },
@@ -99,7 +99,7 @@ export async function POST(req: Request) {
       },
     })
 
-    revalidatePath(`/inbox/${updatedTicket.id}`)
+    revalidatePath('/inbox')
 
     return NextResponse.json({ success: true }, { status: 201 })
   } catch (err) {

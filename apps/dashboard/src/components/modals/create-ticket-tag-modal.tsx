@@ -1,7 +1,7 @@
 'use client'
 
-import { updateTag } from '@/actions/ticket-tags'
-import type { UsersGetMyCurrentTeam } from '@/queries/users'
+import { createTag } from '@/actions/ticket-tags'
+import { getRandomTagColor } from '@/utils/colors'
 import { Modal, ModalDescription, ModalHeader, ModalTitle } from '@seventy-seven/ui/modal'
 import { useAction } from 'next-safe-action/hooks'
 import { usePathname } from 'next/navigation'
@@ -9,17 +9,13 @@ import { toast } from 'sonner'
 import { popModal } from '.'
 import { TicketTagForm } from '../forms/ticket-tag-form'
 
-type Props = {
-  tag: UsersGetMyCurrentTeam['current_team']['ticket_tags'][number]
-}
-
-export const EditTicketTagModal = ({ tag }: Props) => {
+export const CreateTicketTagModal = () => {
   const pathname = usePathname()
 
-  const action = useAction(updateTag, {
+  const action = useAction(createTag, {
     onSuccess: () => {
-      toast.success('Tag updated')
-      popModal('editTicketTagModal')
+      toast.success('Tag created')
+      popModal('createTicketTagModal')
     },
     onError: (error) => {
       toast.error(error.serverError)
@@ -29,26 +25,25 @@ export const EditTicketTagModal = ({ tag }: Props) => {
   return (
     <Modal>
       <ModalHeader>
-        <ModalTitle>Edit tag</ModalTitle>
+        <ModalTitle>Create tag</ModalTitle>
         <ModalDescription>Change the color and/or the name</ModalDescription>
       </ModalHeader>
 
       <TicketTagForm
         defaultValues={{
-          name: tag.name,
-          color: tag.color,
+          name: '',
+          color: getRandomTagColor(),
         }}
         onSubmit={(values) => {
           action.execute({
             revalidatePath: pathname,
-            id: tag.id,
             name: values.name,
             color: values.color,
           })
         }}
-        onClose={() => popModal('editTicketTagModal')}
+        onClose={() => popModal('createTicketTagModal')}
         isLoading={action.status === 'executing'}
-        ctaText="Save tag"
+        ctaText="Create tag"
       />
     </Modal>
   )

@@ -2,6 +2,7 @@ import { opServerClient } from '@/lib/openpanel'
 import { shortId } from '@/utils/shortId'
 import { componentToPlainText, createResendClient } from '@seventy-seven/email'
 import NewTicket from '@seventy-seven/email/emails/new-ticket'
+import { createSlackApp } from '@seventy-seven/integrations/slack'
 import { prisma } from '@seventy-seven/orm/prisma'
 import { waitUntil } from '@vercel/functions'
 import { NextResponse } from 'next/server'
@@ -49,6 +50,13 @@ export async function POST(req: Request) {
       auth_token: true,
       name: true,
       image_url: true,
+      integration_slack: {
+        select: {
+          slack_access_token: true,
+          slack_bot_user_id: true,
+          slack_channel_id: true,
+        },
+      },
       members: {
         select: {
           user: {
@@ -90,6 +98,63 @@ export async function POST(req: Request) {
     },
   })
 
+  if (foundTeam.integration_slack) {
+    const slackApp = createSlackApp({
+      token: foundTeam.integration_slack.slack_access_token,
+      botId: foundTeam.integration_slack.slack_bot_user_id,
+    })
+
+    slackApp.client.chat.postMessage({
+      channel: foundTeam.integration_slack.slack_channel_id,
+      blocks: [
+        {
+          type: 'header',
+          text: {
+            type: 'plain_text',
+            text: 'New support ticket',
+          },
+        },
+        {
+          type: 'section',
+          text: {
+            type: 'mrkdwn',
+            text: `*${parsedBody.data.senderFullName}* wrote:`,
+          },
+        },
+        {
+          type: 'section',
+          text: {
+            type: 'mrkdwn',
+            text: `*${parsedBody.data.subject}*`,
+          },
+        },
+        {
+          type: 'section',
+          text: {
+            type: 'mrkdwn',
+            text: parsedBody.data.body,
+          },
+        },
+        {
+          type: 'divider',
+        },
+        {
+          type: 'actions',
+          elements: [
+            {
+              type: 'button',
+              text: {
+                type: 'plain_text',
+                text: 'Go to ticket',
+              },
+              url: `https://app.seventy-seven.dev/inbox?ticketId=${createdTicket.id}`,
+            },
+          ],
+        },
+      ],
+    })
+  }
+
   const to = foundTeam.members
     .filter((member) => member.user.notification_email_new_ticket)
     .map((member) => `${member.user.full_name} <${member.user.email}>`)
@@ -123,8 +188,7 @@ export async function POST(req: Request) {
     })
 
     if (error) {
-      // biome-ignore lint/suspicious/noConsoleLog: Log here
-      console.log('Error sending email', error)
+      console.error('Error sending email', error)
     }
   }
 

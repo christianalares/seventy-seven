@@ -15,6 +15,7 @@ const SubLinkItem = ({ href, label, isActive }: SubLinkItemProps) => {
   return (
     <li className="relative">
       <Link
+        prefetch
         href={href}
         className={cn('transition-colors', {
           'text-foreground': isActive,
@@ -46,6 +47,7 @@ export const SettingsSubNav = ({ className }: Props) => {
         <SubLinkItem isActive={segment === null} href="/settings" label="General" />
         <SubLinkItem isActive={segment === 'members'} href="/settings/members" label="Members" />
         <SubLinkItem isActive={segment === 'tags'} href="/settings/tags" label="Tags" />
+        <SubLinkItem isActive={segment === 'integrations'} href="/settings/integrations" label="Integrations" />
         <SubLinkItem isActive={segment === 'security'} href="/settings/security" label="Security" />
       </ul>
     </nav>

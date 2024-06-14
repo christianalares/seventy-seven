@@ -13,6 +13,7 @@ export const MembersListTabNav = () => {
       <ul className="flex items-center gap-2">
         <li className="relative">
           <Link
+            prefetch
             href="/settings/members"
             className={cn({
               'text-foreground': pathname === '/settings/members',
@@ -32,6 +33,7 @@ export const MembersListTabNav = () => {
 
         <li className="relative">
           <Link
+            prefetch
             href="/settings/members/pending"
             className={cn({
               'text-foreground': pathname === '/settings/members/pending',

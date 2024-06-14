@@ -60,11 +60,15 @@ export const UserMenuDropdown = ({ user, className }: Props) => {
         <DropdownMenuSeparator />
 
         <DropdownMenuItem asChild>
-          <Link href="/account">Account</Link>
+          <Link prefetch href="/account">
+            Account
+          </Link>
         </DropdownMenuItem>
 
         <DropdownMenuItem asChild>
-          <Link href="/account/teams">Teams</Link>
+          <Link prefetch href="/account/teams">
+            Teams
+          </Link>
         </DropdownMenuItem>
 
         <DropdownMenuSeparator />
