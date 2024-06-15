@@ -17,7 +17,7 @@ export const revokeSlackIntegration = authAction(
       })
       .optional(),
   ]),
-  async (values) => {
+  async (values, user) => {
     const slackIntegration = await integrationsQueries.getCurrentTeamsSlackIntegration()
 
     if (!slackIntegration) {
@@ -50,6 +50,7 @@ export const revokeSlackIntegration = authAction(
 
       analyticsClient.event('slack_integration_revoked', {
         team_id: slackIntegration.team_id,
+        profileId: user.id,
       })
 
       return {

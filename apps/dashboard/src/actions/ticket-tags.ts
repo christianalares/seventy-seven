@@ -170,6 +170,7 @@ export const updateTag = authAction(
 
     analyticsClient.event('ticket_tag_updated', {
       tag_id: values.id,
+      profileId: user.id,
       tag_name_from: values.name,
       tag_name_to: updatedTag.name,
     })
@@ -213,6 +214,7 @@ export const createTag = authAction(
     analyticsClient.event('ticket_tag_created', {
       tag_id: createdTag.id,
       tag_name: createdTag.name,
+      profileId: dbUser.id,
     })
 
     return createdTag

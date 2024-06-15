@@ -133,6 +133,7 @@ export async function GET(request: NextRequest) {
 
       analyticsClient.event('slack_integration_complete', {
         team_id: createdSlackIntegration.team.id,
+        profileId: parsedMetadata.data.userId,
       })
 
       // This window will be in a popup so we redirect to the all-done route which closes the window

@@ -359,6 +359,11 @@ export const changeMemberRole = authAction(
       revalidatePath(values.revalidatePath)
     }
 
+    analyticsClient.event('team_member_role_changed', {
+      team_id: dbTeam.id,
+      profileId: user.id,
+    })
+
     return updatedUserOnTeam
   },
 )
@@ -441,6 +446,11 @@ export const updateTeamAvatar = authAction(
     if (values.revalidatePath) {
       revalidatePath(values.revalidatePath)
     }
+
+    analyticsClient.event('team_avatar_updated', {
+      team_id: dbUser.current_team.id,
+      profileId: dbUser.id,
+    })
 
     return updatedTeam
   },

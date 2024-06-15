@@ -192,6 +192,7 @@ export const editMessage = authAction(
 
     analyticsClient.event('message_edited', {
       message_id: updatedMessage.id,
+      profileId: user.id,
     })
 
     return updatedMessage

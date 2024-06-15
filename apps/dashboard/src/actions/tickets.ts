@@ -83,7 +83,7 @@ export const snoozeTicket = authAction(
 
     analyticsClient.event('snoozed_ticket', {
       ticket_id: updatedTicket.id,
-      user_id: user.id,
+      profileId: user.id,
     })
 
     return updatedTicket
@@ -127,12 +127,12 @@ export const toggleStar = authAction(
     if (values.star) {
       analyticsClient.event('starred_ticket', {
         ticket_id: updatedTicket.id,
-        user_id: user.id,
+        profileId: user.id,
       })
     } else {
       analyticsClient.event('unstarred_ticket', {
         ticket_id: updatedTicket.id,
-        user_id: user.id,
+        profileId: user.id,
       })
     }
 
@@ -244,7 +244,7 @@ export const closeTicket = authAction(
 
     analyticsClient.event('closed_ticket', {
       ticket_id: updatedTicket.id,
-      closed_by_user_id: user.id,
+      profileId: user.id,
     })
 
     return updatedTicket
@@ -304,7 +304,7 @@ export const assignToMember = authAction(
 
     analyticsClient.event('assigned_ticket', {
       ticket_id: values.ticketId,
-      assigned_by_user_id: user.id,
+      profileId: user.id,
       assigned_to_user_id: values.memberId,
     })
 
@@ -342,7 +342,7 @@ export const unassignTicket = authAction(
 
     analyticsClient.event('unassigned_ticket', {
       ticket_id: values.ticketId,
-      user_id: user.id,
+      profileId: user.id,
     })
 
     return { success: true }
