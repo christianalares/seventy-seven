@@ -74,7 +74,7 @@ export const UpdateTeamNameForm = ({ teamId, defaultValues }: Props) => {
             {form.formState.errors.name?.message ? (
               <FormMessage message={form.formState.errors.name.message} />
             ) : (
-              <p>Can be between 2 and 32 characters.</p>
+              <p>Can be between 2 and 32 characters</p>
             )}
 
             <Button loading={action.status === 'executing'} type="submit" size="sm">

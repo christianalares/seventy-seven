@@ -1,4 +1,4 @@
-import { EditDisplayNameForm } from '@/components/forms/edit-display-name.form'
+import { EditDisplayNameForm } from '@/components/forms/edit-display-name-form'
 import { PageWrapper } from '@/components/page-wrapper'
 import { usersQueries } from '@/queries/users'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@seventy-seven/ui/card'

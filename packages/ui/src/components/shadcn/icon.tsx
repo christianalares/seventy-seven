@@ -20,6 +20,7 @@ import {
   FilterX,
   Fingerprint,
   Home,
+  Image,
   Inbox,
   Info,
   List,
@@ -191,6 +192,7 @@ const icons = {
   palette: Palette,
   team: Users,
   fingerprint: Fingerprint,
+  image: Image,
 }
 
 export type IconName = keyof typeof icons

@@ -409,3 +409,39 @@ export const generateAuthToken = authAction(
     }
   },
 )
+
+export const updateTeamAvatar = authAction(
+  z.object({
+    revalidatePath: z.string().optional(),
+    avatarUrl: z.string().url(),
+  }),
+  async (values) => {
+    const dbUser = await usersQueries.myCurrentTeam()
+
+    const updatedTeam = await prisma.team
+      .update({
+        where: {
+          id: dbUser.current_team.id,
+        },
+        data: {
+          image_url: values.avatarUrl,
+        },
+        select: {
+          image_url: true,
+        },
+      })
+      .catch(() => {
+        throw new Error('Could not update team avatar')
+      })
+
+    if (!updatedTeam) {
+      throw new Error('Could not update team avatar')
+    }
+
+    if (values.revalidatePath) {
+      revalidatePath(values.revalidatePath)
+    }
+
+    return updatedTeam
+  },
+)

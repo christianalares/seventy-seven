@@ -9,6 +9,59 @@ export type Json =
 export type Database = {
   public: {
     Tables: {
+      integrations_slack: {
+        Row: {
+          created_at: string
+          id: string
+          slack_access_token: string
+          slack_bot_user_id: string
+          slack_channel: string
+          slack_channel_id: string
+          slack_configuration_url: string
+          slack_team_id: string
+          slack_team_name: string
+          slack_url: string
+          team_id: string
+          updated_at: string | null
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          slack_access_token: string
+          slack_bot_user_id: string
+          slack_channel: string
+          slack_channel_id: string
+          slack_configuration_url: string
+          slack_team_id: string
+          slack_team_name: string
+          slack_url: string
+          team_id: string
+          updated_at?: string | null
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          slack_access_token?: string
+          slack_bot_user_id?: string
+          slack_channel?: string
+          slack_channel_id?: string
+          slack_configuration_url?: string
+          slack_team_id?: string
+          slack_team_name?: string
+          slack_url?: string
+          team_id?: string
+          updated_at?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "integrations_slack_team_id_fkey"
+            columns: ["team_id"]
+            isOneToOne: false
+            referencedRelation: "teams"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       messages: {
         Row: {
           body: string
@@ -20,6 +73,7 @@ export type Database = {
           sent_from_email: string | null
           sent_from_full_name: string | null
           ticket_id: string
+          unable_to_parse_content: boolean
           updated_at: string | null
         }
         Insert: {
@@ -32,6 +86,7 @@ export type Database = {
           sent_from_email?: string | null
           sent_from_full_name?: string | null
           ticket_id: string
+          unable_to_parse_content?: boolean
           updated_at?: string | null
         }
         Update: {
@@ -44,6 +99,7 @@ export type Database = {
           sent_from_email?: string | null
           sent_from_full_name?: string | null
           ticket_id?: string
+          unable_to_parse_content?: boolean
           updated_at?: string | null
         }
         Relationships: [
@@ -135,6 +191,77 @@ export type Database = {
         }
         Relationships: []
       }
+      ticket_tags: {
+        Row: {
+          color: string
+          created_at: string
+          id: string
+          name: string
+          team_id: string
+          updated_at: string | null
+        }
+        Insert: {
+          color: string
+          created_at?: string
+          id?: string
+          name: string
+          team_id: string
+          updated_at?: string | null
+        }
+        Update: {
+          color?: string
+          created_at?: string
+          id?: string
+          name?: string
+          team_id?: string
+          updated_at?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "ticket_tags_team_id_fkey"
+            columns: ["team_id"]
+            isOneToOne: false
+            referencedRelation: "teams"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      ticket_tags_on_tickets: {
+        Row: {
+          created_at: string
+          tag_id: string
+          ticket_id: string
+          updated_at: string | null
+        }
+        Insert: {
+          created_at?: string
+          tag_id: string
+          ticket_id: string
+          updated_at?: string | null
+        }
+        Update: {
+          created_at?: string
+          tag_id?: string
+          ticket_id?: string
+          updated_at?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "ticket_tags_on_tickets_tag_id_fkey"
+            columns: ["tag_id"]
+            isOneToOne: false
+            referencedRelation: "ticket_tags"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "ticket_tags_on_tickets_ticket_id_fkey"
+            columns: ["ticket_id"]
+            isOneToOne: false
+            referencedRelation: "tickets"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       tickets: {
         Row: {
           assigned_to_user_id: string | null
@@ -203,6 +330,8 @@ export type Database = {
           full_name: string
           id: string
           image_url: string | null
+          notification_email_new_message: boolean
+          notification_email_new_ticket: boolean
           updated_at: string | null
         }
         Insert: {
@@ -212,6 +341,8 @@ export type Database = {
           full_name: string
           id?: string
           image_url?: string | null
+          notification_email_new_message?: boolean
+          notification_email_new_ticket?: boolean
           updated_at?: string | null
         }
         Update: {
@@ -221,6 +352,8 @@ export type Database = {
           full_name?: string
           id?: string
           image_url?: string | null
+          notification_email_new_message?: boolean
+          notification_email_new_ticket?: boolean
           updated_at?: string | null
         }
         Relationships: [
@@ -278,18 +411,21 @@ export type Database = {
           email: string
           email_id: string | null
           id: string
+          is_invited: boolean
         }
         Insert: {
           created_at?: string
           email: string
           email_id?: string | null
           id?: string
+          is_invited?: boolean
         }
         Update: {
           created_at?: string
           email?: string
           email_id?: string | null
           id?: string
+          is_invited?: boolean
         }
         Relationships: []
       }
