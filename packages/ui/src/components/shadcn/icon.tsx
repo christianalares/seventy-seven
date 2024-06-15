@@ -1,3 +1,5 @@
+import { cn } from '../../utils'
+
 import {
   AlarmClock,
   Calendar,
@@ -16,6 +18,7 @@ import {
   ExternalLink,
   Filter,
   FilterX,
+  Fingerprint,
   Home,
   Inbox,
   Info,
@@ -32,6 +35,7 @@ import {
   Moon,
   MoreHorizontal,
   MoreVertical,
+  Palette,
   Plus,
   ScrollText,
   Search,
@@ -47,6 +51,7 @@ import {
   User,
   UserPlus,
   UserX,
+  Users,
   X,
 } from 'lucide-react'
 import type { ComponentProps } from 'react'
@@ -183,6 +188,9 @@ const icons = {
   triangleAlert: TriangleAlert,
   shapes: Shapes,
   slack: Slack,
+  palette: Palette,
+  team: Users,
+  fingerprint: Fingerprint,
 }
 
 export type IconName = keyof typeof icons
@@ -195,5 +203,5 @@ type IconProps = {
 export const Icon = ({ name, className, ...restProps }: IconProps) => {
   const IconComponent = icons[name]
 
-  return <IconComponent className={className} {...restProps} />
+  return <IconComponent className={cn(className)} {...restProps} />
 }

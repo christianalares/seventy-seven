@@ -4,6 +4,7 @@ import { generateAuthToken } from '@/actions/teams'
 import type { UsersGetMyCurrentTeam } from '@/queries/users'
 import { Button } from '@seventy-seven/ui/button'
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@seventy-seven/ui/card'
+import { Icon } from '@seventy-seven/ui/icon'
 import { Input } from '@seventy-seven/ui/input'
 import { useAction } from 'next-safe-action/hooks'
 import Link from 'next/link'
@@ -35,12 +36,15 @@ export const AuthToken = ({ authToken }: Props) => {
   return (
     <Card>
       <CardHeader>
-        <CardTitle>Authorization token</CardTitle>
+        <CardTitle className="flex items-center gap-2">
+          <Icon name="fingerprint" />
+          Authorization token
+        </CardTitle>
         <CardDescription>
           This token needs to be provided when creating tickets via the API.
           <br />
           You can read more about that on the{' '}
-          <Link prefetch className="text-primary font-semibold hover:underline" href="/help">
+          <Link prefetch className="text-blue-500" href="/help">
             help section
           </Link>
           . Do not share this key and make sure to only store it in a .env file

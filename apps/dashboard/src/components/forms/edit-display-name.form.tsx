@@ -5,6 +5,7 @@ import { zodResolver } from '@hookform/resolvers/zod'
 import { Button } from '@seventy-seven/ui/button'
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@seventy-seven/ui/card'
 import { Form, FormControl, FormField, FormItem, FormLabel } from '@seventy-seven/ui/form'
+import { Icon } from '@seventy-seven/ui/icon'
 import { Input } from '@seventy-seven/ui/input'
 import { useAction } from 'next-safe-action/hooks'
 import { usePathname } from 'next/navigation'
@@ -51,7 +52,10 @@ export const EditDisplayNameForm = ({ defaultValues }: Props) => {
       <form onSubmit={onSubmit}>
         <Card>
           <CardHeader>
-            <CardTitle>Display name</CardTitle>
+            <CardTitle className="flex items-center gap-2">
+              <Icon name="user" />
+              Display name
+            </CardTitle>
             <CardDescription>
               This will be shown in tickets you respond to, ticket emails to your users and everywhere in this app
             </CardDescription>

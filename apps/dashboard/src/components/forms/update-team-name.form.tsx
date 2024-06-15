@@ -4,6 +4,7 @@ import { updateTeamName } from '@/actions/teams'
 import { Button } from '@seventy-seven/ui/button'
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@seventy-seven/ui/card'
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@seventy-seven/ui/form'
+import { Icon } from '@seventy-seven/ui/icon'
 import { Input } from '@seventy-seven/ui/input'
 import { useAction } from 'next-safe-action/hooks'
 import { toast } from 'sonner'
@@ -45,7 +46,10 @@ export const UpdateTeamNameForm = ({ teamId, defaultValues }: Props) => {
   return (
     <Card>
       <CardHeader>
-        <CardTitle>Team name</CardTitle>
+        <CardTitle className="flex items-center gap-2">
+          <Icon name="team" />
+          Team name
+        </CardTitle>
         <CardDescription>The name of your team could be the name of your organization or company.</CardDescription>
       </CardHeader>
 
