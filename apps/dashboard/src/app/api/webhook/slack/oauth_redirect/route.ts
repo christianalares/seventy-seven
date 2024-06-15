@@ -2,6 +2,7 @@ import { createSlackApp, slackInstaller } from '@seventy-seven/integrations/slac
 import { prisma } from '@seventy-seven/orm/prisma'
 import { type NextRequest, NextResponse } from 'next/server'
 import { z } from 'zod'
+import { analyticsClient } from '@/lib/analytics'
 
 const paramsSchema = z.object({
   code: z.string(),
@@ -128,6 +129,10 @@ export async function GET(request: NextRequest) {
       if (process.env.NODE_ENV === 'development') {
         requestUrl.protocol = 'http'
       }
+
+      analyticsClient.event('slack_integration_complete', {
+        team_id: createdSlackIntegration.team_id,
+      })
 
       // This window will be in a popup so we redirect to the all-done route which closes the window
       // and then sends a browser event to the parent window. Actions can be taken based on this event.
