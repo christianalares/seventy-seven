@@ -23,5 +23,11 @@ export const createAnalyticsClient = ({ clientId, clientSecret }: { clientId: st
 }
 
 export const AnalyticsProvider = ({ clientId }: { clientId: string }) => {
-  return <OpenpanelProvider clientId={clientId} trackScreenViews trackOutgoingLinks />
+  return (
+    <OpenpanelProvider
+      clientId={clientId}
+      trackScreenViews={process.env.NODE_ENV === 'production'}
+      trackOutgoingLinks={process.env.NODE_ENV === 'production'}
+    />
+  )
 }
