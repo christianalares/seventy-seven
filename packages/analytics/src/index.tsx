@@ -7,7 +7,7 @@ export const createAnalyticsClient = ({ clientId, clientSecret }: { clientId: st
   const openpanelClient = new OpenpanelSdk({ clientId, clientSecret })
 
   const event = async (...args: Parameters<OpenpanelSdk['event']>) => {
-    if (process.env.NODE_ENV === 'development') {
+    if (process.env.NODE_ENV !== 'production') {
       // biome-ignore lint/suspicious/noConsoleLog: Should only log in development
       console.log('openpanelClient.event', args)
       return null
