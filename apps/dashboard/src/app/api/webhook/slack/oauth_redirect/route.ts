@@ -1,8 +1,8 @@
+import { analyticsClient } from '@/lib/analytics'
 import { createSlackApp, slackInstaller } from '@seventy-seven/integrations/slack'
 import { prisma } from '@seventy-seven/orm/prisma'
 import { type NextRequest, NextResponse } from 'next/server'
 import { z } from 'zod'
-import { analyticsClient } from '@/lib/analytics'
 
 const paramsSchema = z.object({
   code: z.string(),
@@ -104,6 +104,7 @@ export async function GET(request: NextRequest) {
           slack_channel_id: true,
           team: {
             select: {
+              id: true,
               name: true,
             },
           },
@@ -131,7 +132,7 @@ export async function GET(request: NextRequest) {
       }
 
       analyticsClient.event('slack_integration_complete', {
-        team_id: createdSlackIntegration.team_id,
+        team_id: createdSlackIntegration.team.id,
       })
 
       // This window will be in a popup so we redirect to the all-done route which closes the window
