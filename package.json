@@ -3,7 +3,7 @@
   "private": true,
   "scripts": {
     "postinstall": "turbo prisma:generate",
-    "build": "turbo build",
+    "build": "dotenv -- turbo build",
     "dev": "dotenv -- turbo dev",
     "dev:trigger": "@trigger.dev/cli@latest dev",
     "lint": "turbo lint",
