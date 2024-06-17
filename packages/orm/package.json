@@ -16,7 +16,6 @@
     "@prisma/extension-accelerate": "^1.1.0"
   },
   "devDependencies": {
-    "@prisma/extension-optimize": "^0.8.0",
     "@types/node": "^20.12.7",
     "prisma": "^5.15.0"
   }
