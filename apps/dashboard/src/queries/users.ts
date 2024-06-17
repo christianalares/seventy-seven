@@ -66,6 +66,10 @@ const findMe = async () => {
         },
       },
     },
+    cacheStrategy: {
+      swr: 60,
+      ttl: 60,
+    },
   })
 
   if (!me) {

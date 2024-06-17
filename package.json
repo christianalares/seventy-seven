@@ -8,7 +8,8 @@
     "dev:trigger": "@trigger.dev/cli@latest dev",
     "lint": "turbo lint",
     "check:types": "turbo check:types --concurrency 20",
-    "prisma:generate": "turbo prisma:generate"
+    "prisma:generate": "turbo prisma:generate",
+    "prisma:push": "turbo prisma:push"
   },
   "devDependencies": {
     "@biomejs/biome": "^1.7.0",
@@ -16,5 +17,6 @@
     "dotenv-cli": "^7.4.1",
     "turbo": "latest",
     "typescript": "^5.4.5"
-  }
+  },
+  "packageManager": "pnpm@8.6.12"
 }
