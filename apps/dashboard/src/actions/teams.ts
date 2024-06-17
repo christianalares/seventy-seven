@@ -261,6 +261,7 @@ export const removeMember = authAction(
 
 export const updateTeamName = authAction(
   z.object({
+    revalidatePath: z.string().optional(),
     teamId: z.string().uuid(),
     name: z.string().min(1).max(100),
   }),
@@ -283,6 +284,10 @@ export const updateTeamName = authAction(
 
     if (!updatedTeam) {
       throw new Error('Could not update team name')
+    }
+
+    if (values.revalidatePath) {
+      revalidatePath(values.revalidatePath)
     }
 
     analyticsClient.event('team_name_updated', {

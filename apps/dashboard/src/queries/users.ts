@@ -1,5 +1,6 @@
 import { prisma } from '@seventy-seven/orm/prisma'
 import { getUser } from '@seventy-seven/supabase/session'
+import { redirect } from 'next/navigation'
 
 export type UsersFindMe = Awaited<ReturnType<typeof findMe>>
 export type UsersFindMaybeMe = Awaited<ReturnType<typeof findMaybeMe>>
@@ -25,7 +26,7 @@ const findMe = async () => {
   const user = await getUser()
 
   if (!user) {
-    throw new Error('No session found')
+    redirect('/login')
   }
 
   const me = await prisma.user.findUnique({
@@ -79,7 +80,7 @@ export const myCurrentTeam = async () => {
   const user = await getUser()
 
   if (!user) {
-    throw new Error('No session found')
+    redirect('/login')
   }
 
   const usersCurrentTeam = await prisma.user.findUnique({

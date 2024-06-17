@@ -1,22 +1,33 @@
+import { AlertProvider } from '@/components/alerts'
 import { AnalyticsSetProfile } from '@/components/analytics-set-profile'
+import { Header } from '@/components/header'
+import { ModalProvider } from '@/components/modals'
+import { SheetProvider } from '@/components/sheets'
 import { usersQueries } from '@/queries/users'
+import { Toaster } from '@seventy-seven/ui/sonner'
 
 type Props = {
-  authed: React.ReactNode
-  unauthed: React.ReactNode
+  children: React.ReactNode
 }
 
-const AppLayout = async ({ authed, unauthed }: Props) => {
+const AuthedLayout = async ({ children }: Props) => {
   const user = await usersQueries.findMaybeMe()
 
-  return user ? (
+  return (
     <>
+      <Toaster position="top-center" />
+      <ModalProvider />
+      <AlertProvider />
+      <SheetProvider />
       <AnalyticsSetProfile user={user} />
-      {authed}
+
+      <div className="h-full overflow-hidden grid grid-rows-[auto_1fr]">
+        <Header />
+
+        {children}
+      </div>
     </>
-  ) : (
-    unauthed
   )
 }
 
-export default AppLayout
+export default AuthedLayout
