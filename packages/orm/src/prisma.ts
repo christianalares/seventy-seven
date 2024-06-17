@@ -3,8 +3,6 @@ export * from '@prisma/client'
 import { withAccelerate } from '@prisma/extension-accelerate'
 import { withOptimize } from '@prisma/extension-optimize'
 
-// https://www.prisma.io/docs/guides/other/troubleshooting-orm/help-articles/nextjs-prisma-client-dev-practices
-
 const prismaClientSingleton = () => {
   if (process.env.NODE_ENV === 'development') {
     return new PrismaClient().$extends(withAccelerate()).$extends(withOptimize())
