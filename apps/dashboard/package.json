@@ -2,6 +2,7 @@
   "name": "@seventy-seven/dashboard",
   "version": "0.0.0",
   "private": true,
+  "workspaces": ["packages/*", "apps/*"],
   "scripts": {
     "dev": "next dev --port 3000",
     "build": "next build",
