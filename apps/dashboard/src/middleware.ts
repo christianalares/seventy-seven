@@ -1,23 +1,17 @@
 import { createClient } from '@seventy-seven/supabase/clients/middleware'
 import { type NextRequest, NextResponse } from 'next/server'
 
-const OPEN_PATHS = ['/closed']
+const OPEN_PATHS = ['/closed', '/login', '/all-done']
 
 export async function middleware(req: NextRequest) {
-  const isProtectedRoute = !OPEN_PATHS.includes(req.nextUrl.pathname)
-  const isHomePage = req.nextUrl.pathname === '/'
+  const nextUrl = req.nextUrl
 
   const supabase = createClient(req)
   const { data } = await supabase.auth.getUser()
 
-  if (isProtectedRoute) {
-    if (data.user) {
-      return NextResponse.next()
-    }
-
-    if (!isHomePage) {
-      return Response.redirect(new URL(`/?return_to=${req.nextUrl.pathname}`, req.url))
-    }
+  // Not logged in and not on an open path
+  if (!data && !OPEN_PATHS.includes(nextUrl.pathname)) {
+    return Response.redirect(new URL(`/?return_to=${req.nextUrl.pathname}`, req.url))
   }
 
   return NextResponse.next()

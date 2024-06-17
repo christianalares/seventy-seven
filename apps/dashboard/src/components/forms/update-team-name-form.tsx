@@ -7,6 +7,7 @@ import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '
 import { Icon } from '@seventy-seven/ui/icon'
 import { Input } from '@seventy-seven/ui/input'
 import { useAction } from 'next-safe-action/hooks'
+import { usePathname } from 'next/navigation'
 import { toast } from 'sonner'
 import { type UseTeamFormArgs, useTeamForm } from './hooks/use-team-form'
 
@@ -16,6 +17,8 @@ type Props = {
 }
 
 export const UpdateTeamNameForm = ({ teamId, defaultValues }: Props) => {
+  const pathname = usePathname()
+
   const action = useAction(updateTeamName, {
     onSuccess: (updatedTeam) => {
       toast.success(`Team renamed to "${updatedTeam.name}"`)
@@ -38,6 +41,7 @@ export const UpdateTeamNameForm = ({ teamId, defaultValues }: Props) => {
 
   const onSubmit = form.handleSubmit((values) => {
     action.execute({
+      revalidatePath: pathname,
       teamId,
       name: values.name,
     })

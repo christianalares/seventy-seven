@@ -8,7 +8,7 @@ type Props = {
   }
 }
 
-const UnauthorizedPage = ({ searchParams }: Props) => {
+const LoginPage = ({ searchParams }: Props) => {
   return (
     <div className="h-full flex items-center justify-center px-4">
       <div className="border p-8 rounded-md bg-foreground/5 shadow-lg">
@@ -26,4 +26,4 @@ const UnauthorizedPage = ({ searchParams }: Props) => {
   )
 }
 
-export default UnauthorizedPage
+export default LoginPage
