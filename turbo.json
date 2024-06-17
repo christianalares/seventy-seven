@@ -2,13 +2,39 @@
   "$schema": "https://turbo.build/schema.json",
   "ui": "stream",
   "tasks": {
+    "topo": {
+      "dependsOn": ["^topo"]
+    },
     "build": {
+      "env": [
+        "SUPABASE_SERVICE_ROLE_KEY",
+        "NEXT_PUBLIC_SUPABASE_URL",
+        "NEXT_PUBLIC_SUPABASE_ANON_KEY",
+        "DATABASE_DIRECT_URL",
+        "DATABASE_URL",
+        "EDGE_CONFIG",
+        "RESEND_API_KEY",
+        "NEXT_PUBLIC_OPENPANEL_WEBSITE_CLIENT_ID",
+        "OPENPANEL_WEBSITE_CLIENT_SECRET",
+        "NEXT_PUBLIC_OPENPANEL_DASHBOARD_CLIENT_ID",
+        "OPENPANEL_DASHBOARD_CLIENT_SECRET",
+        "TRIGGER_API_URL",
+        "TRIGGER_API_KEY",
+        "NEXT_PUBLIC_TRIGGER_PUBLIC_API_KEY",
+        "API_ROUTE_SECRET",
+        "SEVENTY_SEVEN_AUTH_TOKEN",
+        "SLACK_OAUTH_REDIRECT_URL",
+        "SLACK_CLIENT_ID",
+        "SLACK_CLIENT_SECRET",
+        "SLACK_SIGNING_SECRET",
+        "SLACK_STATE_SECRET"
+      ],
       "dependsOn": ["^build"],
-      "inputs": ["$TURBO_DEFAULT$", ".env", ".env.local", ".env.development", ".env.production"],
-      "outputs": [".next/**", "!.next/cache/**", "dist/**"]
+      "inputs": ["$TURBO_DEFAULT$", ".env"],
+      "outputs": [".next/**", "!.next/cache/**", "next-env.d.ts", "dist/**"]
     },
     "lint": {
-      "dependsOn": ["^lint"]
+      "dependsOn": ["^topo"]
     },
     "dev": {
       "inputs": ["$TURBO_DEFAULT$", ".env"],
@@ -22,7 +48,8 @@
       "cache": false
     },
     "check:types": {
-      "persistent": true
+      "dependsOn": ["^topo"],
+      "outputs": ["node_modules/.cache/tsbuildinfo.json"]
     }
   }
 }
