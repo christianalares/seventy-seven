@@ -1,7 +1,7 @@
 import { createClient } from '@seventy-seven/supabase/clients/middleware'
 import { type NextRequest, NextResponse } from 'next/server'
 
-const OPEN_PATHS = ['/closed', '/login', '/all-done']
+const OPEN_PATHS = ['/login', '/all-done']
 
 export async function middleware(req: NextRequest) {
   const nextUrl = req.nextUrl
