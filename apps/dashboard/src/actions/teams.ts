@@ -340,6 +340,13 @@ export const changeMemberRole = authAction(
       throw new Error('User is not a member of this team')
     }
 
+    if (dbTeam.members.length === 1) {
+      throw new Error('You are the only member of this team')
+    }
+    if (dbTeam.members.filter((m) => m.role === 'OWNER').length === 1) {
+      throw new Error('You are the last owner of this team. Please transfer ownership before changing your role.')
+    }
+
     const updatedUserOnTeam = await prisma.userOnTeam.update({
       where: {
         user_id_team_id: {

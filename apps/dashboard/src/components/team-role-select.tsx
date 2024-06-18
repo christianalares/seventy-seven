@@ -8,13 +8,16 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { useAction } from 'next-safe-action/hooks'
 import { usePathname } from 'next/navigation'
 import { toast } from 'sonner'
+import { pushAlert } from './alerts'
 
 type Props = {
+  userId: string
   teamId: string
   member: UsersGetMyCurrentTeam['current_team']['members'][number]
+  isUserTheLastOwner: boolean
 }
 
-export const TeamRoleSelect = ({ teamId, member }: Props) => {
+export const TeamRoleSelect = ({ userId, teamId, member, isUserTheLastOwner }: Props) => {
   const pathname = usePathname()
 
   const action = useAction(changeMemberRole, {
@@ -29,6 +32,22 @@ export const TeamRoleSelect = ({ teamId, member }: Props) => {
   const onValueChange = (role: TEAM_ROLE_ENUM) => {
     // Do nothing if you select the same role as the current role
     if (role === member.role) {
+      return
+    }
+
+    if (isUserTheLastOwner) {
+      pushAlert('prohibitLastOwnerRoleChange')
+      return
+    }
+
+    // If you are trying to change your own role to `MEMBER`, show a confirmation alert
+    if (member.user.id === userId && role === 'MEMBER') {
+      pushAlert('confirmChangeYourOwnRole', {
+        memberId: member.user.id,
+        role,
+        teamId,
+      })
+
       return
     }
 

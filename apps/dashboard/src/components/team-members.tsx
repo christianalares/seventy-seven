@@ -26,36 +26,45 @@ export const TeamMembers = async () => {
           </TableRow>
         </TableHeader>
         <TableBody>
-          {user.current_team.members.map((member) => (
-            <TableRow key={member.user.id} className="hover:bg-background">
-              <TableCell>
-                <div className="flex items-center gap-4">
-                  <Avatar
-                    name={member.user.full_name}
-                    imageUrl={member.user.image_url ?? undefined}
-                    className="size-8"
-                  />
-                  <div>
-                    <p>{member.user.full_name}</p>
-                    <p className="text-xs text-muted">{member.user.email}</p>
-                  </div>
-                </div>
-              </TableCell>
-              <TableCell>
-                <div className="flex justify-end items-center gap-2">
-                  {userMember.role !== 'OWNER' ? (
-                    <Badge variant="outline" className="font-normal">
-                      {getRoleName(member.role)}
-                    </Badge>
-                  ) : (
-                    <TeamRoleSelect teamId={user.current_team.id} member={member} />
-                  )}
+          {user.current_team.members.map((member) => {
+            const isUserTheLastOwner = user.current_team.members.filter((m) => m.role === 'OWNER').length === 1
 
-                  <TeamActionsDropdown teamId={user.current_team.id} userMember={userMember} member={member} />
-                </div>
-              </TableCell>
-            </TableRow>
-          ))}
+            return (
+              <TableRow key={member.user.id} className="hover:bg-background">
+                <TableCell>
+                  <div className="flex items-center gap-4">
+                    <Avatar
+                      name={member.user.full_name}
+                      imageUrl={member.user.image_url ?? undefined}
+                      className="size-8"
+                    />
+                    <div>
+                      <p>{member.user.full_name}</p>
+                      <p className="text-xs text-muted">{member.user.email}</p>
+                    </div>
+                  </div>
+                </TableCell>
+                <TableCell>
+                  <div className="flex justify-end items-center gap-2">
+                    {userMember.role !== 'OWNER' || user.current_team.members.length === 1 ? (
+                      <Badge variant="outline" className="font-normal">
+                        {getRoleName(member.role)}
+                      </Badge>
+                    ) : (
+                      <TeamRoleSelect
+                        userId={user.id}
+                        teamId={user.current_team.id}
+                        member={member}
+                        isUserTheLastOwner={isUserTheLastOwner}
+                      />
+                    )}
+
+                    <TeamActionsDropdown teamId={user.current_team.id} userMember={userMember} member={member} />
+                  </div>
+                </TableCell>
+              </TableRow>
+            )
+          })}
         </TableBody>
       </Table>
     </div>
