@@ -1,6 +1,6 @@
 'use client'
 
-import { changeMemberRole, removeMember } from '@/actions/teams'
+import { changeMemberRole } from '@/actions/teams'
 import type { TEAM_ROLE_ENUM } from '@seventy-seven/orm/prisma'
 import { Alert, AlertCancel, AlertDescription, AlertFooter, AlertTitle } from '@seventy-seven/ui/alert'
 import { Button } from '@seventy-seven/ui/button'
