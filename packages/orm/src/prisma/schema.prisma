@@ -29,6 +29,7 @@ model User {
   notification_email_new_ticket  Boolean      @default(true)
   notification_email_new_message Boolean      @default(true)
 
+  @@index([current_team_id])
   @@map("users")
 }
 
@@ -79,6 +80,7 @@ model UserOnTeam {
 
   @@id([user_id, team_id])
   @@unique([user_id, team_id])
+  @@index([team_id, user_id])
   @@map("users_on_teams")
 }
 
@@ -100,6 +102,7 @@ model Ticket {
   assigned_to_user    User?               @relation(fields: [assigned_to_user_id], references: [id])
   tags                TicketTagOnTicket[]
 
+  @@index([team_id, assigned_to_user_id])
   @@map("tickets")
 }
 
@@ -114,6 +117,7 @@ model TicketTag {
   ticket_tags TicketTagOnTicket[]
 
   @@unique([name, team_id])
+  @@index([team_id])
   @@map("ticket_tags")
 }
 
@@ -128,6 +132,7 @@ model TicketTagOnTicket {
 
   @@id([ticket_id, tag_id])
   @@unique([ticket_id, tag_id])
+  @@index([tag_id, ticket_id])
   @@map("ticket_tags_on_tickets")
 }
 
@@ -146,6 +151,7 @@ model Message {
   email_id                String?
   unable_to_parse_content Boolean   @default(false)
 
+  @@index([handler_id, ticket_id])
   @@map("messages")
 }
 
@@ -160,6 +166,7 @@ model TeamInvite {
   code               String   @unique
 
   @@unique([email, team_id])
+  @@index([team_id, created_by_user_id])
   @@map("team_invites")
 }
 
