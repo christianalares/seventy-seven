@@ -76,7 +76,7 @@ const findMe = async () => {
   return me
 }
 
-export const myCurrentTeam = async () => {
+const myCurrentTeam = async () => {
   const user = await getUser()
 
   if (!user) {

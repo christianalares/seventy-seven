@@ -3,7 +3,7 @@
 import { changeMemberRole } from '@/actions/teams'
 import type { UsersGetMyCurrentTeam } from '@/queries/users'
 import { getRoleName } from '@/utils/get-role-name'
-import { TEAM_ROLE_ENUM } from '@seventy-seven/orm/prisma'
+import { TEAM_ROLE_ENUM } from '@seventy-seven/orm/enums'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@seventy-seven/ui/select'
 import { useAction } from 'next-safe-action/hooks'
 import { usePathname } from 'next/navigation'

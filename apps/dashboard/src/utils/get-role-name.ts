@@ -1,4 +1,4 @@
-import type { TEAM_ROLE_ENUM } from '@seventy-seven/orm/prisma'
+import type { TEAM_ROLE_ENUM } from '@seventy-seven/orm/enums'
 import { assertUnreachable } from './assertUnreachable'
 
 export const getRoleName = (role: TEAM_ROLE_ENUM) => {

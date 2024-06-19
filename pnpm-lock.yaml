@@ -122,6 +122,9 @@ importers:
       sugar-high:
         specifier: ^0.6.1
         version: 0.6.1
+      superjson:
+        specifier: ^2.2.1
+        version: 2.2.1
       tailwindcss-animate:
         specifier: ^1.0.7
         version: 1.0.7(tailwindcss@3.4.3)
@@ -5058,6 +5061,13 @@ packages:
     engines: {node: '>= 0.6'}
     dev: false
 
+  /copy-anything@3.0.5:
+    resolution: {integrity: sha512-yCEafptTtb4bk7GLEQoM8KVJpxAfdBJYaXyzQEgQQQgYrZiDp8SJmGKlYza6CYjEDNstAdNdKA3UuoULlEbS6w==}
+    engines: {node: '>=12.13'}
+    dependencies:
+      is-what: 4.1.16
+    dev: false
+
   /cors@2.8.5:
     resolution: {integrity: sha512-KIHbLJqu73RGr/hnbrO9uBeixNGuvSQjul/jdFvS/KFSIH1hWVd1ng7zOHx+YrEfInLG7q4n6GHQ9cDtxv/P6g==}
     engines: {node: '>= 0.10'}
@@ -6978,6 +6988,11 @@ packages:
     resolution: {integrity: sha512-qctsuLZmIQ0+vSSMfoVvyFe2+GSEvnmZ2ezTup1SBse9+twCCeial6EEi3Nc2KFcf6+qz2FBPnjXsk8xhKSaPQ==}
     dependencies:
       call-bind: 1.0.7
+    dev: false
+
+  /is-what@4.1.16:
+    resolution: {integrity: sha512-ZhMwEosbFJkA0YhFnNDgTM4ZxDRsS6HqTo7qsZM08fehyRYIYa0yHu5R6mgo1n/8MgaPBXiPimPD77baVFYg+A==}
+    engines: {node: '>=12.13'}
     dev: false
 
   /is-whitespace@0.3.0:
@@ -9808,6 +9823,13 @@ packages:
     transitivePeerDependencies:
       - supports-color
     dev: true
+
+  /superjson@2.2.1:
+    resolution: {integrity: sha512-8iGv75BYOa0xRJHK5vRLEjE2H/i4lulTjzpUXic3Eg8akftYjkmQDa8JARQ42rlczXyFR3IeRoeFCc7RxHsYZA==}
+    engines: {node: '>=16'}
+    dependencies:
+      copy-anything: 3.0.5
+    dev: false
 
   /supports-color@7.2.0:
     resolution: {integrity: sha512-qpCAvRl9stuOHveKsn7HncJRvv501qIacKzQlO/+Lwxc9+0q2wLyv4Dfvt80/DPn2pqOBsJdDiogXGR9+OvwRw==}

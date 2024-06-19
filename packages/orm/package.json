@@ -3,7 +3,8 @@
   "version": "0.0.0",
   "private": true,
   "exports": {
-    "./prisma": "./src/prisma.ts"
+    "./prisma": "./src/prisma.ts",
+    "./enums": "./src/prisma/enums.ts"
   },
   "scripts": {
     "lint": "biome check .",

@@ -58,7 +58,6 @@ export const TeamMembers = async () => {
                         isUserTheLastOwner={isUserTheLastOwner}
                       />
                     )}
-
                     <TeamActionsDropdown teamId={user.current_team.id} userMember={userMember} member={member} />
                   </div>
                 </TableCell>
