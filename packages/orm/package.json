@@ -3,7 +3,8 @@
   "version": "0.0.0",
   "private": true,
   "exports": {
-    "./prisma": "./src/prisma.ts"
+    "./prisma": "./src/prisma.ts",
+    "./enums": "./src/prisma/enums.ts"
   },
   "scripts": {
     "lint": "biome check .",
@@ -12,7 +13,8 @@
     "prisma:push": "cd ../../ && npx prisma db push --schema=./packages/orm/src/prisma/schema.prisma --skip-generate"
   },
   "dependencies": {
-    "@prisma/client": "^5.14.0"
+    "@prisma/client": "^5.14.0",
+    "next": "^14.2.2"
   },
   "devDependencies": {
     "@types/node": "^20.12.7",
