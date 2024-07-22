@@ -1,8 +1,6 @@
 import type { Status } from '@/lib/search-params'
 import { Prisma, prisma } from '@seventy-seven/orm/prisma'
-// import { unstable_cache } from 'next/cache'
-// import superjson from 'superjson'
-import { usersQueries } from './users'
+import { api } from '.'
 
 export type TicketsFindMany = Awaited<ReturnType<typeof findMany>>
 export type TicketsFindById = NonNullable<Awaited<ReturnType<typeof findById>>>
@@ -14,29 +12,8 @@ type FindManyFilters = {
   query?: string
 }
 
-// Wrapper around unstable_cache that serializes and deserializes the result
-// This is necessary because as for now unstable_cache only works with JSON objects
-
-// const cache = <T, P extends unknown[]>(
-//   fn: (...params: P) => Promise<T>,
-//   keys: Parameters<typeof unstable_cache>[1],
-//   opts: Parameters<typeof unstable_cache>[2],
-// ) => {
-//   const wrap = async (params: unknown[]): Promise<string> => {
-//     const result = await fn(...(params as P))
-//     return superjson.stringify(result)
-//   }
-
-//   const cachedFn = unstable_cache(wrap, keys, opts)
-
-//   return async (...params: P): Promise<T> => {
-//     const result = await cachedFn(params)
-//     return superjson.parse(result)
-//   }
-// }
-
 const findMany = async ({ statuses = [], memberIds = [], tags = [], query = '' }: FindManyFilters) => {
-  const user = await usersQueries.findMe()
+  const user = await api.users.queries.findMe()
 
   const SELECT = {
     id: true,
@@ -185,7 +162,7 @@ const findMany = async ({ statuses = [], memberIds = [], tags = [], query = '' }
 }
 
 const findById = async (id: string) => {
-  const user = await usersQueries.findMe()
+  const user = await api.users.queries.findMe()
 
   const ticket = await prisma.ticket.findFirst({
     where: {

@@ -2,7 +2,7 @@
 
 import { analyticsClient } from '@/lib/analytics'
 import { authAction } from '@/lib/safe-action'
-import { usersQueries } from '@/queries/users'
+import { api } from '@/queries'
 import { TEAM_ROLE_ENUM } from '@seventy-seven/orm/enums'
 import { prisma } from '@seventy-seven/orm/prisma'
 import { revalidatePath } from 'next/cache'
@@ -386,7 +386,7 @@ export const generateAuthToken = authAction(
     revalidatePath: z.string().optional(),
   }),
   async (values, user) => {
-    const usresCurrentTeam = await usersQueries.myCurrentTeam()
+    const usresCurrentTeam = await api.users.queries.myCurrentTeam()
 
     const randomToken = Buffer.from(`${uuid()}_${uuid()}`).toString('base64')
 
@@ -434,7 +434,7 @@ export const updateTeamAvatar = authAction(
     avatarUrl: z.string().url(),
   }),
   async (values) => {
-    const dbUser = await usersQueries.myCurrentTeam()
+    const dbUser = await api.users.queries.myCurrentTeam()
 
     const updatedTeam = await prisma.team
       .update({

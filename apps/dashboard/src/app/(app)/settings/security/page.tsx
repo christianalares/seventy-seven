@@ -1,9 +1,9 @@
 import { AuthToken } from '@/components/auth-token'
 import { PageWrapper } from '@/components/page-wrapper'
-import { usersQueries } from '@/queries/users'
+import { api } from '@/queries'
 
 const SecurityPage = async () => {
-  const user = await usersQueries.myCurrentTeam()
+  const user = await api.users.queries.myCurrentTeam()
 
   return (
     <PageWrapper>

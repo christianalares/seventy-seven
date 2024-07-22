@@ -1,5 +1,5 @@
 import { ticketFiltersCache } from '@/lib/search-params'
-import { ticketsQueries } from '@/queries/tickets'
+import { api } from '@/queries'
 import { Icon } from '@seventy-seven/ui/icon'
 import { Skeleton } from '@seventy-seven/ui/skeleton'
 import { ClearAllFiltersButton } from './clear-all-filters-button'
@@ -11,7 +11,7 @@ export const TicketsList = async () => {
     .filter(([key]) => ['statuses', 'assignees', 'tags'].includes(key))
     .some(([_key, value]) => value !== null)
 
-  const tickets = await ticketsQueries.findMany({
+  const tickets = await api.tickets.queries.findMany({
     statuses: filters.statuses ?? undefined,
     memberIds: filters.assignees ?? undefined,
     query: filters.q ?? undefined,

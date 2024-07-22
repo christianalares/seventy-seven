@@ -1,10 +1,10 @@
 import { UpdateTeamAvatarForm } from '@/components/forms/update-team-avatar-form'
 import { UpdateTeamNameForm } from '@/components/forms/update-team-name-form'
 import { PageWrapper } from '@/components/page-wrapper'
-import { usersQueries } from '@/queries/users'
+import { api } from '@/queries'
 
 const SettingsPage = async () => {
-  const user = await usersQueries.findMe()
+  const user = await api.users.queries.findMe()
 
   return (
     <PageWrapper className="space-y-4">

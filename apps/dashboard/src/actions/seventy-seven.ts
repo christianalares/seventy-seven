@@ -1,7 +1,7 @@
 'use server'
 
 import { authAction } from '@/lib/safe-action'
-import { usersQueries } from '@/queries/users'
+import { api } from '@/queries'
 import { SeventySevenClient } from '@seventy-seven/sdk'
 import { z } from 'zod'
 
@@ -14,7 +14,7 @@ export const createSeventySevenTicket = authAction(
     body: z.string({ required_error: 'Body is required' }),
   }),
   async (values) => {
-    const dbUser = await usersQueries.findMe()
+    const dbUser = await api.users.queries.findMe()
 
     await new Promise((resolve) => setTimeout(resolve, 1000))
 

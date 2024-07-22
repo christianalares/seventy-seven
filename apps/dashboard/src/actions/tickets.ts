@@ -2,7 +2,7 @@
 
 import { analyticsClient } from '@/lib/analytics'
 import { authAction } from '@/lib/safe-action'
-import { usersQueries } from '@/queries/users'
+import { api } from '@/queries'
 import { componentToPlainText, createResendClient } from '@seventy-seven/email'
 import TicketClosed from '@seventy-seven/email/emails/ticket-closed'
 import { Events } from '@seventy-seven/jobs/constants'
@@ -190,7 +190,7 @@ export const closeTicket = authAction(
       throw new Error('Failed to close ticket, something went wrong 😢')
     }
 
-    const dbUser = await usersQueries.findMe()
+    const dbUser = await api.users.queries.findMe()
 
     const resend = createResendClient()
 

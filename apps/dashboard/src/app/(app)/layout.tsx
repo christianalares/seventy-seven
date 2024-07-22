@@ -3,7 +3,7 @@ import { AnalyticsSetProfile } from '@/components/analytics-set-profile'
 import { Header } from '@/components/header'
 import { ModalProvider } from '@/components/modals'
 import { SheetProvider } from '@/components/sheets'
-import { usersQueries } from '@/queries/users'
+import { api } from '@/queries'
 import { Toaster } from '@seventy-seven/ui/sonner'
 
 type Props = {
@@ -11,7 +11,7 @@ type Props = {
 }
 
 const AuthedLayout = async ({ children }: Props) => {
-  const user = await usersQueries.findMaybeMe()
+  const user = await api.users.queries.findMaybeMe()
 
   return (
     <>

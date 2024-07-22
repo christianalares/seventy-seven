@@ -1,10 +1,10 @@
 import { prisma } from '@seventy-seven/orm/prisma'
-import { usersQueries } from './users'
+import { api } from '.'
 
 export type TeamsFindMany = Awaited<ReturnType<typeof findMany>>
 
 const findMany = async () => {
-  const user = await usersQueries.findMe()
+  const user = await api.users.queries.findMe()
 
   const userTeams = await prisma.userOnTeam.findMany({
     where: {

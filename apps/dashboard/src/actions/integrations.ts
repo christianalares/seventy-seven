@@ -2,7 +2,7 @@
 
 import { analyticsClient } from '@/lib/analytics'
 import { authAction } from '@/lib/safe-action'
-import { integrationsQueries } from '@/queries/integrations'
+import { api } from '@/queries'
 import { createSlackApp } from '@seventy-seven/integrations/slack'
 import { prisma } from '@seventy-seven/orm/prisma'
 import { revalidatePath } from 'next/cache'
@@ -18,7 +18,7 @@ export const revokeSlackIntegration = authAction(
       .optional(),
   ]),
   async (values, user) => {
-    const slackIntegration = await integrationsQueries.getCurrentTeamsSlackIntegration()
+    const slackIntegration = await api.integrations.queries.getCurrentTeamsSlackIntegration()
 
     if (!slackIntegration) {
       throw new Error('No Slack integration to revoke')

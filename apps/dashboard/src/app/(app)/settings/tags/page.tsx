@@ -1,11 +1,11 @@
 import { CreateTagButton } from '@/components/create-tag-button'
 import { EditTicketTagButton } from '@/components/edit-ticket-tag-button'
 import { PageWrapper } from '@/components/page-wrapper'
-import { usersQueries } from '@/queries/users'
+import { api } from '@/queries'
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@seventy-seven/ui/table'
 
 const TagsPage = async () => {
-  const user = await usersQueries.myCurrentTeam()
+  const user = await api.users.queries.myCurrentTeam()
 
   return (
     <PageWrapper>

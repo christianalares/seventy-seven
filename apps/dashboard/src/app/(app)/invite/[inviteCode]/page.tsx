@@ -1,5 +1,5 @@
 import { AcceptInvitationButton } from '@/components/accept-invitation-button'
-import { usersQueries } from '@/queries/users'
+import { api } from '@/queries'
 import { prisma } from '@seventy-seven/orm/prisma'
 import { Logo } from '@seventy-seven/ui/logo'
 import Image from 'next/image'
@@ -21,7 +21,7 @@ const InviteCodePage = async ({ params }: Props) => {
     notFound()
   }
 
-  const user = await usersQueries.findMe()
+  const user = await api.users.queries.findMe()
 
   const invite = await prisma.teamInvite.findUnique({
     where: {
