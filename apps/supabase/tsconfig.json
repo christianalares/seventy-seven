@@ -1,0 +1,5 @@
+{
+  "extends": "@seventy-seven/typescript-config/base.json",
+  "include": ["**/*.ts"],
+  "exclude": ["node_modules"]
+}

@@ -1,0 +1,20 @@
+{
+  "name": "@seventy-seven/supabase-app",
+  "private": true,
+  "scripts": {
+    "dev": "supabase start",
+    "login": "supabase login",
+    "db:reset": "tsx ./seed.ts"
+  },
+  "devDependencies": {
+    "@faker-js/faker": "^8.4.1",
+    "@seventy-seven/orm": "workspace:*",
+    "@seventy-seven/supabase": "workspace:*",
+    "@seventy-seven/typescript-config": "workspace:*",
+    "@supabase/supabase-js": "^2.42.5",
+    "dotenv": "^16.4.5",
+    "supabase": "^1.162.4",
+    "tsx": "^4.19.1",
+    "typescript": "^5.4.5"
+  }
+}
