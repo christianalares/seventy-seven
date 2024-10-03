@@ -2,7 +2,7 @@
 
 import { analyticsClient } from '@/lib/analytics'
 import { authAction } from '@/lib/safe-action'
-import { usersQueries } from '@/queries/users'
+import { api } from '@/queries'
 import { prisma } from '@seventy-seven/orm/prisma'
 import { revalidatePath } from 'next/cache'
 import { z } from 'zod'
@@ -19,7 +19,7 @@ export const setTags = authAction(
     ),
   }),
   async (values) => {
-    const dbUser = await usersQueries.findMe()
+    const dbUser = await api.users.queries.findMe()
 
     // Make sure the user belongs to a team that has the ticket
     const userBelongsToTeamWithTicket = dbUser.teams.some(({ team }) => {
@@ -192,7 +192,7 @@ export const createTag = authAction(
       .max(7, { message: 'Invalid color' }),
   }),
   async (values) => {
-    const dbUser = await usersQueries.findMe()
+    const dbUser = await api.users.queries.findMe()
 
     const createdTag = await prisma.ticketTag.create({
       data: {

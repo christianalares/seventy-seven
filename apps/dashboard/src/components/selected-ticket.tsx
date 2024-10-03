@@ -1,7 +1,7 @@
 import { ChatResponseForm } from '@/components/forms/chat-response-form'
 import { TicketChat } from '@/components/ticket-chat'
 import { TicketChatHeader } from '@/components/ticket-chat-header'
-import { ticketsQueries } from '@/queries/tickets'
+import { api } from '@/queries'
 import { Icon } from '@seventy-seven/ui/icon'
 import { Skeleton } from '@seventy-seven/ui/skeleton'
 
@@ -10,7 +10,7 @@ type Props = {
 }
 
 export const SelectedTicket = async ({ id }: Props) => {
-  const ticket = await ticketsQueries.findById(id)
+  const ticket = await api.tickets.queries.findById(id)
 
   if (!ticket) {
     return (

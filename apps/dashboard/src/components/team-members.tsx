@@ -1,4 +1,4 @@
-import { usersQueries } from '@/queries/users'
+import { api } from '@/queries'
 import { getRoleName } from '@/utils/get-role-name'
 import { Badge } from '@seventy-seven/ui/badge'
 import { Icon } from '@seventy-seven/ui/icon'
@@ -9,7 +9,7 @@ import { TeamActionsDropdown } from './team-actions-dropdown'
 import { TeamRoleSelect } from './team-role-select'
 
 export const TeamMembers = async () => {
-  const user = await usersQueries.myCurrentTeam()
+  const user = await api.users.queries.myCurrentTeam()
   const userMember = user.current_team.members.find((member) => member.user.id === user.id)
 
   if (!userMember) {

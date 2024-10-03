@@ -1,4 +1,4 @@
-import { usersQueries } from '@/queries/users'
+import { api } from '@/queries'
 import { Logo } from '@seventy-seven/ui/logo'
 import Link from 'next/link'
 import { MainMenu } from './main-menu'
@@ -6,7 +6,7 @@ import { SelectTeamDropdown } from './select-team-dropdown'
 import { UserMenuDropdown } from './user-menu-dropdown'
 
 export const Header = async () => {
-  const user = await usersQueries.findMe()
+  const user = await api.users.queries.findMe()
 
   return (
     <header className="p-4 border-b flex items-center justify-between h-20 gap-2">

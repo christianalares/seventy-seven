@@ -1,4 +1,4 @@
-import { usersQueries } from '@/queries/users'
+import { api } from '@/queries'
 import { prisma } from '@seventy-seven/orm/prisma'
 import { Icon } from '@seventy-seven/ui/icon'
 import { Skeleton } from '@seventy-seven/ui/skeleton'
@@ -7,7 +7,7 @@ import { InviteCodeBadge } from './invite-code-badge'
 import { PendingMemberDropdown } from './pending-member-dropdown'
 
 export const PendingTeamMembers = async () => {
-  const user = await usersQueries.myCurrentTeam()
+  const user = await api.users.queries.myCurrentTeam()
 
   const invites = await prisma.teamInvite.findMany({
     where: {

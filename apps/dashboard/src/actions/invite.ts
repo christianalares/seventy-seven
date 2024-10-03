@@ -2,7 +2,7 @@
 
 import { analyticsClient } from '@/lib/analytics'
 import { authAction } from '@/lib/safe-action'
-import { usersQueries } from '@/queries/users'
+import { api } from '@/queries'
 import { sentencifyArray } from '@/utils/sentencifyArray'
 import { shortId } from '@/utils/shortId'
 import { componentToPlainText, createResendClient } from '@seventy-seven/email'
@@ -98,7 +98,7 @@ export const inviteTeamMembers = authAction(
       ),
     )
 
-    const dbUser = await usersQueries.findMe()
+    const dbUser = await api.users.queries.findMe()
 
     const resend = createResendClient()
 
@@ -147,7 +147,7 @@ export const acceptInvitation = authAction(
     teamId: z.string().uuid(),
   }),
   async (values) => {
-    const dbUser = await usersQueries.findMe()
+    const dbUser = await api.users.queries.findMe()
 
     await prisma.$transaction(async (tx) => {
       // First get the invite
@@ -228,7 +228,7 @@ export const revokeInvitation = authAction(
     inviteId: z.string().uuid(),
   }),
   async (values) => {
-    const user = await usersQueries.findMe()
+    const user = await api.users.queries.findMe()
 
     const deletedInvite = await prisma.teamInvite
       .delete({

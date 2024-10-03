@@ -2,7 +2,7 @@
 
 import { analyticsClient } from '@/lib/analytics'
 import { authAction } from '@/lib/safe-action'
-import { usersQueries } from '@/queries/users'
+import { api } from '@/queries'
 import { componentToPlainText, createResendClient } from '@seventy-seven/email'
 import TicketMessageResponse from '@seventy-seven/email/emails/ticket-message-response'
 import { prisma } from '@seventy-seven/orm/prisma'
@@ -15,7 +15,7 @@ export const createMessage = authAction(
     body: z.string().min(1).max(1000),
   }),
   async (values, user) => {
-    const dbUser = await usersQueries.findMe()
+    const dbUser = await api.users.queries.findMe()
 
     const usersTeamsHasThisTicket = dbUser.teams.some((team) =>
       team.team.tickets.some((ticket) => ticket.id === values.ticketId),

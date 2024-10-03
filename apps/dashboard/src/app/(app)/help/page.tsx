@@ -1,12 +1,12 @@
 import { CreateSeventySevenTicketButton } from '@/components/create-seventy-seven-ticket-button'
 import { PageWrapper } from '@/components/page-wrapper'
-import { usersQueries } from '@/queries/users'
+import { api } from '@/queries'
 import { Button } from '@seventy-seven/ui/button'
 import { CodeBlock } from '@seventy-seven/ui/code-block'
 import Link from 'next/link'
 
 const HelpPage = async () => {
-  const user = await usersQueries.findMe()
+  const user = await api.users.queries.findMe()
 
   return (
     <PageWrapper className="m-8 [&_p+p]:mt-2">

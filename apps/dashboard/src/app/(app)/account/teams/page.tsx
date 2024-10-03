@@ -1,10 +1,10 @@
 import { CreateTeamButton } from '@/components/create-team-button'
 import { PageWrapper } from '@/components/page-wrapper'
 import { TeamListItem } from '@/components/team-list-item'
-import { teamsQueries } from '@/queries/teams'
+import { api } from '@/queries'
 
 const AccountTeamsPage = async () => {
-  const userTeams = await teamsQueries.findMany()
+  const userTeams = await api.teams.queries.findMany()
 
   return (
     <PageWrapper>

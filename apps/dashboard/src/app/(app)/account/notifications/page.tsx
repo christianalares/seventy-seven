@@ -1,12 +1,12 @@
 import { NotificationsEmailSwitches } from '@/components/notifications-email-switches'
 import { PageWrapper } from '@/components/page-wrapper'
-import { usersQueries } from '@/queries/users'
+import { api } from '@/queries'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@seventy-seven/ui/card'
 import { Icon } from '@seventy-seven/ui/icon'
 import Link from 'next/link'
 
 const NotificationsPage = async () => {
-  const user = await usersQueries.findMe()
+  const user = await api.users.queries.findMe()
 
   return (
     <PageWrapper className="space-y-4">

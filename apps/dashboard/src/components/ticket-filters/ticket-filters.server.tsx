@@ -1,9 +1,10 @@
-import { usersQueries } from '@/queries/users'
+import { api } from '@/queries'
 import { Skeleton } from '@seventy-seven/ui/skeleton'
 import { TicketFiltersClient } from './ticket-filters.client'
 
 export const TicketFiltersServer = async () => {
-  const userTeam = await usersQueries.myCurrentTeam()
+  const userTeam = await api.users.queries.myCurrentTeam()
+
   return <TicketFiltersClient userTeam={userTeam} />
 }
 
