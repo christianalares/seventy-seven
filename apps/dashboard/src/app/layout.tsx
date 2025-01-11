@@ -1,4 +1,5 @@
 import { ThemeProvider } from '@/components/theme-provider'
+import { TRPCProvider } from '@/trpc/client'
 import { AnalyticsProvider } from '@seventy-seven/analytics'
 import '@seventy-seven/ui/globals.css'
 import { cn } from '@seventy-seven/ui/utils'
@@ -50,9 +51,11 @@ const RootLayout = async ({ children }: Props) => {
       <AnalyticsProvider clientId={NEXT_PUBLIC_OPENPANEL_DASHBOARD_CLIENT_ID} />
 
       <body className={cn('h-full flex flex-col', roboto.variable, mavenPro.variable)} suppressHydrationWarning>
-        <ThemeProvider attribute="class" defaultTheme="system" enableSystem disableTransitionOnChange>
-          {children}
-        </ThemeProvider>
+        <TRPCProvider>
+          <ThemeProvider attribute="class" defaultTheme="system" enableSystem disableTransitionOnChange>
+            {children}
+          </ThemeProvider>
+        </TRPCProvider>
       </body>
     </html>
   )

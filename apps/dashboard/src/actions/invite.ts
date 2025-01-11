@@ -11,6 +11,7 @@ import { prisma } from '@seventy-seven/orm/prisma'
 import { revalidatePath } from 'next/cache'
 import { z } from 'zod'
 
+// TODO: Move to TRPC
 export const inviteTeamMembers = authAction(
   z.object({
     revalidatePath: z.string().optional(),
@@ -142,6 +143,7 @@ export const inviteTeamMembers = authAction(
   },
 )
 
+// TODO: Move to TRPC
 export const acceptInvitation = authAction(
   z.object({
     teamId: z.string().uuid(),
@@ -223,6 +225,7 @@ export const acceptInvitation = authAction(
   },
 )
 
+// TODO: Move to TRPC
 export const revokeInvitation = authAction(
   z.object({
     inviteId: z.string().uuid(),

@@ -56,6 +56,9 @@ importers:
       '@seventy-seven/ui':
         specifier: workspace:*
         version: link:../../packages/ui
+      '@tanstack/react-query':
+        specifier: ^5.64.0
+        version: 5.64.0(react@18.2.0)
       '@trigger.dev/nextjs':
         specifier: ^2.3.18
         version: 2.3.18(@trigger.dev/sdk@2.3.18)(next@14.2.2)
@@ -65,6 +68,15 @@ importers:
       '@trigger.dev/sdk':
         specifier: ^2.3.18
         version: 2.3.18
+      '@trpc/client':
+        specifier: 11.0.0-rc.695
+        version: 11.0.0-rc.695(@trpc/server@11.0.0-rc.695)(typescript@5.4.5)
+      '@trpc/react-query':
+        specifier: 11.0.0-rc.695
+        version: 11.0.0-rc.695(@tanstack/react-query@5.64.0)(@trpc/client@11.0.0-rc.695)(@trpc/server@11.0.0-rc.695)(react-dom@18.2.0)(react@18.2.0)(typescript@5.4.5)
+      '@trpc/server':
+        specifier: 11.0.0-rc.695
+        version: 11.0.0-rc.695(typescript@5.4.5)
       '@vercel/edge-config':
         specifier: ^1.1.0
         version: 1.1.0(typescript@5.4.5)
@@ -74,6 +86,9 @@ importers:
       class-variance-authority:
         specifier: ^0.7.0
         version: 0.7.0
+      client-only:
+        specifier: ^0.0.1
+        version: 0.0.1
       date-fns:
         specifier: ^3.6.0
         version: 3.6.0
@@ -116,12 +131,18 @@ importers:
       react-hook-form:
         specifier: ^7.51.5
         version: 7.51.5(react@18.2.0)
+      server-only:
+        specifier: ^0.0.1
+        version: 0.0.1
       sonner:
         specifier: ^1.4.41
         version: 1.4.41(react-dom@18.2.0)(react@18.2.0)
       sugar-high:
         specifier: ^0.6.1
         version: 0.6.1
+      superjson:
+        specifier: ^2.2.2
+        version: 2.2.2
       tailwindcss-animate:
         specifier: ^1.0.7
         version: 1.0.7(tailwindcss@3.4.3)
@@ -3806,6 +3827,10 @@ packages:
     resolution: {integrity: sha512-VGq/H3PuRoj0shOcg1S5Flv3YD2qNz2ttk8w5xe5AHQE1I8NO9EHSBUxezIpk4dD6M7bQDtwHBMqqU2EwMwyUw==}
     dev: false
 
+  /@tanstack/query-core@5.64.0:
+    resolution: {integrity: sha512-/MPJt/AaaMzdWJZTafgMyYhEX/lGjQrNz8+NDQSk8fNoU5PHqh05FhQaBrEQafW2PeBHsRbefEf//qKMiSAbQQ==}
+    dev: false
+
   /@tanstack/react-query@5.0.0-beta.2(react-dom@18.2.0)(react@18.2.0):
     resolution: {integrity: sha512-JdK1HRw20tuwg3GfT3QZTkuS7s2KDa9FeozuJ7jZULlwPczZagouqYmM6+PL0ad6jfCnw8NzmLFtZdlBx6cTmA==}
     peerDependencies:
@@ -3840,6 +3865,15 @@ packages:
       client-only: 0.0.1
       react: 18.3.1
       react-dom: 18.3.1(react@18.3.1)
+    dev: false
+
+  /@tanstack/react-query@5.64.0(react@18.2.0):
+    resolution: {integrity: sha512-tBMzlROROUcTDMpDt1NC3n9ndKnJHPB3RCpa6Bf9f31TFvqhLz879x8jldtKU+6IwMSw1Pn4K1AKA+2SYyA6TA==}
+    peerDependencies:
+      react: ^18 || ^19
+    dependencies:
+      '@tanstack/query-core': 5.64.0
+      react: 18.2.0
     dev: false
 
   /@tootallnate/once@2.0.0:
@@ -4054,6 +4088,42 @@ packages:
     transitivePeerDependencies:
       - supports-color
     dev: true
+
+  /@trpc/client@11.0.0-rc.695(@trpc/server@11.0.0-rc.695)(typescript@5.4.5):
+    resolution: {integrity: sha512-PDLTGY4FYU0aJAHHJYGdmn6ePlkZcqX6FjyZodmpSlYrIZG8r21J6X4+nebFnsIUetxktmcmlJziUoEFYVH56g==}
+    peerDependencies:
+      '@trpc/server': 11.0.0-rc.695+01bdfa997
+      typescript: '>=5.7.2'
+    dependencies:
+      '@trpc/server': 11.0.0-rc.695(typescript@5.4.5)
+      typescript: 5.4.5
+    dev: false
+
+  /@trpc/react-query@11.0.0-rc.695(@tanstack/react-query@5.64.0)(@trpc/client@11.0.0-rc.695)(@trpc/server@11.0.0-rc.695)(react-dom@18.2.0)(react@18.2.0)(typescript@5.4.5):
+    resolution: {integrity: sha512-3+dj2oy2BvE+vqRJyEvL/JMTPDgSWMfQSxaG4p/TV8FrQFgx6CXUzfMzxyNChzQQ/fDrXIrZcNqsu8vK3MtarA==}
+    peerDependencies:
+      '@tanstack/react-query': ^5.62.8
+      '@trpc/client': 11.0.0-rc.695+01bdfa997
+      '@trpc/server': 11.0.0-rc.695+01bdfa997
+      react: '>=18.2.0'
+      react-dom: '>=18.2.0'
+      typescript: '>=5.7.2'
+    dependencies:
+      '@tanstack/react-query': 5.64.0(react@18.2.0)
+      '@trpc/client': 11.0.0-rc.695(@trpc/server@11.0.0-rc.695)(typescript@5.4.5)
+      '@trpc/server': 11.0.0-rc.695(typescript@5.4.5)
+      react: 18.2.0
+      react-dom: 18.2.0(react@18.2.0)
+      typescript: 5.4.5
+    dev: false
+
+  /@trpc/server@11.0.0-rc.695(typescript@5.4.5):
+    resolution: {integrity: sha512-r8e7shX/uoGWSDTRYoy6LmbgXYIlaWK6BDi9PyOCkoh67+ZNOVFSmb3c4XAwyhp3l2QhtjiCQXGxDPFetzP0mA==}
+    peerDependencies:
+      typescript: '>=5.7.2'
+    dependencies:
+      typescript: 5.4.5
+    dev: false
 
   /@tufjs/canonical-json@1.0.0:
     resolution: {integrity: sha512-QTnf++uxunWvG2z3UFNzAoQPHxnSXOwtaI3iJ+AohhV+5vONuArPjJE7aPXPVXfXJsqrVbZBu9b81AJoSd09IQ==}
@@ -5288,6 +5358,13 @@ packages:
   /cookie@0.6.0:
     resolution: {integrity: sha512-U71cyTamuh1CRNCfpGY6to28lxvNwPG4Guz/EVjgf3Jmzv0vlDp1atT9eS5dDjMYHucpHbWns6Lwf3BKz6svdw==}
     engines: {node: '>= 0.6'}
+    dev: false
+
+  /copy-anything@3.0.5:
+    resolution: {integrity: sha512-yCEafptTtb4bk7GLEQoM8KVJpxAfdBJYaXyzQEgQQQgYrZiDp8SJmGKlYza6CYjEDNstAdNdKA3UuoULlEbS6w==}
+    engines: {node: '>=12.13'}
+    dependencies:
+      is-what: 4.1.16
     dev: false
 
   /cors@2.8.5:
@@ -7248,6 +7325,11 @@ packages:
     resolution: {integrity: sha512-qctsuLZmIQ0+vSSMfoVvyFe2+GSEvnmZ2ezTup1SBse9+twCCeial6EEi3Nc2KFcf6+qz2FBPnjXsk8xhKSaPQ==}
     dependencies:
       call-bind: 1.0.7
+    dev: false
+
+  /is-what@4.1.16:
+    resolution: {integrity: sha512-ZhMwEosbFJkA0YhFnNDgTM4ZxDRsS6HqTo7qsZM08fehyRYIYa0yHu5R6mgo1n/8MgaPBXiPimPD77baVFYg+A==}
+    engines: {node: '>=12.13'}
     dev: false
 
   /is-whitespace@0.3.0:
@@ -9609,6 +9691,10 @@ packages:
       - supports-color
     dev: false
 
+  /server-only@0.0.1:
+    resolution: {integrity: sha512-qepMx2JxAa5jjfzxG79yPPq+8BuFToHd1hm7kI+Z4zAq1ftQiP7HcxMhDDItrbtwVeLg/cY2JnKnrcFkmiswNA==}
+    dev: false
+
   /set-blocking@2.0.0:
     resolution: {integrity: sha512-KiKBS8AnWGEyLzofFfmvKwpdPzqiy16LvQfK3yv/fVH7Bj13/wl3JSR1J+rfgRE9q7xUJK4qvgS8raSOeLUehw==}
     dev: true
@@ -10082,6 +10168,13 @@ packages:
     transitivePeerDependencies:
       - supports-color
     dev: true
+
+  /superjson@2.2.2:
+    resolution: {integrity: sha512-5JRxVqC8I8NuOUjzBbvVJAKNM8qoVuH0O77h4WInc/qC2q5IreqKxYwgkga3PfA22OayK2ikceb/B26dztPl+Q==}
+    engines: {node: '>=16'}
+    dependencies:
+      copy-anything: 3.0.5
+    dev: false
 
   /supports-color@7.2.0:
     resolution: {integrity: sha512-qpCAvRl9stuOHveKsn7HncJRvv501qIacKzQlO/+Lwxc9+0q2wLyv4Dfvt80/DPn2pqOBsJdDiogXGR9+OvwRw==}

@@ -9,6 +9,7 @@ import { revalidatePath } from 'next/cache'
 import { v4 as uuid } from 'uuid'
 import { z } from 'zod'
 
+// TODO: Move to TRPC
 export const createTeam = authAction(
   z.object({
     name: z.string().min(1).max(100),
@@ -38,6 +39,7 @@ export const createTeam = authAction(
   },
 )
 
+// TODO: Move to TRPC
 export const setCurrentTeam = authAction(
   z.object({
     revalidatePath: z.string().optional(),
@@ -80,6 +82,7 @@ export const setCurrentTeam = authAction(
   },
 )
 
+// TODO: Move to TRPC
 export const leaveTeam = authAction(
   z.object({
     revalidatePath: z.string().optional(),
@@ -187,6 +190,7 @@ export const leaveTeam = authAction(
   },
 )
 
+// TODO: Move to TRPC
 export const removeMember = authAction(
   z.object({
     revalidatePath: z.string().optional(),
@@ -260,6 +264,7 @@ export const removeMember = authAction(
   },
 )
 
+// TODO: Move to TRPC
 export const updateTeamName = authAction(
   z.object({
     revalidatePath: z.string().optional(),
@@ -300,6 +305,7 @@ export const updateTeamName = authAction(
   },
 )
 
+// TODO: Move to TRPC
 export const changeMemberRole = authAction(
   z.object({
     revalidatePath: z.string().optional(),
@@ -381,6 +387,7 @@ export const changeMemberRole = authAction(
   },
 )
 
+// TODO: Move to TRPC
 export const generateAuthToken = authAction(
   z.object({
     revalidatePath: z.string().optional(),
@@ -428,6 +435,7 @@ export const generateAuthToken = authAction(
   },
 )
 
+// TODO: Move to TRPC
 export const updateTeamAvatar = authAction(
   z.object({
     revalidatePath: z.string().optional(),

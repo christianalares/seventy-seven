@@ -12,6 +12,7 @@ import { isFuture } from 'date-fns'
 import { revalidatePath } from 'next/cache'
 import { z } from 'zod'
 
+// TODO: Move to TRPC
 export const snoozeTicket = authAction(
   z.object({
     ticketId: z.string().uuid(),
@@ -90,6 +91,7 @@ export const snoozeTicket = authAction(
   },
 )
 
+// TODO: Move to TRPC
 export const toggleStar = authAction(
   z.object({
     ticketId: z.string().uuid(),
@@ -143,6 +145,7 @@ export const toggleStar = authAction(
   },
 )
 
+// TODO: Move to TRPC
 export const closeTicket = authAction(
   z.object({
     ticketId: z.string().uuid(),
@@ -251,6 +254,7 @@ export const closeTicket = authAction(
   },
 )
 
+// TODO: Move to TRPC
 export const assignToMember = authAction(
   z.object({
     ticketId: z.string().uuid(),
@@ -312,6 +316,7 @@ export const assignToMember = authAction(
   },
 )
 
+// TODO: Move to TRPC
 export const unassignTicket = authAction(
   z.object({
     revalidatePath: z.string(),

@@ -7,6 +7,7 @@ import { prisma } from '@seventy-seven/orm/prisma'
 import { revalidatePath } from 'next/cache'
 import { z } from 'zod'
 
+// TODO: Move to TRPC
 export const setTags = authAction(
   z.object({
     revalidatePath: z.string().optional(),
@@ -128,6 +129,7 @@ export const setTags = authAction(
   },
 )
 
+// TODO: Move to TRPC
 export const updateTag = authAction(
   z.object({
     revalidatePath: z.string().optional(),
@@ -179,6 +181,7 @@ export const updateTag = authAction(
   },
 )
 
+// TODO: Move to TRPC
 export const createTag = authAction(
   z.object({
     revalidatePath: z.string().optional(),

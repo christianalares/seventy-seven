@@ -5,6 +5,7 @@ import { prisma } from '@seventy-seven/orm/prisma'
 import { revalidatePath } from 'next/cache'
 import { z } from 'zod'
 
+// TODO: Move to TRPC
 export const updateDisplayName = authAction(
   z.object({
     revalidatePath: z.string().optional(),
@@ -27,6 +28,7 @@ export const updateDisplayName = authAction(
   },
 )
 
+// TODO: Move to TRPC
 export const updateEmailNotifications = authAction(
   z.object({
     revalidatePath: z.string().optional(),

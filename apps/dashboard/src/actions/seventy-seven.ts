@@ -7,6 +7,7 @@ import { z } from 'zod'
 
 const seventySevenClient = new SeventySevenClient(process.env.SEVENTY_SEVEN_AUTH_TOKEN!)
 
+// TODO: Move to TRPC
 export const createSeventySevenTicket = authAction(
   z.object({
     fullName: z.string({ required_error: 'Sender full name is required' }),

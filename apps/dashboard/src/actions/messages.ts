@@ -9,6 +9,7 @@ import { prisma } from '@seventy-seven/orm/prisma'
 import { revalidatePath } from 'next/cache'
 import { z } from 'zod'
 
+// TODO: Move to TRPC
 export const createMessage = authAction(
   z.object({
     ticketId: z.string().uuid(),
@@ -149,6 +150,7 @@ export const createMessage = authAction(
   },
 )
 
+// TODO: Move to TRPC
 export const editMessage = authAction(
   z.object({
     revalidatePath: z.string().optional(),

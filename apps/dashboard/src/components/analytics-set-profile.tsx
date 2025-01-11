@@ -1,11 +1,11 @@
 'use client'
 
-import type { UsersFindMaybeMe } from '@/queries/users'
+import type { UsersRouter } from '@/trpc/routers/users-router'
 import { setProfile } from '@seventy-seven/analytics'
 import { useEffect } from 'react'
 
 type Props = {
-  user?: UsersFindMaybeMe
+  user: UsersRouter.GetMaybeMe
 }
 
 export const AnalyticsSetProfile = ({ user }: Props) => {
