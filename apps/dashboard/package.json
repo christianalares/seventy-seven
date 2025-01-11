@@ -43,7 +43,7 @@
     "sonner": "^1.4.41",
     "sugar-high": "^0.6.1",
     "tailwindcss-animate": "^1.0.7",
-    "uuidv4": "^6.2.13",
+    "uuid": "^11.0.5",
     "vaul": "^0.9.1",
     "zod": "^3.23.8",
     "zustand": "^4.5.2"

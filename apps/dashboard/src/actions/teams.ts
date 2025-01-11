@@ -6,7 +6,7 @@ import { api } from '@/queries'
 import { TEAM_ROLE_ENUM } from '@seventy-seven/orm/enums'
 import { prisma } from '@seventy-seven/orm/prisma'
 import { revalidatePath } from 'next/cache'
-import { uuid } from 'uuidv4'
+import { v4 as uuid } from 'uuid'
 import { z } from 'zod'
 
 export const createTeam = authAction(
