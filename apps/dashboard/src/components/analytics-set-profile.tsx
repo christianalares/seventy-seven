@@ -1,14 +1,12 @@
 'use client'
 
-import type { UsersRouter } from '@/trpc/routers/users-router'
+import { trpc } from '@/trpc/client'
 import { setProfile } from '@seventy-seven/analytics'
 import { useEffect } from 'react'
 
-type Props = {
-  user: UsersRouter.GetMaybeMe
-}
+export const AnalyticsSetProfile = () => {
+  const { data: user } = trpc.users.maybeMe.useQuery()
 
-export const AnalyticsSetProfile = ({ user }: Props) => {
   useEffect(() => {
     if (!user) {
       return

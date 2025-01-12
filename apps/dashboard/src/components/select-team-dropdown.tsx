@@ -2,7 +2,7 @@
 
 import { setCurrentTeam } from '@/actions/teams'
 import { useSelectedTicket } from '@/hooks/use-selected-ticket'
-import type { UsersFindMe } from '@/queries/users'
+import { trpc } from '@/trpc/client'
 import { ComboboxDropdown } from '@seventy-seven/ui/combobox-dropdown'
 import { Icon } from '@seventy-seven/ui/icon'
 import { cn } from '@seventy-seven/ui/utils'
@@ -11,11 +11,9 @@ import { usePathname } from 'next/navigation'
 import { toast } from 'sonner'
 import { Avatar } from './avatar'
 
-type Props = {
-  user: UsersFindMe
-}
+export const SelectTeamDropdown = () => {
+  const [user] = trpc.users.me.useSuspenseQuery()
 
-export const SelectTeamDropdown = ({ user }: Props) => {
   const { ticketId, setTicketId } = useSelectedTicket()
   const pathname = usePathname()
 
