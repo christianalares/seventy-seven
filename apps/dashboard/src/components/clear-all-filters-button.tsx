@@ -11,6 +11,7 @@ type Props = {
 
 export const ClearAllFiltersButton = ({ children, className }: Props) => {
   const { clearFilters } = useTicketFilters()
+
   return (
     <Button variant="outline" className={cn(className)} onClick={clearFilters}>
       {children}

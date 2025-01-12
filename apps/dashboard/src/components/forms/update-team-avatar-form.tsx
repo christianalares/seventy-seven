@@ -1,37 +1,38 @@
 'use client'
 
-import { updateTeamAvatar } from '@/actions/teams'
 import { useUpload } from '@/hooks/use-upload'
-import type { UsersFindMe } from '@/queries/users'
+import { trpc } from '@/trpc/client'
 import { imageTypeSchema } from '@/utils/validation/common'
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@seventy-seven/ui/card'
 import { Icon } from '@seventy-seven/ui/icon'
 import { cn } from '@seventy-seven/ui/utils'
-import { useAction } from 'next-safe-action/hooks'
 import Image from 'next/image'
-import { usePathname } from 'next/navigation'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { toast } from 'sonner'
 
-type Props = {
-  currentTeam: UsersFindMe['current_team']
-}
+export const UpdateTeamAvatarForm = () => {
+  const [me] = trpc.users.me.useSuspenseQuery()
+  const trpcUtils = trpc.useUtils()
 
-export const UpdateTeamAvatarForm = ({ currentTeam }: Props) => {
-  const pathname = usePathname()
-  const { isUploading, uploadFile } = useUpload()
-  const [avatarImage, setAvatarImage] = useState(currentTeam.image_url ?? undefined)
-  const [errorMessage, setErrorMessage] = useState<string>()
-
-  const action = useAction(updateTeamAvatar, {
+  const updateTeamAvatarMutation = trpc.teams.updateAvatar.useMutation({
     onSuccess: () => {
+      trpcUtils.users.me.invalidate()
+
       setErrorMessage(undefined)
       toast.success('Team avatar updated')
     },
     onError: (error) => {
-      setErrorMessage(error.serverError ?? 'Failed to update team avatar')
+      setErrorMessage(error.message ?? 'Failed to update team avatar')
     },
   })
+
+  const { isUploading, uploadFile } = useUpload()
+  const [avatarImage, setAvatarImage] = useState(me.current_team.image_url ?? undefined)
+  const [errorMessage, setErrorMessage] = useState<string>()
+
+  useEffect(() => {
+    setAvatarImage(me.current_team.image_url ?? undefined)
+  }, [me.current_team.image_url])
 
   const handleOnChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.currentTarget.files?.[0]
@@ -52,12 +53,11 @@ export const UpdateTeamAvatarForm = ({ currentTeam }: Props) => {
     try {
       const { url } = await uploadFile({
         bucket: 'team-avatars',
-        path: [currentTeam.id, file.name],
-        file: file,
+        path: [me.current_team.id, file.name],
+        file,
       })
 
-      action.execute({
-        revalidatePath: pathname,
+      updateTeamAvatarMutation.mutate({
         avatarUrl: url,
       })
 
@@ -69,7 +69,7 @@ export const UpdateTeamAvatarForm = ({ currentTeam }: Props) => {
     }
   }
 
-  const isLoading = isUploading || action.status === 'executing'
+  const isLoading = isUploading || updateTeamAvatarMutation.isPending
 
   return (
     <Card>
@@ -105,9 +105,9 @@ export const UpdateTeamAvatarForm = ({ currentTeam }: Props) => {
 
             {avatarImage ? (
               <Image
-                className="size-full rounded-full"
+                className="size-full rounded-full object-cover"
                 src={avatarImage}
-                alt={currentTeam.name}
+                alt={me.current_team.name}
                 width={100}
                 height={100}
               />

@@ -14,14 +14,14 @@ type Props = {
 
 export const TicketChat = ({ messages }: Props) => {
   const router = useRouter()
-  const sb = createClient()
+  const supabase = createClient()
 
   const { ticketId } = useSelectedTicket()
   const ref = useRef<ElementRef<'div'>>(null)
   const isMountedRef = useRef(false)
 
   useEffect(() => {
-    const channel = sb
+    const channel = supabase
       .channel('realtime_messages')
       .on(
         'postgres_changes',
@@ -37,9 +37,9 @@ export const TicketChat = ({ messages }: Props) => {
       .subscribe()
 
     return () => {
-      sb.removeChannel(channel)
+      supabase.removeChannel(channel)
     }
-  }, [sb, router])
+  }, [supabase, router])
 
   useEffect(() => {
     if (!ticketId || !ref.current || messages.length <= 0) {

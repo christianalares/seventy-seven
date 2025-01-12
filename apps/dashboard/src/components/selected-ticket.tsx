@@ -1,7 +1,9 @@
+'use client'
+
 import { ChatResponseForm } from '@/components/forms/chat-response-form'
 import { TicketChat } from '@/components/ticket-chat'
 import { TicketChatHeader } from '@/components/ticket-chat-header'
-import { api } from '@/queries'
+import { trpc } from '@/trpc/client'
 import { Icon } from '@seventy-seven/ui/icon'
 import { Skeleton } from '@seventy-seven/ui/skeleton'
 
@@ -9,8 +11,12 @@ type Props = {
   id: string
 }
 
-export const SelectedTicket = async ({ id }: Props) => {
-  const ticket = await api.tickets.queries.findById(id)
+export const SelectedTicket = ({ id }: Props) => {
+  const { data: ticket, isPending } = trpc.tickets.findById.useQuery({ id })
+
+  if (isPending) {
+    return <SelectedTicketSkeleton />
+  }
 
   if (!ticket) {
     return (

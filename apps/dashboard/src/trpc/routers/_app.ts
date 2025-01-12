@@ -1,13 +1,19 @@
 import type { inferRouterOutputs } from '@trpc/server'
 import { createTRPCRouter } from '../init'
+import { integrationsRouter } from './integrations-router'
+import { messagesRouter } from './messages-router'
 import { teamsRouter } from './teams-router'
-import { ticketsRouter } from './tickers-router'
+import { ticketsRouter } from './tickets-router'
+import { ticketTagsRouter } from './tickets-tags-router'
 import { usersRouter } from './users-router'
 
 export const appRouter = createTRPCRouter({
   users: usersRouter,
   teams: teamsRouter,
   tickets: ticketsRouter,
+  messages: messagesRouter,
+  integrations: integrationsRouter,
+  ticketTags: ticketTagsRouter,
 })
 
 // export type definition of API

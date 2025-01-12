@@ -1,11 +1,11 @@
 'use client'
 
-import type { TeamsFindMany } from '@/queries/teams'
+import type { TeamsRouter } from '@/trpc/routers/teams-router'
 import { teamRoleEnumToWord } from '@/utils/teamRoleEnumToWord'
 import { TeamActionsMenu } from './team-actions-menu'
 
 type Props = {
-  userTeam: TeamsFindMany[number]
+  userTeam: TeamsRouter.FindMany[number]
 }
 
 export const TeamListItem = ({ userTeam }: Props) => {

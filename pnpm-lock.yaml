@@ -59,6 +59,9 @@ importers:
       '@tanstack/react-query':
         specifier: ^5.64.0
         version: 5.64.0(react@18.2.0)
+      '@tanstack/react-query-devtools':
+        specifier: ^5.64.0
+        version: 5.64.0(@tanstack/react-query@5.64.0)(react@18.2.0)
       '@trigger.dev/nextjs':
         specifier: ^2.3.18
         version: 2.3.18(@trigger.dev/sdk@2.3.18)(next@14.2.2)
@@ -3829,6 +3832,21 @@ packages:
 
   /@tanstack/query-core@5.64.0:
     resolution: {integrity: sha512-/MPJt/AaaMzdWJZTafgMyYhEX/lGjQrNz8+NDQSk8fNoU5PHqh05FhQaBrEQafW2PeBHsRbefEf//qKMiSAbQQ==}
+    dev: false
+
+  /@tanstack/query-devtools@5.62.16:
+    resolution: {integrity: sha512-3ff6UBJr0H3nIhfLSl9911rvKqXf0u4B58jl0uYdDWLqPk9pCvYIbxC35cGxK2+8INl4IaFVUHb/IdgWrNkg3Q==}
+    dev: false
+
+  /@tanstack/react-query-devtools@5.64.0(@tanstack/react-query@5.64.0)(react@18.2.0):
+    resolution: {integrity: sha512-XORJjlbcBwPJaNbWBfZudaVVMi5TtlN1lYkHYU71hlG2c/jYpceO2yfAhZfgeyTNtqmTJ7jXOitgoGqtunsBAA==}
+    peerDependencies:
+      '@tanstack/react-query': ^5.64.0
+      react: ^18 || ^19
+    dependencies:
+      '@tanstack/query-devtools': 5.62.16
+      '@tanstack/react-query': 5.64.0(react@18.2.0)
+      react: 18.2.0
     dev: false
 
   /@tanstack/react-query@5.0.0-beta.2(react-dom@18.2.0)(react@18.2.0):

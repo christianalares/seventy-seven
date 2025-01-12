@@ -164,4 +164,99 @@ export const ticketsRouter = createTRPCRouter({
 
       return ticketsWithHandledStatus
     }),
+  findById: authProcedure
+    .input(
+      z.object({
+        id: z.string().uuid(),
+      }),
+    )
+    .query(async ({ input, ctx }) => {
+      const user = await ctx.prisma.user.findUnique({
+        where: { id: ctx.user.id },
+      })
+
+      if (!user) {
+        throw new TRPCError({ code: 'NOT_FOUND', message: 'User not found' })
+      }
+
+      const ticket = await ctx.prisma.ticket.findFirst({
+        where: {
+          // Make sure the ticket belongs to the user's team
+          team: {
+            id: user.current_team_id,
+            members: {
+              some: {
+                user_id: user.id,
+              },
+            },
+          },
+          id: input.id,
+        },
+        select: {
+          id: true,
+          subject: true,
+          starred_at: true,
+          closed_at: true,
+          tags: {
+            select: {
+              tag: {
+                select: {
+                  id: true,
+                  name: true,
+                  color: true,
+                },
+              },
+            },
+            orderBy: {
+              created_at: 'asc',
+            },
+          },
+          assigned_to_user: {
+            select: {
+              id: true,
+              full_name: true,
+              image_url: true,
+            },
+          },
+          team: {
+            select: {
+              members: {
+                select: {
+                  user: {
+                    select: {
+                      id: true,
+                      full_name: true,
+                      image_url: true,
+                    },
+                  },
+                },
+              },
+            },
+          },
+          messages: {
+            select: {
+              created_at: true,
+              id: true,
+              unable_to_parse_content: true,
+              handler: {
+                select: {
+                  id: true,
+                  full_name: true,
+                  image_url: true,
+                },
+              },
+              sent_from_full_name: true,
+              sent_from_email: true,
+              sent_from_avatar_url: true,
+              body: true,
+            },
+            orderBy: {
+              created_at: 'asc',
+            },
+          },
+        },
+      })
+
+      return ticket
+    }),
 })

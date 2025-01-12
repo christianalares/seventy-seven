@@ -1,13 +1,14 @@
-import { CreateTeamButton } from '@/components/create-team-button'
-import { PageWrapper } from '@/components/page-wrapper'
-import { TeamListItem } from '@/components/team-list-item'
-import { api } from '@/queries'
+'use client'
 
-const AccountTeamsPage = async () => {
-  const userTeams = await api.teams.queries.findMany()
+import { CreateTeamButton } from '@/components/create-team-button'
+import { TeamListItem } from '@/components/team-list-item'
+import { trpc } from '@/trpc/client'
+
+const AccountTeamsPage = () => {
+  const [userTeams] = trpc.teams.findMany.useSuspenseQuery()
 
   return (
-    <PageWrapper>
+    <>
       <div className="flex justify-end">
         <CreateTeamButton />
       </div>
@@ -21,7 +22,7 @@ const AccountTeamsPage = async () => {
           </ul>
         ))
       )}
-    </PageWrapper>
+    </>
   )
 }
 

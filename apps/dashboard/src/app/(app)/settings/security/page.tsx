@@ -1,15 +1,10 @@
 import { AuthToken } from '@/components/auth-token'
-import { PageWrapper } from '@/components/page-wrapper'
-import { api } from '@/queries'
+import { trpc } from '@/trpc/server'
 
 const SecurityPage = async () => {
-  const user = await api.users.queries.myCurrentTeam()
+  trpc.users.myCurrentTeam.prefetch()
 
-  return (
-    <PageWrapper>
-      <AuthToken authToken={user.current_team.auth_token} />
-    </PageWrapper>
-  )
+  return <AuthToken />
 }
 
 export default SecurityPage

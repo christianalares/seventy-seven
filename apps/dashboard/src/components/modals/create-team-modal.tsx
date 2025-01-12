@@ -1,30 +1,24 @@
 'use client'
 
-import { createTeam } from '@/actions/teams'
+import { trpc } from '@/trpc/client'
 import { Modal, ModalDescription, ModalHeader, ModalTitle } from '@seventy-seven/ui/modal'
-import { useAction } from 'next-safe-action/hooks'
 import { toast } from 'sonner'
 import { popModal } from '.'
 import { CreateTeamForm } from '../forms/create-team-form'
 
 export const CreateTeamModal = () => {
-  const action = useAction(createTeam, {
+  const trpcUtils = trpc.useUtils()
+
+  const createTeamMutation = trpc.teams.create.useMutation({
     onSuccess: (createdTeam) => {
+      trpcUtils.teams.findMany.invalidate()
+
       popModal('createTeamModal')
       toast.success(`Team "${createdTeam.name}" created successfully`)
     },
-    onError: (err, input) => {
+    onError: (error) => {
       popModal('createTeamModal')
-
-      toast.error(err.serverError, {
-        action: {
-          label: 'Retry',
-          onClick: () =>
-            action.execute({
-              name: input.name,
-            }),
-        },
-      })
+      toast.error(error.message)
     },
   })
 
@@ -36,9 +30,9 @@ export const CreateTeamModal = () => {
       </ModalHeader>
       <CreateTeamForm
         onSubmit={(values) => {
-          action.execute({ name: values.name })
+          createTeamMutation.mutate({ name: values.name })
         }}
-        loading={action.status === 'executing'}
+        loading={createTeamMutation.isPending}
       />{' '}
     </Modal>
   )

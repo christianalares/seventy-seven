@@ -1,4 +1,5 @@
 import { TRPCError } from '@trpc/server'
+import { z } from 'zod'
 import { authProcedure, baseProcedure, createTRPCRouter } from '../init'
 import type { RouterOutputs } from './_app'
 
@@ -114,4 +115,67 @@ export const usersRouter = createTRPCRouter({
 
     return usersCurrentTeam
   }),
+  updateDisplayName: authProcedure
+    .input(
+      z.object({
+        displayName: z.string().optional(),
+      }),
+    )
+    .mutation(async ({ input, ctx }) => {
+      const updatedUser = await ctx.prisma.user.update({
+        where: {
+          id: ctx.user.id,
+        },
+        data: {
+          full_name: input.displayName,
+        },
+        select: {
+          full_name: true,
+        },
+      })
+
+      return updatedUser
+    }),
+  updateEmailNotifications: authProcedure
+    .input(
+      z.object({
+        type: z.enum(['new_ticket', 'new_messages']),
+        value: z.boolean(),
+      }),
+    )
+    .mutation(async ({ input, ctx }) => {
+      if (input.type === 'new_ticket') {
+        const updatedUser = await ctx.prisma.user.update({
+          where: {
+            id: ctx.user.id,
+          },
+          data: {
+            notification_email_new_ticket: input.value,
+          },
+          select: {
+            notification_email_new_ticket: true,
+            notification_email_new_message: true,
+          },
+        })
+
+        return updatedUser
+      }
+
+      if (input.type === 'new_messages') {
+        const updatedUser = await ctx.prisma.user.update({
+          where: {
+            id: ctx.user.id,
+          },
+          data: {
+            notification_email_new_message: input.value,
+          },
+          select: {
+            notification_email_new_ticket: true,
+            notification_email_new_message: true,
+          },
+        })
+
+        return updatedUser
+      }
+    }),
 })

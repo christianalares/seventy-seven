@@ -1,8 +1,6 @@
 'use client'
 
-// import { ticketFiltersCache } from '@/lib/search-params'
 import { trpc } from '@/trpc/client'
-// import { api } from '@/queries'
 import { Icon } from '@seventy-seven/ui/icon'
 import { Skeleton } from '@seventy-seven/ui/skeleton'
 import { ClearAllFiltersButton } from './clear-all-filters-button'
@@ -10,7 +8,6 @@ import { useTicketFilters } from './ticket-filters/use-ticket-filters'
 import { TicketListItem } from './ticket-list-item'
 
 export const TicketsList = () => {
-  // const filters = ticketFiltersCache.all()
   const { filter } = useTicketFilters()
 
   const hasFilters = Object.entries(filter)
@@ -23,13 +20,6 @@ export const TicketsList = () => {
     query: filter.q ?? undefined,
     tags: filter.tags ?? undefined,
   })
-
-  // const tickets = await api.tickets.queries.findMany({
-  //   statuses: filters.statuses ?? undefined,
-  //   memberIds: filters.assignees ?? undefined,
-  //   query: filters.q ?? undefined,
-  //   tags: filters.tags ?? undefined,
-  // })
 
   if (tickets.length === 0) {
     return (

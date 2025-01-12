@@ -1,13 +1,10 @@
 'use client'
 
-import { setCurrentTeam } from '@/actions/teams'
 import { useSelectedTicket } from '@/hooks/use-selected-ticket'
 import { trpc } from '@/trpc/client'
 import { ComboboxDropdown } from '@seventy-seven/ui/combobox-dropdown'
 import { Icon } from '@seventy-seven/ui/icon'
 import { cn } from '@seventy-seven/ui/utils'
-import { useAction } from 'next-safe-action/hooks'
-import { usePathname } from 'next/navigation'
 import { toast } from 'sonner'
 import { Avatar } from './avatar'
 
@@ -24,6 +21,8 @@ export const SelectTeamDropdown = () => {
       }
 
       trpcUtils.users.me.invalidate()
+      trpcUtils.teams.invites.invalidate()
+      trpcUtils.teams.findMany.invalidate()
 
       toast.success(`Switched to team ${updatedUser.current_team.name}`)
     },

@@ -21,6 +21,7 @@
     "@seventy-seven/supabase": "workspace:*",
     "@seventy-seven/ui": "workspace:*",
     "@tanstack/react-query": "^5.64.0",
+    "@tanstack/react-query-devtools": "^5.64.0",
     "@trigger.dev/nextjs": "^2.3.18",
     "@trigger.dev/react": "^2.3.18",
     "@trigger.dev/sdk": "^2.3.18",

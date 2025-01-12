@@ -1,6 +1,6 @@
 import { EditDisplayNameForm } from '@/components/forms/edit-display-name-form'
 import { PageWrapper } from '@/components/page-wrapper'
-import { api } from '@/queries'
+import { trpc } from '@/trpc/server'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@seventy-seven/ui/card'
 import { Icon } from '@seventy-seven/ui/icon'
 import { Skeleton } from '@seventy-seven/ui/skeleton'
@@ -12,11 +12,11 @@ const ThemeSwitch = dynamic(() => import('@/components/theme-switch').then(({ Th
 })
 
 const AccountPage = async () => {
-  const user = await api.users.queries.findMe()
+  trpc.users.me.prefetch()
 
   return (
     <PageWrapper className="space-y-4">
-      <EditDisplayNameForm defaultValues={{ displayName: user.full_name }} />
+      <EditDisplayNameForm />
 
       <Card>
         <CardHeader>
