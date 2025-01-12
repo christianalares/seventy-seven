@@ -1,7 +1,7 @@
 'use client'
 
 import type { Status } from '@/lib/search-params'
-import type { UsersGetMyCurrentTeam } from '@/queries/users'
+import { trpc } from '@/trpc/client'
 import { Button } from '@seventy-seven/ui/button'
 import { Checkbox } from '@seventy-seven/ui/checkbox'
 import {
@@ -17,6 +17,7 @@ import {
   DropdownMenuTrigger,
 } from '@seventy-seven/ui/dropdown-menu'
 import { Icon, type IconName } from '@seventy-seven/ui/icon'
+import { Skeleton } from '@seventy-seven/ui/skeleton'
 import { cn } from '@seventy-seven/ui/utils'
 import { Avatar } from '../avatar'
 import { useTicketFilters } from './use-ticket-filters'
@@ -55,11 +56,9 @@ const statusItems: StatusFilterItem[] = [
   },
 ]
 
-type Props = {
-  userTeam: UsersGetMyCurrentTeam
-}
+export const TicketFiltersDropdown = () => {
+  const [userTeam] = trpc.users.myCurrentTeam.useSuspenseQuery()
 
-export const TicketFiltersClient = ({ userTeam }: Props) => {
   const { filter, hasFilters, setFilter, clearFilters } = useTicketFilters()
 
   const assigneeItems = userTeam.current_team.members.map((member) => ({
@@ -223,5 +222,13 @@ export const TicketFiltersClient = ({ userTeam }: Props) => {
         </DropdownMenuGroup>
       </DropdownMenuContent>
     </DropdownMenu>
+  )
+}
+
+export const TicketFilterLoading = () => {
+  return (
+    <Skeleton className="size-10">
+      <span className="sr-only">Loading filters</span>
+    </Skeleton>
   )
 }

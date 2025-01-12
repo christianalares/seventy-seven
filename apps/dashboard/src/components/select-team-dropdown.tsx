@@ -12,21 +12,23 @@ import { toast } from 'sonner'
 import { Avatar } from './avatar'
 
 export const SelectTeamDropdown = () => {
+  const { ticketId, setTicketId } = useSelectedTicket()
+
+  const trpcUtils = trpc.useUtils()
   const [user] = trpc.users.me.useSuspenseQuery()
 
-  const { ticketId, setTicketId } = useSelectedTicket()
-  const pathname = usePathname()
-
-  const action = useAction(setCurrentTeam, {
+  const switchTeamMutation = trpc.teams.switch.useMutation({
     onSuccess: (updatedUser) => {
       if (ticketId.ticketId) {
         setTicketId({ ticketId: null })
       }
 
+      trpcUtils.users.me.invalidate()
+
       toast.success(`Switched to team ${updatedUser.current_team.name}`)
     },
     onError: (err) => {
-      toast.error(err.serverError)
+      toast.error(err.message)
     },
   })
 
@@ -41,7 +43,7 @@ export const SelectTeamDropdown = () => {
   return (
     <ComboboxDropdown
       size="sm"
-      disabled={action.status === 'executing'}
+      disabled={switchTeamMutation.isPending}
       placeholder="Select team"
       searchPlaceholder="Search team"
       emptyResults="No team member found"
@@ -58,8 +60,7 @@ export const SelectTeamDropdown = () => {
           return
         }
 
-        action.execute({
-          revalidatePath: pathname,
+        switchTeamMutation.mutate({
           teamId: item.id,
         })
       }}
