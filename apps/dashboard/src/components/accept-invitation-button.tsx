@@ -1,8 +1,7 @@
 'use client'
 
-import { acceptInvitation } from '@/actions/invite'
+import { trpc } from '@/trpc/client'
 import { Button } from '@seventy-seven/ui/button'
-import { useAction } from 'next-safe-action/hooks'
 import { useRouter } from 'next/navigation'
 import { toast } from 'sonner'
 
@@ -13,23 +12,18 @@ type Props = {
 export const AcceptInvitationButton = ({ teamId }: Props) => {
   const router = useRouter()
 
-  const action = useAction(acceptInvitation, {
+  const acceptInvitationMutation = trpc.invites.accept.useMutation({
     onSuccess: () => {
       toast.success('Invitation accepted')
       router.push('/account/teams')
     },
-    onError: (err, input) => {
-      toast.error(err.serverError, {
-        action: {
-          label: 'Retry',
-          onClick: () => action.execute({ teamId: input.teamId }),
-        },
-      })
+    onError: (error) => {
+      toast.error(error.message)
     },
   })
 
   return (
-    <Button loading={action.status === 'executing'} onClick={() => action.execute({ teamId })}>
+    <Button loading={acceptInvitationMutation.isPending} onClick={() => acceptInvitationMutation.mutate({ teamId })}>
       Accept invitation
     </Button>
   )

@@ -17,7 +17,7 @@ export const Header = () => {
       </div>
 
       <div className="flex items-center gap-4">
-        <Suspense>
+        <Suspense fallback={null}>
           <SelectTeamDropdown />
           <UserMenuDropdown />
         </Suspense>

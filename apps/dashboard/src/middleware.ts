@@ -10,8 +10,8 @@ export async function middleware(req: NextRequest) {
   const { data } = await supabase.auth.getUser()
 
   // Not logged in and not on an open path
-  if (!data && !OPEN_PATHS.includes(nextUrl.pathname)) {
-    return Response.redirect(new URL(`/?return_to=${req.nextUrl.pathname}`, req.url))
+  if (!data.user && !OPEN_PATHS.includes(nextUrl.pathname)) {
+    return Response.redirect(new URL(`/login?return_to=${req.nextUrl.pathname}`, req.url))
   }
 
   return NextResponse.next()
