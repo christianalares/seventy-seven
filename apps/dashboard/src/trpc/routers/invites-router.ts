@@ -75,12 +75,13 @@ export const invitesRouter = createTRPCRouter({
               },
             },
           })
-          .catch((_err) => {
-            throw new Error('No invite found')
+          .catch((error) => {
+            console.error(error)
+            throw new TRPCError({ code: 'INTERNAL_SERVER_ERROR', message: 'Failed to create invite' })
           })
 
         if (!invite) {
-          throw new Error('No invite found')
+          throw new TRPCError({ code: 'NOT_FOUND', message: 'No invite found' })
         }
 
         // Add the user to the team
@@ -92,13 +93,13 @@ export const invitesRouter = createTRPCRouter({
               user_id: ctx.user.id,
             },
           })
-          .catch((_err) => {
-            console.log(_err)
-            throw new Error('Could not accept invite')
+          .catch((error) => {
+            console.error(error)
+            throw new TRPCError({ code: 'INTERNAL_SERVER_ERROR', message: 'Could not accept invite' })
           })
 
         if (!createdMember) {
-          throw new Error('Could not accept invite')
+          throw new TRPCError({ code: 'INTERNAL_SERVER_ERROR', message: 'Could not accept invite' })
         }
 
         // Set the users current team
@@ -119,7 +120,7 @@ export const invitesRouter = createTRPCRouter({
             },
           })
           .catch((_err) => {
-            throw new Error(`Could not delete invite ${invite.id}`)
+            throw new TRPCError({ code: 'INTERNAL_SERVER_ERROR', message: `Could not delete invite ${invite.id}` })
           })
 
         return {
