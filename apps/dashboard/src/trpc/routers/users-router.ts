@@ -10,6 +10,10 @@ export namespace UsersRouter {
 
 export const usersRouter = createTRPCRouter({
   maybeMe: baseProcedure.query(async ({ ctx }) => {
+    if (!ctx.user?.id) {
+      return null
+    }
+
     const me = await ctx.prisma.user.findUnique({
       where: {
         id: ctx.user?.id,
