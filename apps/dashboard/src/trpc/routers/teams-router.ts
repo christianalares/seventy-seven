@@ -2,6 +2,7 @@ import { sentencifyArray } from '@/utils/sentencifyArray'
 import { shortId } from '@/utils/shortId'
 import { componentToPlainText, createResendClient } from '@seventy-seven/email'
 import TeamInvite from '@seventy-seven/email/emails/team-invite'
+import { TEAM_ROLE_ENUM } from '@seventy-seven/orm/prisma'
 import { TRPCError } from '@trpc/server'
 import { v4 as uuid } from 'uuid'
 import { z } from 'zod'
@@ -550,4 +551,159 @@ export const teamsRouter = createTRPCRouter({
       isNew: !user.current_team.auth_token,
     }
   }),
+  changeMemberRole: authProcedure
+    .input(
+      z.object({
+        teamId: z.string().uuid(),
+        memberId: z.string().uuid(),
+        role: z.nativeEnum(TEAM_ROLE_ENUM),
+      }),
+    )
+    .mutation(async ({ input, ctx }) => {
+      const team = await ctx.prisma.team.findUnique({
+        where: {
+          id: input.teamId,
+        },
+        select: {
+          id: true,
+          members: {
+            select: {
+              role: true,
+              user_id: true,
+            },
+          },
+        },
+      })
+
+      if (!team) {
+        throw new Error('Could not find team')
+      }
+
+      const userInTeam = team.members.find((member) => member.user_id === ctx.user.id)
+
+      if (!userInTeam) {
+        throw new TRPCError({ code: 'FORBIDDEN', message: 'You are not a member of this team' })
+      }
+
+      if (userInTeam.role !== 'OWNER') {
+        throw new TRPCError({ code: 'FORBIDDEN', message: 'You do not have permission to change roles' })
+      }
+
+      if (!team.members.some((member) => member.user_id === input.memberId)) {
+        throw new TRPCError({ code: 'FORBIDDEN', message: 'User is not a member of this team' })
+      }
+
+      if (team.members.length === 1) {
+        throw new TRPCError({ code: 'FORBIDDEN', message: 'You are the only member of this team' })
+      }
+
+      if (team.members.filter((m) => m.role === 'OWNER').length === 1 && input.memberId === ctx.user.id) {
+        throw new TRPCError({
+          code: 'FORBIDDEN',
+          message: 'You are the last owner of this team. Please transfer ownership before changing your role.',
+        })
+      }
+
+      const updatedUserOnTeam = await ctx.prisma.userOnTeam.update({
+        where: {
+          user_id_team_id: {
+            user_id: input.memberId,
+            team_id: team.id,
+          },
+        },
+        data: {
+          role: input.role,
+        },
+        select: {
+          role: true,
+          user: {
+            select: {
+              full_name: true,
+            },
+          },
+        },
+      })
+
+      ctx.analyticsClient.event('team_member_role_changed', {
+        team_id: team.id,
+        profileId: ctx.user.id,
+      })
+
+      return updatedUserOnTeam
+    }),
+  removeMember: authProcedure
+    .input(
+      z.object({
+        teamId: z.string().uuid(),
+        memberId: z.string().uuid(),
+      }),
+    )
+    .mutation(async ({ input, ctx }) => {
+      const team = await ctx.prisma.team
+        .findUnique({
+          where: {
+            id: input.teamId,
+            // Make sure the user is a owner of the team
+            members: {
+              some: {
+                user_id: ctx.user.id,
+                role: 'OWNER',
+              },
+            },
+          },
+          select: {
+            id: true,
+            is_personal: true,
+            members: {
+              select: {
+                role: true,
+                user_id: true,
+              },
+            },
+          },
+        })
+        .catch(() => {
+          throw new TRPCError({ code: 'INTERNAL_SERVER_ERROR', message: 'Failed to get team' })
+        })
+
+      if (!team) {
+        throw new TRPCError({ code: 'NOT_FOUND', message: 'Team not found' })
+      }
+
+      if (team.members.length <= 1) {
+        throw new TRPCError({
+          code: 'FORBIDDEN',
+          message: 'You are the last owner of the team. If you want to leave the team, please delete it instead.',
+        })
+      }
+
+      const deletedUserOnTeam = await ctx.prisma.userOnTeam.delete({
+        where: {
+          user_id_team_id: {
+            user_id: input.memberId,
+            team_id: team.id,
+          },
+        },
+        select: {
+          user: {
+            select: {
+              full_name: true,
+            },
+          },
+          team: {
+            select: {
+              id: true,
+              name: true,
+            },
+          },
+        },
+      })
+
+      ctx.analyticsClient.event('team_member_removed', {
+        team_id: team.id,
+        profileId: ctx.user.id,
+      })
+
+      return deletedUserOnTeam
+    }),
 })

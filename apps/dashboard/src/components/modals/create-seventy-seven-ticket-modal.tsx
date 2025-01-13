@@ -1,14 +1,13 @@
 'use client'
 
-import { createSeventySevenTicket } from '@/actions/seventy-seven'
 import type { UsersFindMe } from '@/queries/users'
+import { trpc } from '@/trpc/client'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { Button } from '@seventy-seven/ui/button'
 import { Input } from '@seventy-seven/ui/input'
 import { Label } from '@seventy-seven/ui/label'
 import { Modal, ModalDescription, ModalFooter, ModalHeader, ModalTitle } from '@seventy-seven/ui/modal'
 import { Textarea } from '@seventy-seven/ui/textarea'
-import { useAction } from 'next-safe-action/hooks'
 import { useForm } from 'react-hook-form'
 import { toast } from 'sonner'
 import { z } from 'zod'
@@ -27,19 +26,16 @@ const createSeventySevenTicketFormSchema = z.object({
 type CreateSeventySevenTicketFormValues = z.infer<typeof createSeventySevenTicketFormSchema>
 
 export const CreateSeventySevenTicketModal = ({ user }: Props) => {
-  const action = useAction(createSeventySevenTicket, {
+  const createSeventySevenTicketMutation = trpc.seventySeven.createTicket.useMutation({
     onSuccess: (_createdTicket) => {
+      popModal('createSeventySevenTicketModal')
+
       toast.success('Ticket has been created', {
         description: 'We will get back to you ASAP.',
       })
     },
-    onError: (err, input) => {
-      toast.error(err.serverError, {
-        action: {
-          label: 'Retry',
-          onClick: () => action.execute(input),
-        },
-      })
+    onError: (error) => {
+      toast.error(error.message)
     },
   })
 
@@ -51,7 +47,7 @@ export const CreateSeventySevenTicketModal = ({ user }: Props) => {
   })
 
   const onSubmit = form.handleSubmit(async (values) => {
-    action.execute({
+    createSeventySevenTicketMutation.mutate({
       fullName: values.fullName,
       subject: values.subject,
       body: values.body,
@@ -97,7 +93,7 @@ export const CreateSeventySevenTicketModal = ({ user }: Props) => {
           <Button type="button" variant="secondary" onClick={() => popModal('createSeventySevenTicketModal')}>
             Cancel
           </Button>
-          <Button type="submit" loading={action.status === 'executing'}>
+          <Button type="submit" loading={createSeventySevenTicketMutation.isPending}>
             Create ticket
           </Button>
         </ModalFooter>

@@ -350,7 +350,7 @@ export const changeMemberRole = authAction(
     if (dbTeam.members.length === 1) {
       throw new Error('You are the only member of this team')
     }
-    if (dbTeam.members.filter((m) => m.role === 'OWNER').length === 1) {
+    if (dbTeam.members.filter((m) => m.role === 'OWNER').length === 1 && values.memberId === user.id) {
       throw new Error('You are the last owner of this team. Please transfer ownership before changing your role.')
     }
 

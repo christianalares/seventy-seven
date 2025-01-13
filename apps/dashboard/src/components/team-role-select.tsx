@@ -1,12 +1,10 @@
 'use client'
 
-import { changeMemberRole } from '@/actions/teams'
 import type { UsersGetMyCurrentTeam } from '@/queries/users'
+import { trpc } from '@/trpc/client'
 import { getRoleName } from '@/utils/get-role-name'
 import { TEAM_ROLE_ENUM } from '@seventy-seven/orm/enums'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@seventy-seven/ui/select'
-import { useAction } from 'next-safe-action/hooks'
-import { usePathname } from 'next/navigation'
 import { toast } from 'sonner'
 import { pushAlert } from './alerts'
 
@@ -18,14 +16,16 @@ type Props = {
 }
 
 export const TeamRoleSelect = ({ userId, teamId, member, isUserTheLastOwner }: Props) => {
-  const pathname = usePathname()
+  const trpcUtils = trpc.useUtils()
 
-  const action = useAction(changeMemberRole, {
+  const changeMemberRoleMutation = trpc.teams.changeMemberRole.useMutation({
     onSuccess: (updatedUserOnTeam) => {
+      trpcUtils.users.myCurrentTeam.invalidate()
+
       toast.success(`Role for ${updatedUserOnTeam.user.full_name} changed to ${updatedUserOnTeam.role.toLowerCase()}`)
     },
     onError: (error) => {
-      toast.error(error.serverError)
+      toast.error(error.message)
     },
   })
 
@@ -35,7 +35,7 @@ export const TeamRoleSelect = ({ userId, teamId, member, isUserTheLastOwner }: P
       return
     }
 
-    if (isUserTheLastOwner) {
+    if (isUserTheLastOwner && userId === member.user.id) {
       pushAlert('prohibitLastOwnerRoleChange')
       return
     }
@@ -51,8 +51,7 @@ export const TeamRoleSelect = ({ userId, teamId, member, isUserTheLastOwner }: P
       return
     }
 
-    action.execute({
-      revalidatePath: pathname,
+    changeMemberRoleMutation.mutate({
       memberId: member.user.id,
       teamId,
       role,
@@ -60,7 +59,7 @@ export const TeamRoleSelect = ({ userId, teamId, member, isUserTheLastOwner }: P
   }
 
   return (
-    <Select value={member.role} disabled={action.status === 'executing'} onValueChange={onValueChange}>
+    <Select value={member.role} disabled={changeMemberRoleMutation.isPending} onValueChange={onValueChange}>
       <SelectTrigger className="w-28 h-8">
         <SelectValue placeholder="Select role" />
       </SelectTrigger>

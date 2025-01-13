@@ -1,6 +1,6 @@
 'use client'
 
-import type { UsersGetMyCurrentTeam } from '@/queries/users'
+import type { UsersRouter } from '@/trpc/routers/users-router'
 import { Button } from '@seventy-seven/ui/button'
 import {
   DropdownMenu,
@@ -14,8 +14,8 @@ import { pushAlert } from './alerts'
 
 type Props = {
   teamId: string
-  userMember: UsersGetMyCurrentTeam['current_team']['members'][number]
-  member: UsersGetMyCurrentTeam['current_team']['members'][number]
+  userMember: UsersRouter.MyCurrentTeam['current_team']['members'][number]
+  member: UsersRouter.MyCurrentTeam['current_team']['members'][number]
 }
 
 export const TeamActionsDropdown = ({ teamId, userMember, member }: Props) => {

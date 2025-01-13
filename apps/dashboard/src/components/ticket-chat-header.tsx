@@ -1,8 +1,8 @@
-import type { TicketsFindById } from '@/queries/tickets'
+import type { TicketsRouter } from '@/trpc/routers/tickets-router'
 import { TicketActionDropdown } from './ticket-action-dropdown'
 
 type Props = {
-  ticket: TicketsFindById
+  ticket: NonNullable<TicketsRouter.FindById>
 }
 
 export const TicketChatHeader = ({ ticket }: Props) => {

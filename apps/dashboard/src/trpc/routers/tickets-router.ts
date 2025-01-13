@@ -1,13 +1,17 @@
 import { componentToPlainText, createResendClient } from '@seventy-seven/email'
 import TicketClosed from '@seventy-seven/email/emails/ticket-closed'
+import { Events } from '@seventy-seven/jobs/constants'
+import { jobsClient } from '@seventy-seven/jobs/jobsClient'
 import { Prisma } from '@seventy-seven/orm/prisma'
 import { TRPCError } from '@trpc/server'
+import { isFuture } from 'date-fns'
 import { z } from 'zod'
 import { authProcedure, createTRPCRouter } from '../init'
 import type { RouterOutputs } from './_app'
 
 export namespace TicketsRouter {
   export type FindMany = RouterOutputs['tickets']['findMany']
+  export type FindById = RouterOutputs['tickets']['findById']
 }
 
 export const ticketsRouter = createTRPCRouter({
@@ -199,6 +203,7 @@ export const ticketsRouter = createTRPCRouter({
           subject: true,
           starred_at: true,
           closed_at: true,
+          snoozed_until: true,
           tags: {
             select: {
               tag: {
@@ -552,5 +557,97 @@ export const ticketsRouter = createTRPCRouter({
       })
 
       return { success: true }
+    }),
+  snooze: authProcedure
+    .input(
+      z.object({
+        ticketId: z.string().uuid(),
+        snoozedUntil: z
+          .date({ required_error: 'Snoozed date is required' })
+          .refine(isFuture, { message: 'Snoozed date must be in the future' }),
+      }),
+    )
+    .mutation(async ({ input, ctx }) => {
+      const user = await ctx.prisma.user.findUnique({
+        where: { id: ctx.user.id },
+        select: {
+          email: true,
+        },
+      })
+
+      if (!user) {
+        throw new TRPCError({ code: 'NOT_FOUND', message: 'User not found' })
+      }
+
+      const updatedTicket = await ctx.prisma.ticket.update({
+        where: {
+          id: input.ticketId,
+          // Make sure the user is a member of the team
+          team: {
+            members: {
+              some: {
+                user_id: ctx.user.id,
+              },
+            },
+          },
+        },
+        data: {
+          snoozed_until: input.snoozedUntil,
+        },
+        select: {
+          snoozed_until: true,
+          id: true,
+          event_id: true,
+        },
+      })
+
+      if (!updatedTicket.snoozed_until) {
+        throw new Error('Failed to snooze ticket, something went wrong 😢')
+      }
+
+      // If a user snoozes a ticket when it's already snoozed, we need to cancel the previous event
+      if (updatedTicket.event_id) {
+        await jobsClient.cancelEvent(updatedTicket.event_id)
+      }
+
+      const event = await jobsClient.sendEvent(
+        {
+          name: Events.UNSNOOZE_TICKET,
+          payload: {
+            ticketId: updatedTicket.id,
+            userId: ctx.user.id,
+            userEmail: user.email,
+          },
+        },
+        {
+          deliverAt: updatedTicket.snoozed_until,
+        },
+      )
+
+      // Update the ticket with the event id
+      await ctx.prisma.ticket.update({
+        where: { id: updatedTicket.id },
+        data: {
+          event_id: event.id,
+        },
+      })
+
+      if (!updatedTicket) {
+        throw new TRPCError({
+          code: 'INTERNAL_SERVER_ERROR',
+          message: 'Failed to snooze ticket, something went wrong 😢',
+        })
+      }
+
+      // revalidatePath('/inbox')
+      // revalidatePath(`/inbox/${updatedTicket.id}`)
+      // revalidatePath(`/inbox/snoozed/${updatedTicket.id}`)
+
+      ctx.analyticsClient.event('snoozed_ticket', {
+        ticket_id: updatedTicket.id,
+        profileId: ctx.user.id,
+      })
+
+      return updatedTicket
     }),
 })

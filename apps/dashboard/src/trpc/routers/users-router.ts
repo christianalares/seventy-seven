@@ -4,8 +4,9 @@ import { authProcedure, baseProcedure, createTRPCRouter } from '../init'
 import type { RouterOutputs } from './_app'
 
 export namespace UsersRouter {
-  export type GetMaybeMe = RouterOutputs['users']['maybeMe']
-  export type GetMe = RouterOutputs['users']['me']
+  export type MaybeMe = RouterOutputs['users']['maybeMe']
+  export type Me = RouterOutputs['users']['me']
+  export type MyCurrentTeam = RouterOutputs['users']['myCurrentTeam']
 }
 
 export const usersRouter = createTRPCRouter({

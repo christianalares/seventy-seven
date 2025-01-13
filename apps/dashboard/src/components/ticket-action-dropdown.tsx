@@ -1,8 +1,8 @@
 'use client'
 
 import { pushModal } from '@/components/modals'
-import type { TicketsFindById } from '@/queries/tickets'
 import { trpc } from '@/trpc/client'
+import type { TicketsRouter } from '@/trpc/routers/tickets-router'
 import { Button } from '@seventy-seven/ui/button'
 import {
   DropdownMenu,
@@ -16,7 +16,7 @@ import { Spinner } from '@seventy-seven/ui/spinner'
 import { toast } from 'sonner'
 
 type Props = {
-  ticket: TicketsFindById
+  ticket: NonNullable<TicketsRouter.FindById>
 }
 
 export const TicketActionDropdown = ({ ticket }: Props) => {
@@ -85,13 +85,19 @@ export const TicketActionDropdown = ({ ticket }: Props) => {
 
         <DropdownMenuItem
           className="gap-2"
-          onSelect={() =>
+          onSelect={() => {
+            // if (ticket.snoozed_until) {
+            //   toast.error('Not yet implemented')
+            //   return
+            // }
+
             pushModal('snoozeTicketModal', {
               ticketId: ticket.id,
             })
-          }
+          }}
         >
           <Icon name="alarmClock" className="size-4 text-orange-500" />
+          {/* {ticket.snoozed_until ? 'Unsnooze' : 'Snooze'} */}
           Snooze
         </DropdownMenuItem>
 

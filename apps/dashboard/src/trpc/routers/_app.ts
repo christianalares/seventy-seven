@@ -3,6 +3,7 @@ import { createTRPCRouter } from '../init'
 import { integrationsRouter } from './integrations-router'
 import { invitesRouter } from './invites-router'
 import { messagesRouter } from './messages-router'
+import { seventySevenRouter } from './seventy-seven-router'
 import { teamsRouter } from './teams-router'
 import { ticketsRouter } from './tickets-router'
 import { ticketTagsRouter } from './tickets-tags-router'
@@ -16,6 +17,7 @@ export const appRouter = createTRPCRouter({
   integrations: integrationsRouter,
   ticketTags: ticketTagsRouter,
   invites: invitesRouter,
+  seventySeven: seventySevenRouter,
 })
 
 // export type definition of API

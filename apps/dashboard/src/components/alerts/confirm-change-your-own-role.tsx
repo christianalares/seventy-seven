@@ -1,12 +1,10 @@
 'use client'
 
-import { changeMemberRole } from '@/actions/teams'
+import { trpc } from '@/trpc/client'
 import type { TEAM_ROLE_ENUM } from '@seventy-seven/orm/enums'
 import { Alert, AlertCancel, AlertDescription, AlertFooter, AlertTitle } from '@seventy-seven/ui/alert'
 import { Button } from '@seventy-seven/ui/button'
 import { DialogHeader } from '@seventy-seven/ui/dialog'
-import { useAction } from 'next-safe-action/hooks'
-import { usePathname } from 'next/navigation'
 import { toast } from 'sonner'
 import { popAlert } from '.'
 
@@ -17,15 +15,17 @@ type Props = {
 }
 
 export const ConfirmChangeYourOwnRoleAlert = ({ teamId, memberId, role }: Props) => {
-  const pathname = usePathname()
+  const trpcUtils = trpc.useUtils()
 
-  const action = useAction(changeMemberRole, {
+  const changeMemberRoleMutation = trpc.teams.changeMemberRole.useMutation({
     onSuccess: (updatedUserOnTeam) => {
+      trpcUtils.users.myCurrentTeam.invalidate()
+
       toast.success(`Role for ${updatedUserOnTeam.user.full_name} changed to ${updatedUserOnTeam.role.toLowerCase()}`)
       popAlert('confirmChangeYourOwnRole')
     },
     onError: (error) => {
-      toast.error(error.serverError)
+      toast.error(error.message)
     },
   })
 
@@ -42,13 +42,12 @@ export const ConfirmChangeYourOwnRoleAlert = ({ teamId, memberId, role }: Props)
       <p>Are you sure you want to continue?</p>
 
       <AlertFooter>
-        <AlertCancel disabled={action.status === 'executing'}>Cancel</AlertCancel>
+        <AlertCancel disabled={changeMemberRoleMutation.isPending}>Cancel</AlertCancel>
         <Button
-          loading={action.status === 'executing'}
+          loading={changeMemberRoleMutation.isPending}
           variant="destructive"
           onClick={() => {
-            action.execute({
-              revalidatePath: pathname,
+            changeMemberRoleMutation.mutate({
               memberId: memberId,
               teamId,
               role,

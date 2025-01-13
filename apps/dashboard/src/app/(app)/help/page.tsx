@@ -27,8 +27,8 @@ const HelpPage = async () => {
       <hr className="my-8" />
       <h2 className="mt-4 text-xl">Step 2</h2>
       <p className="mt-4">
-        So, now you have an authorization token. You can use this token to make a{' '}
-        <span className="font-medium">POST</span> request to the "create ticket" endpoint.
+        Now you have an authorization token. You can use this token to make a <span className="font-medium">POST</span>{' '}
+        request to the "create ticket" endpoint, either using the SDK or by using the raw HTTP request.
       </p>
       <CodeBlock
         className="mt-4 max-h-none"

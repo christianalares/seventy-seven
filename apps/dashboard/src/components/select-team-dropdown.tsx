@@ -21,6 +21,7 @@ export const SelectTeamDropdown = () => {
       }
 
       trpcUtils.users.me.invalidate()
+      trpcUtils.users.myCurrentTeam.invalidate()
       trpcUtils.teams.invites.invalidate()
       trpcUtils.teams.findMany.invalidate()
 
