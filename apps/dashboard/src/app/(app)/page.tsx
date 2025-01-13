@@ -1,14 +1,14 @@
-// import { trpc } from '@/trpc/server'
-// import { redirect } from 'next/navigation'
+import { trpc } from '@/trpc/server'
+import { redirect } from 'next/navigation'
 
-// export const dynamic = 'force-dynamic'
+export const dynamic = 'force-dynamic'
 
 const AuthorizedPage = async () => {
-  // const user = await trpc.users.maybeMe()
+  const user = await trpc.users.maybeMe()
 
-  // if (user) {
-  //   redirect('/inbox')
-  // }
+  if (user) {
+    redirect('/inbox')
+  }
 
   return null
 }
