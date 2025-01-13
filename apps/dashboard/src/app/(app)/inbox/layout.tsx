@@ -3,6 +3,8 @@ import { TicketFilterLoading, TicketFiltersDropdown } from '@/components/ticket-
 import { trpc } from '@/trpc/server'
 import { Suspense } from 'react'
 
+export const dynamic = 'force-dynamic'
+
 type Props = {
   children: React.ReactNode
 }

@@ -1,5 +1,7 @@
 import { SettingsSubNav } from '@/components/settings-sub-nav'
 
+export const dynamic = 'force-dynamic'
+
 type Props = {
   children: React.ReactNode
 }

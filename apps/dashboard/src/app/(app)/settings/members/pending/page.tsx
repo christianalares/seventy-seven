@@ -2,7 +2,7 @@ import { PendingTeamMembers, PendingTeamMembersSkeleton } from '@/components/pen
 import { trpc } from '@/trpc/server'
 import { Suspense } from 'react'
 
-const PendingMembersPage = async () => {
+const PendingMembersPage = () => {
   trpc.teams.invites.prefetch()
 
   return (

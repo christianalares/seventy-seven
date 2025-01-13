@@ -5,6 +5,8 @@ import { trpc } from '@/trpc/server'
 import { Skeleton } from '@seventy-seven/ui/skeleton'
 import { Suspense } from 'react'
 
+export const dynamic = 'force-dynamic'
+
 type Props = {
   children: React.ReactNode
 }

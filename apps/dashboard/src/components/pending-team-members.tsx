@@ -7,7 +7,7 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@
 import { InviteCodeBadge } from './invite-code-badge'
 import { PendingMemberDropdown } from './pending-member-dropdown'
 
-export const PendingTeamMembers = async () => {
+export const PendingTeamMembers = () => {
   const [invites] = trpc.teams.invites.useSuspenseQuery()
 
   if (invites.length === 0) {

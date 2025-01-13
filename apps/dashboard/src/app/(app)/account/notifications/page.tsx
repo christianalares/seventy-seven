@@ -5,7 +5,9 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@seve
 import { Icon } from '@seventy-seven/ui/icon'
 import Link from 'next/link'
 
-const NotificationsPage = async () => {
+export const dynamic = 'force-dynamic'
+
+const NotificationsPage = () => {
   trpc.users.me.prefetch()
 
   return (

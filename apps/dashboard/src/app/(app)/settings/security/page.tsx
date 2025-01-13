@@ -1,7 +1,7 @@
 import { AuthToken } from '@/components/auth-token'
 import { trpc } from '@/trpc/server'
 
-const SecurityPage = async () => {
+const SecurityPage = () => {
   trpc.users.myCurrentTeam.prefetch()
 
   return <AuthToken />

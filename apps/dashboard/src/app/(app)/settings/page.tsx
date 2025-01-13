@@ -3,7 +3,7 @@ import { UpdateTeamNameForm } from '@/components/forms/update-team-name-form'
 import { PageWrapper } from '@/components/page-wrapper'
 import { HydrateClient, trpc } from '@/trpc/server'
 
-const SettingsPage = async () => {
+const SettingsPage = () => {
   trpc.users.me.prefetch()
 
   return (

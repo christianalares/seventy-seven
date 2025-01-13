@@ -58,4 +58,5 @@ const IntegrationsPage = () => {
     </Card>
   )
 }
+
 export default IntegrationsPage

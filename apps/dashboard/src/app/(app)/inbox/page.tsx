@@ -10,7 +10,7 @@ type Props = {
   searchParams: Record<string, string | string[] | undefined>
 }
 
-const InboxRootPage = async ({ searchParams }: Props) => {
+const InboxRootPage = ({ searchParams }: Props) => {
   const ticketId = ticketIdCache.parse(searchParams)
   const filter = ticketFiltersCache.parse(searchParams)
   const numberOfActiveFilters = Object.values(filter).filter((value) => value !== null).length

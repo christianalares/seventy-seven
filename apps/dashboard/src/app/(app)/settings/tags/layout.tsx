@@ -1,10 +1,8 @@
 import { PageWrapper } from '@/components/page-wrapper'
 import { HydrateClient, trpc } from '@/trpc/server'
 
-export const dynamic = 'force-dynamic'
-
-const TeamsLayout = ({ children }: { children: React.ReactNode }) => {
-  trpc.teams.findMany.prefetch()
+const TagsLayout = ({ children }: { children: React.ReactNode }) => {
+  trpc.users.myCurrentTeam.prefetch()
 
   return (
     <HydrateClient>
@@ -13,4 +11,4 @@ const TeamsLayout = ({ children }: { children: React.ReactNode }) => {
   )
 }
 
-export default TeamsLayout
+export default TagsLayout
