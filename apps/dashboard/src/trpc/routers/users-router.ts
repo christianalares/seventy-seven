@@ -14,13 +14,19 @@ export const usersRouter = createTRPCRouter({
       return null
     }
 
-    const me = await ctx.prisma.user.findUnique({
-      where: {
-        id: ctx.user.id,
-      },
-    })
+    try {
+      const me = await ctx.prisma.user.findUnique({
+        where: {
+          id: ctx.user.id,
+        },
+      })
 
-    return me
+      return me
+    } catch (error) {
+      console.error(error)
+
+      return null
+    }
   }),
   me: authProcedure.query(async ({ ctx }) => {
     const me = await ctx.prisma.user.findUnique({
