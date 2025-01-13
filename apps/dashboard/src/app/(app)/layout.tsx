@@ -6,6 +6,8 @@ import { SheetProvider } from '@/components/sheets'
 import { HydrateClient, trpc } from '@/trpc/server'
 import { Toaster } from '@seventy-seven/ui/sonner'
 
+export const dynamic = 'force-dynamic'
+
 type Props = {
   children: React.ReactNode
 }
