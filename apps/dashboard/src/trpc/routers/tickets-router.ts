@@ -1,3 +1,5 @@
+import { componentToPlainText, createResendClient } from '@seventy-seven/email'
+import TicketClosed from '@seventy-seven/email/emails/ticket-closed'
 import { Prisma } from '@seventy-seven/orm/prisma'
 import { TRPCError } from '@trpc/server'
 import { z } from 'zod'
@@ -258,5 +260,297 @@ export const ticketsRouter = createTRPCRouter({
       })
 
       return ticket
+    }),
+  toggleStar: authProcedure
+    .input(
+      z.object({
+        ticketId: z.string().uuid(),
+        star: z.boolean(),
+      }),
+    )
+    .mutation(async ({ input, ctx }) => {
+      const updatedTicket = await ctx.prisma.ticket
+        .update({
+          where: {
+            id: input.ticketId,
+            // Make sure the user is a member of the team
+            team: {
+              members: {
+                some: {
+                  user_id: ctx.user.id,
+                },
+              },
+            },
+          },
+          data: {
+            starred_at: input.star ? new Date() : null,
+          },
+          select: {
+            id: true,
+            starred_at: true,
+          },
+        })
+        .catch((error) => {
+          console.error(error)
+          throw new TRPCError({
+            code: 'INTERNAL_SERVER_ERROR',
+            message: `Failed to ${input.star ? 'star' : 'unstar'} ticket, something went wrong 😢`,
+          })
+        })
+
+      if (!updatedTicket) {
+        throw new TRPCError({
+          code: 'INTERNAL_SERVER_ERROR',
+          message: `Failed to ${input.star ? 'star' : 'unstar'} ticket, something went wrong 😢`,
+        })
+      }
+
+      if (input.star) {
+        ctx.analyticsClient.event('starred_ticket', {
+          ticket_id: updatedTicket.id,
+          profileId: ctx.user.id,
+        })
+      } else {
+        ctx.analyticsClient.event('unstarred_ticket', {
+          ticket_id: updatedTicket.id,
+          profileId: ctx.user.id,
+        })
+      }
+
+      return {
+        ...updatedTicket,
+        wasStarred: !!updatedTicket.starred_at,
+      }
+    }),
+  closeTicket: authProcedure
+    .input(
+      z.object({
+        ticketId: z.string().uuid(),
+      }),
+    )
+    .mutation(async ({ input, ctx }) => {
+      const updatedTicket = await ctx.prisma.ticket
+        .update({
+          where: {
+            id: input.ticketId,
+            // Make sure the user is a member of the team
+            team: {
+              members: {
+                some: {
+                  user_id: ctx.user.id,
+                },
+              },
+            },
+          },
+          data: {
+            closed_at: new Date(),
+          },
+          select: {
+            id: true,
+            short_id: true,
+            starred_at: true,
+            messages: {
+              select: {
+                id: true,
+                body: true,
+                created_at: true,
+                sent_from_full_name: true,
+                sent_from_email: true,
+                sent_from_avatar_url: true,
+                handler: {
+                  select: {
+                    full_name: true,
+                    image_url: true,
+                  },
+                },
+              },
+            },
+          },
+        })
+        .catch((error) => {
+          console.error(error)
+          throw new TRPCError({
+            code: 'INTERNAL_SERVER_ERROR',
+            message: 'Failed to close ticket, something went wrong 😢',
+          })
+        })
+
+      if (!updatedTicket) {
+        throw new TRPCError({
+          code: 'INTERNAL_SERVER_ERROR',
+          message: 'Failed to close ticket, something went wrong 😢',
+        })
+      }
+
+      const user = await ctx.prisma.user.findUnique({
+        where: { id: ctx.user.id },
+        select: {
+          full_name: true,
+          image_url: true,
+          current_team: {
+            select: {
+              name: true,
+              image_url: true,
+            },
+          },
+        },
+      })
+
+      if (!user) {
+        throw new TRPCError({ code: 'NOT_FOUND', message: 'User not found' })
+      }
+
+      const resend = createResendClient()
+
+      // Construct an array of `Name <email>`
+      const recipients = updatedTicket.messages
+        .map((msg) => ({ name: msg.sent_from_full_name, email: msg.sent_from_email }))
+        .filter((r): r is { name: string; email: string } => !!r.email && !!r.name)
+        .map((r) => `${r.name} <${r.email}>`)
+
+      const uniqueRecipients = [...new Set(recipients)]
+
+      // If the team is personal or if the handlers name is the same as the team name, then the `from` field should be the handlers name
+      // otherwise show [name] from [team_name]
+      const from =
+        user.full_name === user.current_team.name ? user.full_name : `${user.full_name} from ${user.current_team.name}`
+
+      const template = TicketClosed({
+        handler: {
+          company: {
+            name: user.current_team.name,
+            image_url: user.current_team.image_url ?? undefined,
+          },
+          name: user.full_name,
+          avatar: user.image_url ?? undefined,
+        },
+        thread: updatedTicket.messages,
+        ticket: {
+          id: updatedTicket.id,
+          short_id: updatedTicket.short_id,
+        },
+      })
+
+      const { error } = await resend.emails.send({
+        from: `${from} <seventy-seven@seventy-seven.dev>`,
+        reply_to: `${from} <${updatedTicket.short_id}@ticket.seventy-seven.dev>`,
+        to: uniqueRecipients,
+        subject: `Ticket #${updatedTicket.short_id} was closed`,
+        react: template,
+        text: componentToPlainText(template),
+      })
+
+      if (error) {
+        console.error('Error sending email', error)
+      }
+
+      ctx.analyticsClient.event('closed_ticket', {
+        ticket_id: updatedTicket.id,
+        profileId: ctx.user.id,
+      })
+
+      return updatedTicket
+    }),
+  assign: authProcedure
+    .input(
+      z.object({
+        ticketId: z.string().uuid(),
+        memberId: z.string().uuid(),
+      }),
+    )
+    .mutation(async ({ input, ctx }) => {
+      const ticket = await ctx.prisma.ticket
+        .findUnique({
+          where: {
+            id: input.ticketId,
+          },
+          select: {
+            team: {
+              select: {
+                members: {
+                  select: {
+                    user_id: true,
+                  },
+                },
+              },
+            },
+          },
+        })
+        .catch((error) => {
+          console.error(error)
+
+          throw new TRPCError({ code: 'NOT_FOUND', message: 'Ticket not found' })
+        })
+
+      if (!ticket) {
+        throw new TRPCError({ code: 'NOT_FOUND', message: 'Ticket not found' })
+      }
+
+      const memberIdsInTeam = ticket.team.members.map((m) => m.user_id)
+
+      if (![ctx.user.id, input.memberId].every((id) => memberIdsInTeam.includes(id))) {
+        throw new TRPCError({
+          code: 'FORBIDDEN',
+          message: 'You cannot assign a ticket to a member that is not in the team',
+        })
+      }
+
+      const updatedTicket = await ctx.prisma.ticket.update({
+        where: {
+          id: input.ticketId,
+        },
+        data: {
+          assigned_to_user_id: input.memberId,
+        },
+        select: {
+          assigned_to_user: {
+            select: {
+              full_name: true,
+            },
+          },
+        },
+      })
+
+      ctx.analyticsClient.event('assigned_ticket', {
+        ticket_id: input.ticketId,
+        profileId: ctx.user.id,
+        assigned_to_user_id: input.memberId,
+      })
+
+      return updatedTicket
+    }),
+  unassign: authProcedure
+    .input(
+      z.object({
+        ticketId: z.string().uuid(),
+      }),
+    )
+    .mutation(async ({ input, ctx }) => {
+      await ctx.prisma.ticket
+        .update({
+          where: {
+            id: input.ticketId,
+            team: {
+              members: {
+                some: {
+                  user_id: ctx.user.id,
+                },
+              },
+            },
+          },
+          data: {
+            assigned_to_user_id: null,
+          },
+        })
+        .catch((_err) => {
+          throw new TRPCError({ code: 'INTERNAL_SERVER_ERROR', message: 'Failed to unassign ticket' })
+        })
+
+      ctx.analyticsClient.event('unassigned_ticket', {
+        ticket_id: input.ticketId,
+        profileId: ctx.user.id,
+      })
+
+      return { success: true }
     }),
 })

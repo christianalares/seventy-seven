@@ -1,8 +1,8 @@
 'use client'
 
-import { closeTicket, toggleStar } from '@/actions/tickets'
 import { pushModal } from '@/components/modals'
 import type { TicketsFindById } from '@/queries/tickets'
+import { trpc } from '@/trpc/client'
 import { Button } from '@seventy-seven/ui/button'
 import {
   DropdownMenu,
@@ -13,7 +13,6 @@ import {
 } from '@seventy-seven/ui/dropdown-menu'
 import { Icon } from '@seventy-seven/ui/icon'
 import { Spinner } from '@seventy-seven/ui/spinner'
-import { useAction } from 'next-safe-action/hooks'
 import { toast } from 'sonner'
 
 type Props = {
@@ -21,25 +20,33 @@ type Props = {
 }
 
 export const TicketActionDropdown = ({ ticket }: Props) => {
-  const toggleStarAction = useAction(toggleStar, {
+  const trpcUtils = trpc.useUtils()
+
+  const toggleStarMutation = trpc.tickets.toggleStar.useMutation({
     onSuccess: (updatedTicket) => {
+      trpcUtils.tickets.findMany.invalidate()
+      trpcUtils.tickets.findById.invalidate()
+
       toast.success(`Ticket was ${updatedTicket.wasStarred ? 'starred' : 'unstarred'}`)
     },
-    onError: (err) => {
-      toast.error(err.serverError)
+    onError: (error) => {
+      toast.error(error.message)
     },
   })
 
-  const closeTicketAction = useAction(closeTicket, {
+  const closeTicketMutation = trpc.tickets.closeTicket.useMutation({
     onSuccess: (_updatedTicket) => {
+      trpcUtils.tickets.findMany.invalidate()
+      trpcUtils.tickets.findById.invalidate()
+
       toast.success('Ticket was closed')
     },
-    onError: (err) => {
-      toast.error(err.serverError)
+    onError: (error) => {
+      toast.error(error.message)
     },
   })
 
-  const isLoading = [toggleStarAction, closeTicketAction].some((action) => action.status === 'executing')
+  const isLoading = toggleStarMutation.isPending || closeTicketMutation.isPending
 
   return (
     <DropdownMenu>
@@ -89,9 +96,9 @@ export const TicketActionDropdown = ({ ticket }: Props) => {
         </DropdownMenuItem>
 
         <DropdownMenuItem
-          disabled={toggleStarAction.status === 'executing'}
+          disabled={toggleStarMutation.isPending}
           className="gap-2"
-          onSelect={() => toggleStarAction.execute({ ticketId: ticket.id, star: !ticket.starred_at })}
+          onSelect={() => toggleStarMutation.mutate({ ticketId: ticket.id, star: !ticket.starred_at })}
         >
           <Icon name="star" className="size-4 text-amber-500" />
           {ticket.starred_at ? 'Unstar' : 'Star'}
@@ -99,9 +106,9 @@ export const TicketActionDropdown = ({ ticket }: Props) => {
 
         {!ticket.closed_at && (
           <DropdownMenuItem
-            disabled={closeTicketAction.status === 'executing'}
+            disabled={closeTicketMutation.isPending}
             className="gap-2"
-            onSelect={() => closeTicketAction.execute({ ticketId: ticket.id })}
+            onSelect={() => closeTicketMutation.mutate({ ticketId: ticket.id })}
           >
             <Icon name="checkCircle" className="size-4 text-destructive" />
             Close
