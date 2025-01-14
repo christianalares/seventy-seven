@@ -170,4 +170,49 @@ export const messagesRouter = createTRPCRouter({
 
       return createdMessage
     }),
+  edit: authProcedure
+    .input(
+      z.object({
+        messageId: z.string().uuid(),
+        body: z
+          .string()
+          .min(1, { message: 'A message body is required' })
+          .max(1000, { message: 'Message cannot be longer than 1000 characters' }),
+      }),
+    )
+    .mutation(async ({ input, ctx }) => {
+      const updatedMessage = await ctx.prisma.message
+        .update({
+          where: {
+            id: input.messageId,
+            // Make sure the user is a member of the team that the ticket belongs to
+            ticket: {
+              team: {
+                members: {
+                  some: {
+                    user_id: ctx.user.id,
+                  },
+                },
+              },
+            },
+          },
+          data: {
+            body: input.body,
+            unable_to_parse_content: false,
+          },
+          select: {
+            id: true,
+          },
+        })
+        .catch(() => {
+          throw new TRPCError({ code: 'INTERNAL_SERVER_ERROR', message: 'Failed to update message' })
+        })
+
+      ctx.analyticsClient.event('message_edited', {
+        message_id: updatedMessage.id,
+        profileId: ctx.user.id,
+      })
+
+      return updatedMessage
+    }),
 })

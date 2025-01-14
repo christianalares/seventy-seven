@@ -1,24 +1,24 @@
 'use client'
 
-import { createTag } from '@/actions/ticket-tags'
+import { trpc } from '@/trpc/client'
 import { getRandomTagColor } from '@/utils/colors'
 import { Modal, ModalDescription, ModalHeader, ModalTitle } from '@seventy-seven/ui/modal'
-import { useAction } from 'next-safe-action/hooks'
-import { usePathname } from 'next/navigation'
 import { toast } from 'sonner'
 import { popModal } from '.'
 import { TicketTagForm } from '../forms/ticket-tag-form'
 
 export const CreateTicketTagModal = () => {
-  const pathname = usePathname()
+  const trpcUtils = trpc.useUtils()
 
-  const action = useAction(createTag, {
+  const createTagMutation = trpc.ticketTags.create.useMutation({
     onSuccess: () => {
+      trpcUtils.users.myCurrentTeam.invalidate()
+
       toast.success('Tag created')
       popModal('createTicketTagModal')
     },
     onError: (error) => {
-      toast.error(error.serverError)
+      toast.error(error.message)
     },
   })
 
@@ -35,14 +35,13 @@ export const CreateTicketTagModal = () => {
           color: getRandomTagColor(),
         }}
         onSubmit={(values) => {
-          action.execute({
-            revalidatePath: pathname,
+          createTagMutation.mutate({
             name: values.name,
             color: values.color,
           })
         }}
         onClose={() => popModal('createTicketTagModal')}
-        isLoading={action.status === 'executing'}
+        isLoading={createTagMutation.isPending}
         ctaText="Create tag"
       />
     </Modal>

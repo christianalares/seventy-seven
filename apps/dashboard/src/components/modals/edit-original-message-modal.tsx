@@ -1,13 +1,11 @@
 'use client'
 
-import { editMessage } from '@/actions/messages'
+import { trpc } from '@/trpc/client'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { Button } from '@seventy-seven/ui/button'
 import { Label } from '@seventy-seven/ui/label'
 import { Modal, ModalDescription, ModalFooter, ModalHeader, ModalTitle } from '@seventy-seven/ui/modal'
 import { Textarea } from '@seventy-seven/ui/textarea'
-import { useAction } from 'next-safe-action/hooks'
-import { usePathname } from 'next/navigation'
 import { useForm } from 'react-hook-form'
 import { toast } from 'sonner'
 import { z } from 'zod'
@@ -28,10 +26,12 @@ const editOriginalMessageFormSchema = z.object({
 type EditOriginalMessageFormValues = z.infer<typeof editOriginalMessageFormSchema>
 
 export const EditOriginalMessageModal = ({ message, messageId }: Props) => {
-  const pathname = usePathname()
+  const trpcUtils = trpc.useUtils()
 
-  const action = useAction(editMessage, {
+  const editMessageMutation = trpc.messages.edit.useMutation({
     onSuccess: (_updatedMessage) => {
+      trpcUtils.tickets.findById.invalidate()
+
       toast.success('Message was updated', {
         description: 'The message was saved and marked as parsed',
       })
@@ -39,13 +39,8 @@ export const EditOriginalMessageModal = ({ message, messageId }: Props) => {
       popModal('editOriginalMessageModal')
       setTimeout(() => popModal('viewOriginalMessageContentModal'), 500)
     },
-    onError: (err, input) => {
-      toast.error(err.validationErrors?.body?.[0] || err.serverError, {
-        action: {
-          label: 'Retry',
-          onClick: () => action.execute(input),
-        },
-      })
+    onError: (error) => {
+      toast.error(error.message)
     },
   })
 
@@ -57,8 +52,7 @@ export const EditOriginalMessageModal = ({ message, messageId }: Props) => {
   })
 
   const onSubmit = form.handleSubmit((values) => {
-    action.execute({
-      revalidatePath: pathname,
+    editMessageMutation.mutate({
       messageId,
       body: values.message,
     })
@@ -82,7 +76,7 @@ export const EditOriginalMessageModal = ({ message, messageId }: Props) => {
         <ErrorMessage message={form.formState.errors.message?.message} />
 
         <ModalFooter className="mt-4">
-          <Button type="submit" loading={action.status === 'executing'}>
+          <Button type="submit" loading={editMessageMutation.isPending}>
             Save and marked as parsed
           </Button>
         </ModalFooter>

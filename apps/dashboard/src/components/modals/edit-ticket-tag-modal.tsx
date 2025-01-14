@@ -1,10 +1,8 @@
 'use client'
 
-import { updateTag } from '@/actions/ticket-tags'
 import type { UsersGetMyCurrentTeam } from '@/queries/users'
+import { trpc } from '@/trpc/client'
 import { Modal, ModalDescription, ModalHeader, ModalTitle } from '@seventy-seven/ui/modal'
-import { useAction } from 'next-safe-action/hooks'
-import { usePathname } from 'next/navigation'
 import { toast } from 'sonner'
 import { popModal } from '.'
 import { TicketTagForm } from '../forms/ticket-tag-form'
@@ -14,15 +12,17 @@ type Props = {
 }
 
 export const EditTicketTagModal = ({ tag }: Props) => {
-  const pathname = usePathname()
+  const trpcUtils = trpc.useUtils()
 
-  const action = useAction(updateTag, {
+  const editTagMutation = trpc.ticketTags.edit.useMutation({
     onSuccess: () => {
+      trpcUtils.users.myCurrentTeam.invalidate()
+
       toast.success('Tag updated')
       popModal('editTicketTagModal')
     },
     onError: (error) => {
-      toast.error(error.serverError)
+      toast.error(error.message)
     },
   })
 
@@ -39,15 +39,14 @@ export const EditTicketTagModal = ({ tag }: Props) => {
           color: tag.color,
         }}
         onSubmit={(values) => {
-          action.execute({
-            revalidatePath: pathname,
+          editTagMutation.mutate({
             id: tag.id,
             name: values.name,
             color: values.color,
           })
         }}
         onClose={() => popModal('editTicketTagModal')}
-        isLoading={action.status === 'executing'}
+        isLoading={editTagMutation.isPending}
         ctaText="Save tag"
       />
     </Modal>

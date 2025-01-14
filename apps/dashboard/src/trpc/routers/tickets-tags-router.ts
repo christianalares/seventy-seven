@@ -157,4 +157,97 @@ export const ticketTagsRouter = createTRPCRouter({
         unLinedTags,
       }
     }),
+  create: authProcedure
+    .input(
+      z.object({
+        name: z
+          .string({ message: 'Name is required' })
+          .min(1, { message: 'Name is required' })
+          .max(30, { message: 'Name can only be maximun 30 characters' }),
+        color: z
+          .string({ message: 'Color is required' })
+          .startsWith('#', { message: 'Invalid color' })
+          .max(7, { message: 'Invalid color' }),
+      }),
+    )
+    .mutation(async ({ input, ctx }) => {
+      const user = await ctx.prisma.user.findUnique({
+        where: { id: ctx.user.id },
+        select: {
+          id: true,
+          current_team_id: true,
+        },
+      })
+
+      if (!user) {
+        throw new TRPCError({ code: 'NOT_FOUND', message: 'User not found' })
+      }
+
+      const createdTag = await ctx.prisma.ticketTag.create({
+        data: {
+          name: input.name,
+          color: input.color,
+          team_id: user.current_team_id,
+        },
+        select: {
+          id: true,
+          name: true,
+          color: true,
+        },
+      })
+
+      ctx.analyticsClient.event('ticket_tag_created', {
+        tag_id: createdTag.id,
+        tag_name: createdTag.name,
+        profileId: user.id,
+      })
+
+      return createdTag
+    }),
+  edit: authProcedure
+    .input(
+      z.object({
+        id: z.string().uuid(),
+        name: z
+          .string({ message: 'Name is required' })
+          .min(1, { message: 'Name is required' })
+          .max(30, { message: 'Name can only be maximun 30 characters' }),
+        color: z
+          .string({ message: 'Color is required' })
+          .startsWith('#', { message: 'Invalid color' })
+          .max(7, { message: 'Invalid color' }),
+      }),
+    )
+    .mutation(async ({ input, ctx }) => {
+      const updatedTag = await ctx.prisma.ticketTag
+        .update({
+          where: {
+            id: input.id,
+            // Make sure the tag belongs to the users team
+            team: {
+              members: {
+                some: {
+                  user_id: ctx.user.id,
+                },
+              },
+            },
+          },
+          data: {
+            name: input.name,
+            color: input.color,
+          },
+        })
+        .catch((_err) => {
+          throw new TRPCError({ code: 'INTERNAL_SERVER_ERROR', message: 'Failed to update tag' })
+        })
+
+      ctx.analyticsClient.event('ticket_tag_updated', {
+        tag_id: input.id,
+        profileId: ctx.user.id,
+        tag_name_from: input.name,
+        tag_name_to: updatedTag.name,
+      })
+
+      return updatedTag
+    }),
 })

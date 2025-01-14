@@ -13,9 +13,8 @@ export const ViewOriginalMessageContentModal = ({ message, messageId }: Props) =
       <ModalHeader>
         <ModalTitle>Original message content</ModalTitle>
         <ModalDescription>
-          This message contains content that the parser could not extract.
-          <br />
-          If you want, you can edit this message so it looks better in the chat.
+          This message contains content that the parser could not extract. If you want, you can edit this message so it
+          looks better in the chat.
         </ModalDescription>
       </ModalHeader>
 
