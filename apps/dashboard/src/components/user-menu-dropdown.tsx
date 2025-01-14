@@ -1,7 +1,7 @@
 'use client'
 
 import { Avatar } from '@/components/avatar'
-import type { UsersFindMe } from '@/queries/users'
+import { trpc } from '@/trpc/client'
 import { createClient } from '@seventy-seven/supabase/clients/client'
 import {
   DropdownMenu,
@@ -17,11 +17,12 @@ import { useRouter } from 'next/navigation'
 import { ThemeSwitch } from './theme-switch'
 
 type Props = {
-  user: UsersFindMe
   className?: string
 }
 
-export const UserMenuDropdown = ({ user, className }: Props) => {
+export const UserMenuDropdown = ({ className }: Props) => {
+  const [user] = trpc.users.me.useSuspenseQuery()
+
   const router = useRouter()
   const sb = createClient()
 

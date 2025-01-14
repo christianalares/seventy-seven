@@ -1,7 +1,7 @@
 'use client'
 
-import { setTags } from '@/actions/ticket-tags'
-import type { TicketsFindById } from '@/queries/tickets'
+import { trpc } from '@/trpc/client'
+import type { TicketsRouter } from '@/trpc/routers/tickets-router'
 import { getRandomTagColor } from '@/utils/colors'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { Button } from '@seventy-seven/ui/button'
@@ -9,8 +9,6 @@ import { Icon } from '@seventy-seven/ui/icon'
 import { Modal, ModalDescription, ModalFooter, ModalHeader, ModalTitle } from '@seventy-seven/ui/modal'
 import { cn } from '@seventy-seven/ui/utils'
 import { useAnimate } from 'framer-motion'
-import { useAction } from 'next-safe-action/hooks'
-import { usePathname } from 'next/navigation'
 import { type ElementRef, useEffect, useRef, useState } from 'react'
 import { useFieldArray, useForm } from 'react-hook-form'
 import { toast } from 'sonner'
@@ -18,7 +16,7 @@ import { z } from 'zod'
 import { popModal } from '.'
 
 type Props = {
-  ticket: TicketsFindById
+  ticket: TicketsRouter.FindById
 }
 
 const tagsFormSchema = z.object({
@@ -34,15 +32,20 @@ const tagsFormSchema = z.object({
 type TagFormValues = z.infer<typeof tagsFormSchema>
 
 export const TicketTagsModal = ({ ticket }: Props) => {
-  const pathname = usePathname()
+  const trpcUtils = trpc.useUtils()
 
-  const action = useAction(setTags, {
+  const setTagsMutation = trpc.ticketTags.setTags.useMutation({
     onSuccess: () => {
-      toast.success('Tags updated')
+      trpcUtils.ticketTags.invalidate()
+      trpcUtils.tickets.findMany.invalidate()
+      trpcUtils.tickets.findById.invalidate()
+
       popModal('ticketTagsModal')
+
+      toast.success('Tags updated')
     },
     onError: (error) => {
-      toast.error(error.serverError)
+      toast.error(error.message)
     },
   })
 
@@ -85,8 +88,7 @@ export const TicketTagsModal = ({ ticket }: Props) => {
   }, [inputValue])
 
   const onSubmit = form.handleSubmit((values) => {
-    action.execute({
-      revalidatePath: pathname,
+    setTagsMutation.mutate({
       ticketId: ticket.id,
       tags: values.tags,
     })
@@ -190,12 +192,12 @@ export const TicketTagsModal = ({ ticket }: Props) => {
             type="button"
             variant="secondary"
             onClick={() => popModal('ticketTagsModal')}
-            disabled={action.status === 'executing'}
+            disabled={setTagsMutation.isPending}
           >
             Cancel
           </Button>
 
-          <Button type="submit" loading={action.status === 'executing'}>
+          <Button type="submit" loading={setTagsMutation.isPending}>
             Save tags
           </Button>
         </ModalFooter>

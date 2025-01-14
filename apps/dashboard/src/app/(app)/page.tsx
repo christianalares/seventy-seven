@@ -1,8 +1,10 @@
-import { api } from '@/queries'
+import { trpc } from '@/trpc/server'
 import { redirect } from 'next/navigation'
 
+export const dynamic = 'force-dynamic'
+
 const AuthorizedPage = async () => {
-  const user = await api.users.queries.findMaybeMe()
+  const user = await trpc.users.maybeMe()
 
   if (user) {
     redirect('/inbox')

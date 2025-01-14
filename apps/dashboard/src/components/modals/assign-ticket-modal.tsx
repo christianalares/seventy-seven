@@ -1,9 +1,9 @@
-import type { TicketsFindById } from '@/queries/tickets'
+import type { TicketsRouter } from '@/trpc/routers/tickets-router'
 import { Modal, ModalDescription, ModalHeader, ModalTitle } from '@seventy-seven/ui/modal'
 import { AssignTeamMemberForm } from '../forms/assign-team-member-form'
 
 type Props = {
-  ticket: TicketsFindById
+  ticket: TicketsRouter.FindById
 }
 
 export const AssignTicketModal = ({ ticket }: Props) => {

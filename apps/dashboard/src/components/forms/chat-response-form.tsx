@@ -1,12 +1,11 @@
 'use client'
 
-import { createMessage } from '@/actions/messages'
+import { trpc } from '@/trpc/client'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { Button } from '@seventy-seven/ui/button'
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@seventy-seven/ui/form'
 import { Icon } from '@seventy-seven/ui/icon'
 import { Textarea } from '@seventy-seven/ui/textarea'
-import { useAction } from 'next-safe-action/hooks'
 import { useForm } from 'react-hook-form'
 import { toast } from 'sonner'
 import { z } from 'zod'
@@ -32,27 +31,23 @@ export const ChatResponseForm = ({ ticketId }: Props) => {
     },
   })
 
-  const action = useAction(createMessage, {
-    onSuccess: (_createdMessage) => {
+  const trpcUtils = trpc.useUtils()
+
+  const createMessageMutation = trpc.messages.create.useMutation({
+    onSuccess: () => {
+      trpcUtils.tickets.findMany.invalidate()
+      trpcUtils.tickets.findById.invalidate({ id: ticketId })
+
       toast.success('Message sent!')
       form.reset()
     },
-    onError: (err, input) => {
-      toast.error(err.serverError, {
-        action: {
-          label: 'Retry',
-          onClick: () =>
-            action.execute({
-              ticketId,
-              body: input.body,
-            }),
-        },
-      })
+    onError: (error) => {
+      toast.error(error.message)
     },
   })
 
   const onSubmit = form.handleSubmit((values) => {
-    action.execute({
+    createMessageMutation.mutate({
       ticketId,
       body: values.message,
     })
@@ -83,7 +78,7 @@ export const ChatResponseForm = ({ ticketId }: Props) => {
 
           <Button
             className="absolute bottom-2 right-2"
-            loading={action.status === 'executing'}
+            loading={createMessageMutation.isPending}
             size="icon-sm"
             type="submit"
           >

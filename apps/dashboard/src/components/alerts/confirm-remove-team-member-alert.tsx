@@ -1,11 +1,9 @@
 'use client'
 
-import { removeMember } from '@/actions/teams'
+import { trpc } from '@/trpc/client'
 import { Alert, AlertCancel, AlertDescription, AlertFooter, AlertTitle } from '@seventy-seven/ui/alert'
 import { Button } from '@seventy-seven/ui/button'
 import { DialogHeader } from '@seventy-seven/ui/dialog'
-import { useAction } from 'next-safe-action/hooks'
-import { usePathname } from 'next/navigation'
 import { toast } from 'sonner'
 import { popAlert } from '.'
 
@@ -15,15 +13,17 @@ type Props = {
 }
 
 export const ConfirmRemoveTeamMemberAlert = ({ teamId, memberId }: Props) => {
-  const pathname = usePathname()
+  const trpcUtils = trpc.useUtils()
 
-  const action = useAction(removeMember, {
+  const removeMemberMutation = trpc.teams.removeMember.useMutation({
     onSuccess: (deletedUserOnTeam) => {
+      trpcUtils.users.myCurrentTeam.invalidate()
+
       toast.success(`${deletedUserOnTeam.user.full_name} was removed from the team "${deletedUserOnTeam.team.name}"`)
       popAlert('confirmRemoveTeamMember')
     },
     onError: (error) => {
-      toast.error(error.serverError)
+      toast.error(error.message)
     },
   })
 
@@ -39,11 +39,11 @@ export const ConfirmRemoveTeamMemberAlert = ({ teamId, memberId }: Props) => {
       <p>Are you sure you want to continue?</p>
 
       <AlertFooter>
-        <AlertCancel disabled={action.status === 'executing'}>Cancel</AlertCancel>
+        <AlertCancel disabled={removeMemberMutation.isPending}>Cancel</AlertCancel>
         <Button
-          loading={action.status === 'executing'}
+          loading={removeMemberMutation.isPending}
           variant="destructive"
-          onClick={() => action.execute({ teamId, memberId, revalidatePath: pathname })}
+          onClick={() => removeMemberMutation.mutate({ teamId, memberId })}
         >
           Remove member
         </Button>

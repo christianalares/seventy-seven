@@ -1,7 +1,7 @@
 'use client'
 
 import { useSelectedTicket } from '@/hooks/use-selected-ticket'
-import type { TicketsFindById } from '@/queries/tickets'
+import type { TicketsRouter } from '@/trpc/routers/tickets-router'
 import { createClient } from '@seventy-seven/supabase/clients/client'
 import { useRouter } from 'next/navigation'
 import { type ElementRef, useEffect, useRef } from 'react'
@@ -9,19 +9,19 @@ import { ChatMessageHandler } from './chat-message-handler'
 import { ChatMessageUser } from './chat-message-user'
 
 type Props = {
-  messages: TicketsFindById['messages']
+  messages: TicketsRouter.FindById['messages']
 }
 
 export const TicketChat = ({ messages }: Props) => {
   const router = useRouter()
-  const sb = createClient()
+  const supabase = createClient()
 
   const { ticketId } = useSelectedTicket()
   const ref = useRef<ElementRef<'div'>>(null)
   const isMountedRef = useRef(false)
 
   useEffect(() => {
-    const channel = sb
+    const channel = supabase
       .channel('realtime_messages')
       .on(
         'postgres_changes',
@@ -37,9 +37,9 @@ export const TicketChat = ({ messages }: Props) => {
       .subscribe()
 
     return () => {
-      sb.removeChannel(channel)
+      supabase.removeChannel(channel)
     }
-  }, [sb, router])
+  }, [supabase, router])
 
   useEffect(() => {
     if (!ticketId || !ref.current || messages.length <= 0) {

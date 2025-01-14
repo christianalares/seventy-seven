@@ -1,37 +1,41 @@
 import { EditDisplayNameForm } from '@/components/forms/edit-display-name-form'
 import { PageWrapper } from '@/components/page-wrapper'
-import { api } from '@/queries'
+import { HydrateClient, trpc } from '@/trpc/server'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@seventy-seven/ui/card'
 import { Icon } from '@seventy-seven/ui/icon'
 import { Skeleton } from '@seventy-seven/ui/skeleton'
-import dynamic from 'next/dynamic'
+import _dynamic from 'next/dynamic'
 
-const ThemeSwitch = dynamic(() => import('@/components/theme-switch').then(({ ThemeSwitch }) => ThemeSwitch), {
+export const dynamic = 'force-dynamic'
+
+const ThemeSwitch = _dynamic(() => import('@/components/theme-switch').then(({ ThemeSwitch }) => ThemeSwitch), {
   ssr: false,
   loading: () => <Skeleton className="w-36 h-8" />,
 })
 
-const AccountPage = async () => {
-  const user = await api.users.queries.findMe()
+const AccountPage = () => {
+  trpc.users.me.prefetch()
 
   return (
-    <PageWrapper className="space-y-4">
-      <EditDisplayNameForm defaultValues={{ displayName: user.full_name }} />
+    <HydrateClient>
+      <PageWrapper className="space-y-4">
+        <EditDisplayNameForm />
 
-      <Card>
-        <CardHeader>
-          <CardTitle className="flex items-center gap-2">
-            <Icon name="palette" />
-            Appearance
-          </CardTitle>
-          <CardDescription>Customize how Seventy Seven looks on your device</CardDescription>
-        </CardHeader>
+        <Card>
+          <CardHeader>
+            <CardTitle className="flex items-center gap-2">
+              <Icon name="palette" />
+              Appearance
+            </CardTitle>
+            <CardDescription>Customize how Seventy Seven looks on your device</CardDescription>
+          </CardHeader>
 
-        <CardContent>
-          <ThemeSwitch className="w-36" />
-        </CardContent>
-      </Card>
-    </PageWrapper>
+          <CardContent>
+            <ThemeSwitch className="w-36" />
+          </CardContent>
+        </Card>
+      </PageWrapper>
+    </HydrateClient>
   )
 }
 

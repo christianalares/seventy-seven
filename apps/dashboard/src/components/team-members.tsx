@@ -1,4 +1,6 @@
-import { api } from '@/queries'
+'use client'
+
+import { trpc } from '@/trpc/client'
 import { getRoleName } from '@/utils/get-role-name'
 import { Badge } from '@seventy-seven/ui/badge'
 import { Icon } from '@seventy-seven/ui/icon'
@@ -8,8 +10,9 @@ import { Avatar } from './avatar'
 import { TeamActionsDropdown } from './team-actions-dropdown'
 import { TeamRoleSelect } from './team-role-select'
 
-export const TeamMembers = async () => {
-  const user = await api.users.queries.myCurrentTeam()
+export const TeamMembers = () => {
+  const [user] = trpc.users.myCurrentTeam.useSuspenseQuery()
+
   const userMember = user.current_team.members.find((member) => member.user.id === user.id)
 
   if (!userMember) {

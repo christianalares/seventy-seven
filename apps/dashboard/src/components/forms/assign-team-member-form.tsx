@@ -1,13 +1,11 @@
-import { assignToMember, unassignTicket } from '@/actions/tickets'
-import type { TicketsFindById } from '@/queries/tickets'
+import { trpc } from '@/trpc/client'
+import type { TicketsRouter } from '@/trpc/routers/tickets-router'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { Button } from '@seventy-seven/ui/button'
 import { ComboboxDropdown } from '@seventy-seven/ui/combobox-dropdown'
 import { Form, FormControl, FormField, FormItem, FormMessage } from '@seventy-seven/ui/form'
 import { Icon } from '@seventy-seven/ui/icon'
 import { cn } from '@seventy-seven/ui/utils'
-import { useAction } from 'next-safe-action/hooks'
-import { usePathname } from 'next/navigation'
 import { useForm } from 'react-hook-form'
 import { toast } from 'sonner'
 import { z } from 'zod'
@@ -21,29 +19,35 @@ const assignTeamMemberFormSchema = z.object({
 type AssignTeamMemberFormValues = z.infer<typeof assignTeamMemberFormSchema>
 
 type Props = {
-  ticket: TicketsFindById
+  ticket: TicketsRouter.FindById
 }
 
 export const AssignTeamMemberForm = ({ ticket }: Props) => {
-  const pathname = usePathname()
+  const trpcUtils = trpc.useUtils()
 
-  const unassignAction = useAction(unassignTicket, {
+  const unassignMutation = trpc.tickets.unassign.useMutation({
     onSuccess: () => {
+      trpcUtils.tickets.findById.invalidate()
+      trpcUtils.tickets.findMany.invalidate()
+
       toast.success('Ticket was unassigned')
       popModal('assignTicketModal')
     },
-    onError: (err) => {
-      toast.error(err.serverError)
+    onError: (error) => {
+      toast.error(error.message)
     },
   })
 
-  const assignAction = useAction(assignToMember, {
+  const assignMutation = trpc.tickets.assign.useMutation({
     onSuccess: (updatedTicket) => {
+      trpcUtils.tickets.findById.invalidate()
+      trpcUtils.tickets.findMany.invalidate()
+
       toast.success(`Ticket was assigned to ${updatedTicket.assigned_to_user?.full_name}`)
       popModal('assignTicketModal')
     },
-    onError: (err) => {
-      toast.error(err.serverError)
+    onError: (error) => {
+      toast.error(error.message)
     },
   })
 
@@ -61,7 +65,7 @@ export const AssignTeamMemberForm = ({ ticket }: Props) => {
   }))
 
   const onSubmit = form.handleSubmit((values) => {
-    assignAction.execute({
+    assignMutation.mutate({
       ticketId: ticket.id,
       memberId: values.teamMemberId,
     })
@@ -112,20 +116,16 @@ export const AssignTeamMemberForm = ({ ticket }: Props) => {
         <div className="mt-4 flex justify-end gap-2">
           {ticket.assigned_to_user && (
             <Button
-              onClick={() => unassignAction.execute({ revalidatePath: pathname, ticketId: ticket.id })}
+              onClick={() => unassignMutation.mutate({ ticketId: ticket.id })}
               type="button"
               variant="destructive"
-              disabled={assignAction.status === 'executing'}
-              loading={unassignAction.status === 'executing'}
+              disabled={assignMutation.isPending}
+              loading={unassignMutation.isPending}
             >
               Unassign
             </Button>
           )}
-          <Button
-            type="submit"
-            loading={assignAction.status === 'executing'}
-            disabled={unassignAction.status === 'executing'}
-          >
+          <Button type="submit" loading={assignMutation.isPending} disabled={unassignMutation.isPending}>
             Assign
           </Button>
         </div>

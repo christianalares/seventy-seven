@@ -1,6 +1,6 @@
 'use client'
 
-import { setCurrentTeam } from '@/actions/teams'
+import { trpc } from '@/trpc/client'
 import { Button } from '@seventy-seven/ui/button'
 import {
   DropdownMenu,
@@ -11,9 +11,7 @@ import {
 } from '@seventy-seven/ui/dropdown-menu'
 import { Icon } from '@seventy-seven/ui/icon'
 import { Spinner } from '@seventy-seven/ui/spinner'
-import { useAction } from 'next-safe-action/hooks'
 import Link from 'next/link'
-import { usePathname } from 'next/navigation'
 import { toast } from 'sonner'
 import { pushAlert } from './alerts'
 
@@ -23,22 +21,26 @@ type Props = {
 }
 
 export const TeamActionsMenu = ({ teamId, isCurrent }: Props) => {
-  const pathname = usePathname()
+  const trpcUtils = trpc.useUtils()
 
-  const setCurrentTeamAction = useAction(setCurrentTeam, {
+  const switchTeamMutation = trpc.teams.switch.useMutation({
     onSuccess: (updatedUser) => {
+      trpcUtils.users.me.invalidate()
+      trpcUtils.teams.invites.invalidate()
+      trpcUtils.teams.findMany.invalidate()
+
       toast.success(`Team "${updatedUser.current_team.name}" is now your current team`)
     },
-    onError: (err) => {
-      toast.error(err.serverError)
+    onError: (error) => {
+      toast.error(error.message)
     },
   })
 
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
-        <Button variant="ghost" size="icon" disabled={setCurrentTeamAction.status === 'executing'}>
-          {setCurrentTeamAction.status === 'executing' ? (
+        <Button variant="ghost" size="icon" disabled={switchTeamMutation.isPending}>
+          {switchTeamMutation.isPending ? (
             <Spinner className="size-4" />
           ) : (
             <Icon name="moreVertical" className="size-4" />
@@ -50,8 +52,7 @@ export const TeamActionsMenu = ({ teamId, isCurrent }: Props) => {
         <DropdownMenuItem
           disabled={isCurrent}
           onSelect={() => {
-            setCurrentTeamAction.execute({
-              revalidatePath: pathname,
+            switchTeamMutation.mutate({
               teamId,
             })
           }}

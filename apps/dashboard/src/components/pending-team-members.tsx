@@ -1,24 +1,14 @@
-import { api } from '@/queries'
-import { prisma } from '@seventy-seven/orm/prisma'
+'use client'
+
+import { trpc } from '@/trpc/client'
 import { Icon } from '@seventy-seven/ui/icon'
 import { Skeleton } from '@seventy-seven/ui/skeleton'
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@seventy-seven/ui/table'
 import { InviteCodeBadge } from './invite-code-badge'
 import { PendingMemberDropdown } from './pending-member-dropdown'
 
-export const PendingTeamMembers = async () => {
-  const user = await api.users.queries.myCurrentTeam()
-
-  const invites = await prisma.teamInvite.findMany({
-    where: {
-      team_id: user.current_team.id,
-    },
-    select: {
-      code: true,
-      id: true,
-      email: true,
-    },
-  })
+export const PendingTeamMembers = () => {
+  const [invites] = trpc.teams.invites.useSuspenseQuery()
 
   if (invites.length === 0) {
     return <p className="border-t pt-4">There are no pending invites on this team</p>

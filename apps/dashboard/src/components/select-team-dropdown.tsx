@@ -1,34 +1,34 @@
 'use client'
 
-import { setCurrentTeam } from '@/actions/teams'
 import { useSelectedTicket } from '@/hooks/use-selected-ticket'
-import type { UsersFindMe } from '@/queries/users'
+import { trpc } from '@/trpc/client'
 import { ComboboxDropdown } from '@seventy-seven/ui/combobox-dropdown'
 import { Icon } from '@seventy-seven/ui/icon'
 import { cn } from '@seventy-seven/ui/utils'
-import { useAction } from 'next-safe-action/hooks'
-import { usePathname } from 'next/navigation'
 import { toast } from 'sonner'
 import { Avatar } from './avatar'
 
-type Props = {
-  user: UsersFindMe
-}
-
-export const SelectTeamDropdown = ({ user }: Props) => {
+export const SelectTeamDropdown = () => {
   const { ticketId, setTicketId } = useSelectedTicket()
-  const pathname = usePathname()
 
-  const action = useAction(setCurrentTeam, {
+  const trpcUtils = trpc.useUtils()
+  const [user] = trpc.users.me.useSuspenseQuery()
+
+  const switchTeamMutation = trpc.teams.switch.useMutation({
     onSuccess: (updatedUser) => {
       if (ticketId.ticketId) {
         setTicketId({ ticketId: null })
       }
 
+      trpcUtils.users.me.invalidate()
+      trpcUtils.users.myCurrentTeam.invalidate()
+      trpcUtils.teams.invites.invalidate()
+      trpcUtils.teams.findMany.invalidate()
+
       toast.success(`Switched to team ${updatedUser.current_team.name}`)
     },
     onError: (err) => {
-      toast.error(err.serverError)
+      toast.error(err.message)
     },
   })
 
@@ -43,7 +43,7 @@ export const SelectTeamDropdown = ({ user }: Props) => {
   return (
     <ComboboxDropdown
       size="sm"
-      disabled={action.status === 'executing'}
+      disabled={switchTeamMutation.isPending}
       placeholder="Select team"
       searchPlaceholder="Search team"
       emptyResults="No team member found"
@@ -60,8 +60,7 @@ export const SelectTeamDropdown = ({ user }: Props) => {
           return
         }
 
-        action.execute({
-          revalidatePath: pathname,
+        switchTeamMutation.mutate({
           teamId: item.id,
         })
       }}

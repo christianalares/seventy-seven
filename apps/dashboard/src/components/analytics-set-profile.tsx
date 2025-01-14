@@ -1,14 +1,12 @@
 'use client'
 
-import type { UsersFindMaybeMe } from '@/queries/users'
+import { trpc } from '@/trpc/client'
 import { setProfile } from '@seventy-seven/analytics'
 import { useEffect } from 'react'
 
-type Props = {
-  user?: UsersFindMaybeMe
-}
+export const AnalyticsSetProfile = () => {
+  const { data: user } = trpc.users.maybeMe.useQuery()
 
-export const AnalyticsSetProfile = ({ user }: Props) => {
   useEffect(() => {
     if (!user) {
       return

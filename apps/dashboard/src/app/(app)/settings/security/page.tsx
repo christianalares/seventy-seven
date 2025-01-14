@@ -1,14 +1,13 @@
 import { AuthToken } from '@/components/auth-token'
-import { PageWrapper } from '@/components/page-wrapper'
-import { api } from '@/queries'
+import { HydrateClient, trpc } from '@/trpc/server'
 
-const SecurityPage = async () => {
-  const user = await api.users.queries.myCurrentTeam()
+const SecurityPage = () => {
+  trpc.users.myCurrentTeam.prefetch()
 
   return (
-    <PageWrapper>
-      <AuthToken authToken={user.current_team.auth_token} />
-    </PageWrapper>
+    <HydrateClient>
+      <AuthToken />
+    </HydrateClient>
   )
 }
 

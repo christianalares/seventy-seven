@@ -1,15 +1,13 @@
 'use client'
 
-import { updateDisplayName } from '@/actions/user'
+import { trpc } from '@/trpc/client'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { Button } from '@seventy-seven/ui/button'
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@seventy-seven/ui/card'
 import { Form, FormControl, FormField, FormItem, FormLabel } from '@seventy-seven/ui/form'
 import { Icon } from '@seventy-seven/ui/icon'
 import { Input } from '@seventy-seven/ui/input'
-import { useAction } from 'next-safe-action/hooks'
-import { usePathname } from 'next/navigation'
-import { type DefaultValues, useForm } from 'react-hook-form'
+import { useForm } from 'react-hook-form'
 import { toast } from 'sonner'
 import { z } from 'zod'
 
@@ -19,30 +17,32 @@ const editDisplayNameFormSchema = z.object({
 
 type EditDisplayNameFormValues = z.infer<typeof editDisplayNameFormSchema>
 
-type Props = {
-  defaultValues?: DefaultValues<EditDisplayNameFormValues>
-}
+export const EditDisplayNameForm = () => {
+  const [me] = trpc.users.me.useSuspenseQuery()
+  const trpcUtils = trpc.useUtils()
 
-export const EditDisplayNameForm = ({ defaultValues }: Props) => {
-  const pathname = usePathname()
-
-  const action = useAction(updateDisplayName, {
+  const updateDisplayNameMutation = trpc.users.updateDisplayName.useMutation({
     onSuccess: (updatedUser) => {
+      trpcUtils.users.me.invalidate()
+
+      form.reset({ displayName: updatedUser.full_name })
+
       toast.success(`Display name updated to "${updatedUser.full_name}"`)
     },
     onError: (error) => {
-      toast.error(error.serverError)
+      toast.error(error.message)
     },
   })
 
   const form = useForm<EditDisplayNameFormValues>({
     resolver: zodResolver(editDisplayNameFormSchema),
-    defaultValues,
+    defaultValues: {
+      displayName: me.full_name,
+    },
   })
 
   const onSubmit = form.handleSubmit((values) => {
-    action.execute({
-      revalidatePath: pathname,
+    updateDisplayNameMutation.mutate({
       displayName: values.displayName,
     })
   })
@@ -78,7 +78,7 @@ export const EditDisplayNameForm = ({ defaultValues }: Props) => {
 
           <CardFooter className="justify-between">
             <p>Provide a display name that is suitable for your users and your team.</p>
-            <Button type="submit" loading={action.status === 'executing'}>
+            <Button type="submit" loading={updateDisplayNameMutation.isPending}>
               Save
             </Button>
           </CardFooter>

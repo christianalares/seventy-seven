@@ -1,9 +1,17 @@
+import { HydrateClient, trpc } from '@/trpc/server'
+
 type Props = {
   children: React.ReactNode
 }
 
-const AccountLayout = ({ children }: Props) => {
-  return <main className="overflow-y-scroll">{children}</main>
+const HelpLayout = ({ children }: Props) => {
+  trpc.users.me.prefetch()
+
+  return (
+    <HydrateClient>
+      <main className="overflow-y-scroll">{children}</main>
+    </HydrateClient>
+  )
 }
 
-export default AccountLayout
+export default HelpLayout

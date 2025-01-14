@@ -1,11 +1,10 @@
-import { snoozeTicket } from '@/actions/tickets'
+import { trpc } from '@/trpc/client'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { Button } from '@seventy-seven/ui/button'
 import { DateTimePicker } from '@seventy-seven/ui/date-time-picker'
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@seventy-seven/ui/form'
 import { Icon } from '@seventy-seven/ui/icon'
 import { format, isFuture, isPast, isToday } from 'date-fns'
-import { useAction } from 'next-safe-action/hooks'
 import { useForm } from 'react-hook-form'
 import { toast } from 'sonner'
 import { z } from 'zod'
@@ -24,21 +23,28 @@ type Props = {
 }
 
 export const SnoozeTicketForm = ({ ticketId }: Props) => {
-  const action = useAction(snoozeTicket, {
+  const trpcUtils = trpc.useUtils()
+
+  const snoozeTicketMutation = trpc.tickets.snooze.useMutation({
     onSuccess: (updatedTicket) => {
       if (!updatedTicket.snoozed_until) {
         return
       }
 
+      trpcUtils.tickets.findById.invalidate()
+      trpcUtils.tickets.findMany.invalidate()
+
       const date = format(
         updatedTicket.snoozed_until,
         isToday(updatedTicket.snoozed_until) ? 'HH:mm' : 'MMM dd (HH:mm)',
       )
+
       toast.success(`Ticket was snoozed until ${date}`)
+
       popModal('snoozeTicketModal')
     },
-    onError: (err) => {
-      toast.error(err.serverError)
+    onError: (error) => {
+      toast.error(error.message)
       popModal('snoozeTicketModal')
     },
   })
@@ -48,7 +54,7 @@ export const SnoozeTicketForm = ({ ticketId }: Props) => {
   })
 
   const onSubmit = form.handleSubmit((values) => {
-    action.execute({ ticketId, snoozedUntil: values.date })
+    snoozeTicketMutation.mutate({ ticketId, snoozedUntil: values.date })
   })
 
   return (
@@ -78,7 +84,7 @@ export const SnoozeTicketForm = ({ ticketId }: Props) => {
           {form.formState.errors.date && <FormMessage message={form.formState.errors.date.message} />}
 
           <Button
-            loading={action.status === 'executing'}
+            loading={snoozeTicketMutation.isPending}
             type="submit"
             className="gap-2 ml-auto"
             disabled={isPast(form.watch('date'))}

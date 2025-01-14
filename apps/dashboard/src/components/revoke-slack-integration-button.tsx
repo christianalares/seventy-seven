@@ -1,30 +1,31 @@
 'use client'
 
-import { revokeSlackIntegration } from '@/actions/integrations'
+import { trpc } from '@/trpc/client'
 import { Button } from '@seventy-seven/ui/button'
-import { useAction } from 'next-safe-action/hooks'
-import { usePathname } from 'next/navigation'
 import { toast } from 'sonner'
 
 export const RevokeSlackIntegrationButton = () => {
-  const pathname = usePathname()
+  const trpcUtils = trpc.useUtils()
 
-  const action = useAction(revokeSlackIntegration, {
+  const revokeSlackIntegrationMutation = trpc.integrations.revokeSlackIntegration.useMutation({
     onSuccess: (data) => {
+      trpcUtils.integrations.getSlackIntegration.invalidate()
+
       if (data.success) {
         toast.success('Slack integration revoked')
       }
+    },
+    onError: (error) => {
+      toast.error(error.message)
     },
   })
 
   return (
     <Button
       variant="destructive"
-      loading={action.status === 'executing'}
+      loading={revokeSlackIntegrationMutation.isPending}
       onClick={() => {
-        action.execute({
-          revalidatePath: pathname,
-        })
+        revokeSlackIntegrationMutation.mutate()
       }}
     >
       Revoke Slack integration

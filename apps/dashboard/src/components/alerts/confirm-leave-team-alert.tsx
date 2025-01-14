@@ -1,11 +1,9 @@
 'use client'
 
-import { leaveTeam } from '@/actions/teams'
+import { trpc } from '@/trpc/client'
 import { Alert, AlertCancel, AlertDescription, AlertFooter, AlertTitle } from '@seventy-seven/ui/alert'
 import { Button } from '@seventy-seven/ui/button'
 import { DialogHeader } from '@seventy-seven/ui/dialog'
-import { useAction } from 'next-safe-action/hooks'
-import { usePathname, useRouter } from 'next/navigation'
 import { toast } from 'sonner'
 import { popAlert } from '.'
 
@@ -14,17 +12,19 @@ type Props = {
 }
 
 export const ConfirmLeaveTeamAlert = ({ teamId }: Props) => {
-  const pathname = usePathname()
-  const router = useRouter()
+  const trpcUtils = trpc.useUtils()
 
-  const action = useAction(leaveTeam, {
+  const leaveTeamMutation = trpc.teams.leave.useMutation({
     onSuccess: (leftTeam) => {
+      trpcUtils.users.me.invalidate()
+      trpcUtils.teams.invites.invalidate()
+      trpcUtils.teams.findMany.invalidate()
+
       toast.success(`You have left the team ${leftTeam.team.name}`)
       popAlert('confirmLeaveTeam')
-      router.push('/account/teams')
     },
     onError: (error) => {
-      toast.error(error.serverError)
+      toast.error(error.message)
     },
   })
 
@@ -41,11 +41,11 @@ export const ConfirmLeaveTeamAlert = ({ teamId }: Props) => {
       <p>Are you sure you want to continue?</p>
 
       <AlertFooter>
-        <AlertCancel disabled={action.status === 'executing'}>Cancel</AlertCancel>
+        <AlertCancel disabled={leaveTeamMutation.isPending}>Cancel</AlertCancel>
         <Button
-          loading={action.status === 'executing'}
+          loading={leaveTeamMutation.isPending}
           variant="destructive"
-          onClick={() => action.execute({ revalidatePath: pathname, teamId })}
+          onClick={() => leaveTeamMutation.mutate({ teamId })}
         >
           Leave team
         </Button>

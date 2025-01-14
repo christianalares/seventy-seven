@@ -1,38 +1,29 @@
 'use client'
 
-import { inviteTeamMembers } from '@/actions/invite'
-import type { UsersGetMyCurrentTeam } from '@/queries/users'
+import { trpc } from '@/trpc/client'
+import type { UsersRouter } from '@/trpc/routers/users-router'
 import { pluralize } from '@/utils/pluralize'
 import { Modal, ModalDescription, ModalHeader, ModalTitle } from '@seventy-seven/ui/modal'
-import { useAction } from 'next-safe-action/hooks'
-import { usePathname } from 'next/navigation'
 import { toast } from 'sonner'
 import { popModal } from '.'
 import { InviteTeamMemberForm } from '../forms/invite-team-member-form'
 
 type Props = {
-  team: UsersGetMyCurrentTeam['current_team']
+  team: UsersRouter.MyCurrentTeam['current_team']
 }
 
 export const InviteTeamMemberModal = ({ team }: Props) => {
-  const pathname = usePathname()
+  const trpcUtils = trpc.useUtils()
 
-  const action = useAction(inviteTeamMembers, {
+  const inviteTeamMembersMutation = trpc.teams.invite.useMutation({
     onSuccess: (numberOfCreatedInvites) => {
+      trpcUtils.teams.invites.invalidate()
+
       popModal('inviteTeamMemberModal')
       toast.success(`You invited ${pluralize(numberOfCreatedInvites, 'member', 'members')}`)
     },
-    onError: (err, input) => {
-      toast.error(err.serverError, {
-        action: {
-          label: 'Retry',
-          onClick: () =>
-            action.execute({
-              emails: input.emails,
-              teamId: input.teamId,
-            }),
-        },
-      })
+    onError: (error) => {
+      toast.error(error.message)
     },
   })
 
@@ -44,13 +35,12 @@ export const InviteTeamMemberModal = ({ team }: Props) => {
       </ModalHeader>
       <InviteTeamMemberForm
         onSubmit={(values) => {
-          action.execute({
-            revalidatePath: pathname,
+          inviteTeamMembersMutation.mutate({
             emails: values.invites.map(({ email }) => email),
             teamId: team.id,
           })
         }}
-        loading={action.status === 'executing'}
+        loading={inviteTeamMembersMutation.isPending}
       />{' '}
     </Modal>
   )

@@ -1,64 +1,53 @@
 'use client'
 
-import { updateEmailNotifications } from '@/actions/user'
-import type { UsersFindMe } from '@/queries/users'
+import { trpc } from '@/trpc/client'
 import { Label } from '@seventy-seven/ui/label'
 import { Switch } from '@seventy-seven/ui/switch'
-import { useOptimisticAction } from 'next-safe-action/hooks'
-import { usePathname } from 'next/navigation'
 import { toast } from 'sonner'
 
-type Props = {
-  user: UsersFindMe
-}
+export const NotificationsEmailSwitches = () => {
+  const trpcUtils = trpc.useUtils()
+  const [me] = trpc.users.me.useSuspenseQuery()
 
-export const NotificationsEmailSwitches = ({ user }: Props) => {
-  const pathname = usePathname()
-
-  const action = useOptimisticAction(
-    updateEmailNotifications,
-    {
-      notification_email_new_ticket: user.notification_email_new_ticket,
-      notification_email_new_message: user.notification_email_new_message,
-    },
-    (state, input) => {
-      if (!state) {
-        return state
-      }
-
-      if (input.type === 'new_ticket') {
-        return {
-          ...state,
-          notification_email_new_ticket: input.value,
+  const updateEmailNotificationsMutation = trpc.users.updateEmailNotifications.useMutation({
+    onMutate: ({ type, value }) => {
+      trpcUtils.users.me.setData(undefined, (prev) => {
+        if (!prev) {
+          return prev
         }
-      }
 
-      if (input.type === 'new_messages') {
-        return {
-          ...state,
-          notification_email_new_message: input.value,
+        if (type === 'new_ticket') {
+          return {
+            ...prev,
+            notification_email_new_ticket: value,
+          }
         }
-      }
 
-      return state
+        if (type === 'new_messages') {
+          return {
+            ...prev,
+            notification_email_new_message: value,
+          }
+        }
+
+        return prev
+      })
     },
-    {
-      onSuccess: (_updatedUser) => {
-        toast.success('Notification settings updated')
-      },
+    onSuccess: () => {
+      toast.success('Notification settings updated')
     },
-  )
+  })
 
   return (
     <div className="border border-border/50 rounded-lg divide-y divide-border/50">
       <Label className="flex items-center gap-4 p-4 text-base">
         <Switch
-          checked={action.optimisticData?.notification_email_new_ticket}
+          disabled={updateEmailNotificationsMutation.isPending}
+          checked={me.notification_email_new_ticket}
           onCheckedChange={() => {
-            action.execute({
-              revalidatePath: pathname,
+            updateEmailNotificationsMutation.mutate({
               type: 'new_ticket',
-              value: !action.optimisticData?.notification_email_new_ticket,
+              value: !me.notification_email_new_ticket,
             })
           }}
         />
