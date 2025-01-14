@@ -1,6 +1,5 @@
 'use client'
 
-import type { UsersFindMe } from '@/queries/users'
 import { trpc } from '@/trpc/client'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { Button } from '@seventy-seven/ui/button'
@@ -13,10 +12,6 @@ import { toast } from 'sonner'
 import { z } from 'zod'
 import { popModal } from '.'
 
-type Props = {
-  user: UsersFindMe
-}
-
 const createSeventySevenTicketFormSchema = z.object({
   fullName: z.string({ required_error: 'Full name is required' }).min(2, { message: 'Full name is required' }),
   subject: z.string({ required_error: 'Subject is required' }).min(1, { message: 'Subject is required' }),
@@ -25,7 +20,9 @@ const createSeventySevenTicketFormSchema = z.object({
 
 type CreateSeventySevenTicketFormValues = z.infer<typeof createSeventySevenTicketFormSchema>
 
-export const CreateSeventySevenTicketModal = ({ user }: Props) => {
+export const CreateSeventySevenTicketModal = () => {
+  const [me] = trpc.users.me.useSuspenseQuery()
+
   const createSeventySevenTicketMutation = trpc.seventySeven.createTicket.useMutation({
     onSuccess: (_createdTicket) => {
       popModal('createSeventySevenTicketModal')
@@ -42,7 +39,7 @@ export const CreateSeventySevenTicketModal = ({ user }: Props) => {
   const form = useForm<CreateSeventySevenTicketFormValues>({
     resolver: zodResolver(createSeventySevenTicketFormSchema),
     defaultValues: {
-      fullName: user.full_name,
+      fullName: me.full_name,
     },
   })
 
@@ -72,7 +69,7 @@ export const CreateSeventySevenTicketModal = ({ user }: Props) => {
 
             <Label className="block flex-1">
               <span>Email</span>
-              <Input disabled defaultValue={user.email} className="mt-2" />
+              <Input disabled defaultValue={me.email} className="mt-2" />
             </Label>
           </div>
 

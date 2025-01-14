@@ -1,4 +1,4 @@
-import type { TicketsFindMany } from '@/queries/tickets'
+import type { TicketsRouter } from '@/trpc/routers/tickets-router'
 import { Badge } from '@seventy-seven/ui/badge'
 import { Icon } from '@seventy-seven/ui/icon'
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@seventy-seven/ui/tooltip'
@@ -6,7 +6,7 @@ import { format, isToday } from 'date-fns'
 import { Avatar } from './avatar'
 
 type Props = {
-  ticket: TicketsFindMany[number]
+  ticket: TicketsRouter.FindMany[number]
 }
 
 export const TicketListItemBadges = ({ ticket }: Props) => {

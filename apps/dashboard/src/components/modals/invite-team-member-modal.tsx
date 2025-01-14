@@ -1,7 +1,7 @@
 'use client'
 
-import type { UsersGetMyCurrentTeam } from '@/queries/users'
 import { trpc } from '@/trpc/client'
+import type { UsersRouter } from '@/trpc/routers/users-router'
 import { pluralize } from '@/utils/pluralize'
 import { Modal, ModalDescription, ModalHeader, ModalTitle } from '@seventy-seven/ui/modal'
 import { toast } from 'sonner'
@@ -9,7 +9,7 @@ import { popModal } from '.'
 import { InviteTeamMemberForm } from '../forms/invite-team-member-form'
 
 type Props = {
-  team: UsersGetMyCurrentTeam['current_team']
+  team: UsersRouter.MyCurrentTeam['current_team']
 }
 
 export const InviteTeamMemberModal = ({ team }: Props) => {

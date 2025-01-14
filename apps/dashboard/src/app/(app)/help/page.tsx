@@ -1,13 +1,12 @@
+'use client'
+
 import { CreateSeventySevenTicketButton } from '@/components/create-seventy-seven-ticket-button'
 import { PageWrapper } from '@/components/page-wrapper'
-import { api } from '@/queries'
 import { Button } from '@seventy-seven/ui/button'
 import { CodeBlock } from '@seventy-seven/ui/code-block'
 import Link from 'next/link'
 
-const HelpPage = async () => {
-  const user = await api.users.queries.findMe()
-
+const HelpPage = () => {
   return (
     <PageWrapper className="m-8 [&_p+p]:mt-2">
       <h1 className="text-2xl">Help</h1>
@@ -91,8 +90,7 @@ const createdTicket = await seventySevenClient.createTicket({
       </p>
       <p>
         This is a little meta but we actually use Seventy Seven for Seventy Seven so if you have any troubles you can
-        <CreateSeventySevenTicketButton user={user}>create a ticket</CreateSeventySevenTicketButton> to get in contact
-        with us.
+        <CreateSeventySevenTicketButton>create a ticket</CreateSeventySevenTicketButton> to get in contact with us.
       </p>
     </PageWrapper>
   )

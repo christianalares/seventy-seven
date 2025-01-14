@@ -264,6 +264,10 @@ export const ticketsRouter = createTRPCRouter({
         },
       })
 
+      if (!ticket) {
+        throw new TRPCError({ code: 'NOT_FOUND', message: 'Ticket not found' })
+      }
+
       return ticket
     }),
   toggleStar: authProcedure

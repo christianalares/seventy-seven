@@ -1,7 +1,7 @@
 'use client'
 
-import type { UsersGetMyCurrentTeam } from '@/queries/users'
 import { trpc } from '@/trpc/client'
+import type { UsersRouter } from '@/trpc/routers/users-router'
 import { getRoleName } from '@/utils/get-role-name'
 import { TEAM_ROLE_ENUM } from '@seventy-seven/orm/enums'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@seventy-seven/ui/select'
@@ -11,7 +11,7 @@ import { pushAlert } from './alerts'
 type Props = {
   userId: string
   teamId: string
-  member: UsersGetMyCurrentTeam['current_team']['members'][number]
+  member: UsersRouter.MyCurrentTeam['current_team']['members'][number]
   isUserTheLastOwner: boolean
 }
 

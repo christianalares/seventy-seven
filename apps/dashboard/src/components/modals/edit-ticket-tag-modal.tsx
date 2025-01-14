@@ -1,14 +1,14 @@
 'use client'
 
-import type { UsersGetMyCurrentTeam } from '@/queries/users'
 import { trpc } from '@/trpc/client'
+import type { UsersRouter } from '@/trpc/routers/users-router'
 import { Modal, ModalDescription, ModalHeader, ModalTitle } from '@seventy-seven/ui/modal'
 import { toast } from 'sonner'
 import { popModal } from '.'
 import { TicketTagForm } from '../forms/ticket-tag-form'
 
 type Props = {
-  tag: UsersGetMyCurrentTeam['current_team']['ticket_tags'][number]
+  tag: UsersRouter.MyCurrentTeam['current_team']['ticket_tags'][number]
 }
 
 export const EditTicketTagModal = ({ tag }: Props) => {

@@ -1,7 +1,7 @@
 'use client'
 
-import type { TicketsFindById } from '@/queries/tickets'
 import { trpc } from '@/trpc/client'
+import type { TicketsRouter } from '@/trpc/routers/tickets-router'
 import { getRandomTagColor } from '@/utils/colors'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { Button } from '@seventy-seven/ui/button'
@@ -16,7 +16,7 @@ import { z } from 'zod'
 import { popModal } from '.'
 
 type Props = {
-  ticket: TicketsFindById
+  ticket: TicketsRouter.FindById
 }
 
 const tagsFormSchema = z.object({

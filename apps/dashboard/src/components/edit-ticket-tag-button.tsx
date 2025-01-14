@@ -1,12 +1,12 @@
 'use client'
 
-import type { UsersGetMyCurrentTeam } from '@/queries/users'
+import type { UsersRouter } from '@/trpc/routers/users-router'
 import { Button } from '@seventy-seven/ui/button'
 import { Icon } from '@seventy-seven/ui/icon'
 import { pushModal } from './modals'
 
 type Props = {
-  tag: UsersGetMyCurrentTeam['current_team']['ticket_tags'][number]
+  tag: UsersRouter.MyCurrentTeam['current_team']['ticket_tags'][number]
 }
 
 export const EditTicketTagButton = ({ tag }: Props) => {

@@ -1,5 +1,5 @@
-import type { TicketsFindById } from '@/queries/tickets'
 import { trpc } from '@/trpc/client'
+import type { TicketsRouter } from '@/trpc/routers/tickets-router'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { Button } from '@seventy-seven/ui/button'
 import { ComboboxDropdown } from '@seventy-seven/ui/combobox-dropdown'
@@ -19,7 +19,7 @@ const assignTeamMemberFormSchema = z.object({
 type AssignTeamMemberFormValues = z.infer<typeof assignTeamMemberFormSchema>
 
 type Props = {
-  ticket: TicketsFindById
+  ticket: TicketsRouter.FindById
 }
 
 export const AssignTeamMemberForm = ({ ticket }: Props) => {

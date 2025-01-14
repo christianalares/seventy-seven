@@ -1,7 +1,7 @@
 'use client'
 
 import { useSelectedTicket } from '@/hooks/use-selected-ticket'
-import type { TicketsFindMany } from '@/queries/tickets'
+import type { TicketsRouter } from '@/trpc/routers/tickets-router'
 import { Icon } from '@seventy-seven/ui/icon'
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@seventy-seven/ui/tooltip'
 import { cn } from '@seventy-seven/ui/utils'
@@ -10,7 +10,7 @@ import { Avatar } from './avatar'
 import { TicketListItemBadges } from './ticket-list-item-badges'
 
 type Props = {
-  ticket: TicketsFindMany[number]
+  ticket: TicketsRouter.FindMany[number]
 }
 
 export const TicketListItem = ({ ticket }: Props) => {

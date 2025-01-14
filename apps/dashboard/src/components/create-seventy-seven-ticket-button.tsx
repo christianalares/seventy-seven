@@ -1,20 +1,14 @@
 'use client'
 
-import type { UsersFindMe } from '@/queries/users'
 import { pushModal } from './modals'
 
 type Props = {
   children: React.ReactNode
-  user: UsersFindMe
 }
 
-export const CreateSeventySevenTicketButton = ({ children, user }: Props) => {
+export const CreateSeventySevenTicketButton = ({ children }: Props) => {
   return (
-    <button
-      type="button"
-      className="text-blue-600"
-      onClick={() => pushModal('createSeventySevenTicketModal', { user })}
-    >
+    <button type="button" className="text-blue-600" onClick={() => pushModal('createSeventySevenTicketModal')}>
       {children}
     </button>
   )
