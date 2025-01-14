@@ -13,10 +13,11 @@
     "prisma:push": "cd ../../ && npx prisma db push --schema=./packages/orm/src/prisma/schema.prisma --skip-generate"
   },
   "dependencies": {
-    "@prisma/client": "^5.14.0"
+    "@prisma/client": "^6.2.1",
+    "@prisma/extension-optimize": "^1.1.4"
   },
   "devDependencies": {
     "@types/node": "^20.12.7",
-    "prisma": "^5.14.0"
+    "prisma": "^6.2.1"
   }
 }
