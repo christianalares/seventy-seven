@@ -24,6 +24,7 @@ export const SelectTeamDropdown = () => {
       trpcUtils.users.myCurrentTeam.invalidate()
       trpcUtils.teams.invites.invalidate()
       trpcUtils.teams.findMany.invalidate()
+      trpcUtils.tickets.findMany.invalidate()
 
       toast.success(`Switched to team ${updatedUser.current_team.name}`)
     },
