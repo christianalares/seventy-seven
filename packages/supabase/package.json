@@ -6,7 +6,8 @@
     "./clients/server": "./src/clients/server.ts",
     "./clients/middleware": "./src/clients/middleware.ts",
     "./clients/client": "./src/clients/client.ts",
-    "./session": "./src/session.ts"
+    "./session": "./src/session.ts",
+    "./types": "./src/types/index.ts"
   },
   "scripts": {
     "lint": "biome check .",
