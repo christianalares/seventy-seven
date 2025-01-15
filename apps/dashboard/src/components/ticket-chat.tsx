@@ -2,9 +2,8 @@
 
 import { useRealtimeQuery } from '@/hooks/use-realtime-query'
 import { useSelectedTicket } from '@/hooks/use-selected-ticket'
+import { trpc } from '@/trpc/client'
 import type { TicketsRouter } from '@/trpc/routers/tickets-router'
-// import { createClient } from '@seventy-seven/supabase/clients/client'
-import { useRouter } from 'next/navigation'
 import { type ElementRef, useEffect, useRef } from 'react'
 import { ChatMessageHandler } from './chat-message-handler'
 import { ChatMessageUser } from './chat-message-user'
@@ -14,8 +13,7 @@ type Props = {
 }
 
 export const TicketChat = ({ messages }: Props) => {
-  const router = useRouter()
-  // const supabase = createClient()
+  const trpcUtils = trpc.useUtils()
 
   const { ticketId } = useSelectedTicket()
   const ref = useRef<ElementRef<'div'>>(null)
@@ -26,36 +24,11 @@ export const TicketChat = ({ messages }: Props) => {
       event: 'INSERT',
       table: 'messages',
     },
-    (_payload) => {
-      // biome-ignore lint/suspicious/noConsoleLog: <explanation>
-      console.log('refresh', _payload)
-      router.refresh()
+    (payload) => {
+      trpcUtils.tickets.findMany.invalidate()
+      trpcUtils.tickets.findById.invalidate({ id: payload.new.ticket_id })
     },
   )
-
-  // This looks ugly...
-  // useEffect(() => {
-  //   const channel = supabase
-  //     .channel('realtime_messages')
-  //     .on(
-  //       'postgres_changes',
-  //       {
-  //         event: 'INSERT',
-  //         schema: 'public',
-  //         table: 'messages',
-  //       },
-  //       (_payload) => {
-  //         router.refresh()
-  //       },
-  //     )
-  //     .subscribe()
-
-  //   console.log(channel)
-
-  //   return () => {
-  //     supabase.removeChannel(channel)
-  //   }
-  // }, [supabase, router])
 
   useEffect(() => {
     if (!ticketId || !ref.current || messages.length <= 0) {
