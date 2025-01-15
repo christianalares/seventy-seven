@@ -31,12 +31,10 @@ export const ChatResponseForm = ({ ticketId }: Props) => {
     },
   })
 
-  const trpcUtils = trpc.useUtils()
-
   const createMessageMutation = trpc.messages.create.useMutation({
     onSuccess: () => {
-      trpcUtils.tickets.findMany.invalidate()
-      trpcUtils.tickets.findById.invalidate({ id: ticketId })
+      // NOTE: No need to invalidate here, since we're already doing that in the realtime query callback
+      // See ticket-chat.tsx for more details
 
       toast.success('Message sent!')
       form.reset()
