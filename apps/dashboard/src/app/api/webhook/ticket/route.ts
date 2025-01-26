@@ -1,4 +1,5 @@
-import { parseIncomingMessage } from '@/utils/parseIncomingMessage'
+import { parseIncomingMessageWithAI } from '@/utils/parseIncomingMessageWithAI'
+import { stripMarkupfromMessage } from '@/utils/stripMarkupfromMessage'
 import { Prisma, prisma } from '@seventy-seven/orm/prisma'
 import { revalidatePath } from 'next/cache'
 import { headers } from 'next/headers'
@@ -72,10 +73,8 @@ export async function POST(req: Request) {
     return NextResponse.json({ error: `No user messages found on ticket #${shortId}` }, { status: 404 })
   }
 
-  const { content, unableToParseContent } = parseIncomingMessage(
-    parsedBody.data.StrippedTextReply,
-    parsedBody.data.HtmlBody,
-  )
+  const strippedMessage = stripMarkupfromMessage(parsedBody.data.HtmlBody)
+  const parsedMessage = await parseIncomingMessageWithAI(strippedMessage)
 
   try {
     await prisma.ticket.update({
@@ -86,8 +85,9 @@ export async function POST(req: Request) {
         closed_at: null,
         messages: {
           create: {
-            body: content,
-            unable_to_parse_content: unableToParseContent,
+            body: parsedMessage,
+            raw_body: parsedBody.data.HtmlBody,
+            unable_to_parse_content: false,
             sent_from_full_name: lastMessageFromUser.sent_from_full_name,
             sent_from_email: lastMessageFromUser.sent_from_email,
             sent_from_avatar_url: lastMessageFromUser.sent_from_avatar_url,
