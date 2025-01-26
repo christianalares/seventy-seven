@@ -148,8 +148,9 @@ model Message {
   sent_from_email         String?
   sent_from_avatar_url    String?
   body                    String
+  raw_body                String?
   email_id                String?
-  unable_to_parse_content Boolean   @default(false)
+  unable_to_parse_content Boolean?  @default(false)
 
   @@index([handler_id, ticket_id])
   @@map("messages")
