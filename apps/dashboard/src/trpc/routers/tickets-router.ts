@@ -1,8 +1,8 @@
+import { unsnoozeTicketTask } from '@/trigger/unsnooze-ticket'
 import { componentToPlainText, createResendClient } from '@seventy-seven/email'
 import TicketClosed from '@seventy-seven/email/emails/ticket-closed'
-import { Events } from '@seventy-seven/jobs/constants'
-import { jobsClient } from '@seventy-seven/jobs/jobsClient'
 import { Prisma } from '@seventy-seven/orm/prisma'
+import { runs } from '@trigger.dev/sdk/v3'
 import { TRPCError } from '@trpc/server'
 import { isFuture } from 'date-fns'
 import { z } from 'zod'
@@ -611,20 +611,17 @@ export const ticketsRouter = createTRPCRouter({
 
       // If a user snoozes a ticket when it's already snoozed, we need to cancel the previous event
       if (updatedTicket.event_id) {
-        await jobsClient.cancelEvent(updatedTicket.event_id)
+        await runs.cancel(updatedTicket.event_id)
       }
 
-      const event = await jobsClient.sendEvent(
+      const event = await unsnoozeTicketTask.trigger(
         {
-          name: Events.UNSNOOZE_TICKET,
-          payload: {
-            ticketId: updatedTicket.id,
-            userId: ctx.user.id,
-            userEmail: user.email,
-          },
+          ticketId: updatedTicket.id,
+          userId: ctx.user.id,
+          userEmail: user.email,
         },
         {
-          deliverAt: updatedTicket.snoozed_until,
+          delay: updatedTicket.snoozed_until,
         },
       )
 
@@ -642,10 +639,6 @@ export const ticketsRouter = createTRPCRouter({
           message: 'Failed to snooze ticket, something went wrong 😢',
         })
       }
-
-      // revalidatePath('/inbox')
-      // revalidatePath(`/inbox/${updatedTicket.id}`)
-      // revalidatePath(`/inbox/snoozed/${updatedTicket.id}`)
 
       ctx.analyticsClient.event('snoozed_ticket', {
         ticket_id: updatedTicket.id,

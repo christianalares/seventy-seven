@@ -13,7 +13,7 @@ type Props = {
   avatar?: string
   body: string
   date: Date
-  unableToParseContent: boolean
+  unableToParseContent: boolean | null
 }
 
 export const ChatMessageUser = ({ id, name, avatar, body, date, unableToParseContent }: Props) => {
