@@ -30,6 +30,7 @@ Seventy Seven is an easy to use customer support service. Use the endpoint for y
 - Trigger.dev - Scheduled background jobs
 - TailwindCSS - Styling
 - Shadcn - UI
+- OpenPanel - Analytics
 
 ## Disclaimer
 The product is in beta which means that some of the functionality you want or need is either not yet implemented or could contain some bugs. Don't hesitate to hit me up on 𝕏 ([@c_alares](https://twitter.com/c_alares)) or create a github issue.

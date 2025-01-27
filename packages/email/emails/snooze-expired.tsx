@@ -57,8 +57,6 @@ const TicketMessageResponse = ({ shortId, subject, thread, ticketUrl }: Props) =
 
       <Preview>Snoozed ticket alert! #{shortId}</Preview>
 
-      <title>Snoozed ticket alert! #{shortId}</title>
-
       <Tailwind
         config={{
           theme: {

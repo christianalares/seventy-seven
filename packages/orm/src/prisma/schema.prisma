@@ -1,11 +1,13 @@
 generator client {
-  provider = "prisma-client-js"
+  provider        = "prisma-client-js"
+  previewFeatures = ["postgresqlExtensions"]
 }
 
 datasource db {
-  provider  = "postgresql"
-  url       = env("DATABASE_URL")
-  directUrl = env("DATABASE_DIRECT_URL")
+  provider   = "postgresql"
+  url        = env("DATABASE_URL")
+  directUrl  = env("DATABASE_DIRECT_URL")
+  extensions = [pgvector(map: "vector", schema: "extensions")]
 }
 
 enum TEAM_ROLE_ENUM {
@@ -85,12 +87,12 @@ model UserOnTeam {
 }
 
 model Ticket {
-  id                  String              @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
-  short_id            String              @unique
-  created_at          DateTime            @default(now()) @db.Timestamptz(6)
-  updated_at          DateTime?           @db.Timestamptz(6)
-  team_id             String              @db.Uuid
-  team                Team                @relation(fields: [team_id], references: [id])
+  id                  String                 @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  short_id            String                 @unique
+  created_at          DateTime               @default(now()) @db.Timestamptz(6)
+  updated_at          DateTime?              @db.Timestamptz(6)
+  team_id             String                 @db.Uuid
+  team                Team                   @relation(fields: [team_id], references: [id])
   subject             String
   meta                Json?
   messages            Message[]
@@ -98,9 +100,11 @@ model Ticket {
   closed_at           DateTime?
   event_id            String?
   starred_at          DateTime?
-  assigned_to_user_id String?             @db.Uuid
-  assigned_to_user    User?               @relation(fields: [assigned_to_user_id], references: [id])
+  assigned_to_user_id String?                @db.Uuid
+  assigned_to_user    User?                  @relation(fields: [assigned_to_user_id], references: [id])
   tags                TicketTagOnTicket[]
+  summary             String?
+  embedding           Unsupported("vector")?
 
   @@index([team_id, assigned_to_user_id])
   @@map("tickets")

@@ -1,4 +1,0 @@
-{
-  "extends": "@seventy-seven/typescript-config/react-library.json",
-  "include": ["src", "*.ts"]
-}
