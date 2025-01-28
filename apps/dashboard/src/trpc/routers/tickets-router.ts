@@ -678,6 +678,11 @@ export const ticketsRouter = createTRPCRouter({
         throw new TRPCError({ code: 'BAD_REQUEST', message: 'Ticket is not snoozed' })
       }
 
+      // If the ticket is snoozed, we need to cancel the event
+      if (ticket.event_id) {
+        await runs.cancel(ticket.event_id)
+      }
+
       await ctx.prisma.ticket.update({
         where: { id: input.ticketId },
         data: {
