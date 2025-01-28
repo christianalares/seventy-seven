@@ -3,7 +3,7 @@ import { openai } from '@ai-sdk/openai'
 import { generateText } from 'ai'
 
 export const parseIncomingMessageWithAI = async (html: string) => {
-  const model = openai('gpt-3.5-turbo')
+  const model = openai('gpt-4o-mini')
 
   const { text } = await generateText({
     model,

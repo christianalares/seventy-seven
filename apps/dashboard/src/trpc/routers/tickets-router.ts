@@ -205,6 +205,7 @@ export const ticketsRouter = createTRPCRouter({
           starred_at: true,
           closed_at: true,
           snoozed_until: true,
+          summary: true,
           tags: {
             select: {
               tag: {

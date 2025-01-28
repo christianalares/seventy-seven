@@ -1,5 +1,7 @@
+import type { GenerateTicketSummaryTask } from '@/trigger/generate-ticket-summary'
 import { componentToPlainText, createResendClient } from '@seventy-seven/email'
 import TicketMessageResponse from '@seventy-seven/email/emails/ticket-message-response'
+import { tasks } from '@trigger.dev/sdk/v3'
 import { TRPCError } from '@trpc/server'
 import { z } from 'zod'
 import { authProcedure, createTRPCRouter } from '../init'
@@ -102,6 +104,10 @@ export const messagesRouter = createTRPCRouter({
             },
           },
         },
+      })
+
+      await tasks.trigger<GenerateTicketSummaryTask>('generate-ticket-summary', {
+        ticketId: createdMessage.ticket.id,
       })
 
       if (createdMessage.handler) {

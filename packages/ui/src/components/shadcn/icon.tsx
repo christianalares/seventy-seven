@@ -45,6 +45,7 @@ import {
   Settings,
   Settings2,
   Shapes,
+  Sparkles,
   Star,
   Sun,
   Tag,
@@ -195,6 +196,7 @@ const icons = {
   team: Users,
   fingerprint: Fingerprint,
   image: Image,
+  sparkles: Sparkles,
 }
 
 export type IconName = keyof typeof icons

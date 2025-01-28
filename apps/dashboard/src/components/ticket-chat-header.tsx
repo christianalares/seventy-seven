@@ -1,5 +1,6 @@
 import type { TicketsRouter } from '@/trpc/routers/tickets-router'
 import { TicketActionDropdown } from './ticket-action-dropdown'
+import { TicketInfoButton } from './ticket-info-button'
 
 type Props = {
   ticket: NonNullable<TicketsRouter.FindById>
@@ -19,8 +20,9 @@ export const TicketChatHeader = ({ ticket }: Props) => {
         </span>
       </div>
 
-      <div className="ml-auto">
+      <div className="ml-auto flex items-center gap-2">
         <TicketActionDropdown ticket={ticket} />
+        <TicketInfoButton />
       </div>
     </header>
   )

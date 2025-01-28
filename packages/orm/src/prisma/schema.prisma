@@ -104,7 +104,7 @@ model Ticket {
   assigned_to_user    User?                  @relation(fields: [assigned_to_user_id], references: [id])
   tags                TicketTagOnTicket[]
   summary             String?
-  embedding           Unsupported("vector")?
+  summary_embedding   Unsupported("vector")?
 
   @@index([team_id, assigned_to_user_id])
   @@map("tickets")
