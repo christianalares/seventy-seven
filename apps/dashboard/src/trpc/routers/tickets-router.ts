@@ -687,6 +687,7 @@ export const ticketsRouter = createTRPCRouter({
         where: { id: input.ticketId },
         data: {
           snoozed_until: null,
+          event_id: null,
         },
       })
 
