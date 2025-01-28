@@ -1,8 +1,9 @@
-import { unsnoozeTicketTask } from '@/trigger/unsnooze-ticket'
+import type { UnsnoozeTicketTask } from '@/trigger/unsnooze-ticket'
 import { componentToPlainText, createResendClient } from '@seventy-seven/email'
 import TicketClosed from '@seventy-seven/email/emails/ticket-closed'
 import { Prisma } from '@seventy-seven/orm/prisma'
 import { runs } from '@trigger.dev/sdk/v3'
+import { tasks } from '@trigger.dev/sdk/v3'
 import { TRPCError } from '@trpc/server'
 import { isFuture } from 'date-fns'
 import { z } from 'zod'
@@ -614,7 +615,8 @@ export const ticketsRouter = createTRPCRouter({
         await runs.cancel(updatedTicket.event_id)
       }
 
-      const event = await unsnoozeTicketTask.trigger(
+      const event = await tasks.trigger<UnsnoozeTicketTask>(
+        'unsnooze-ticket',
         {
           ticketId: updatedTicket.id,
           userId: ctx.user.id,
@@ -646,5 +648,45 @@ export const ticketsRouter = createTRPCRouter({
       })
 
       return updatedTicket
+    }),
+  cancelSnooze: authProcedure
+    .input(
+      z.object({
+        ticketId: z.string().uuid(),
+      }),
+    )
+    .mutation(async ({ input, ctx }) => {
+      const ticket = await ctx.prisma.ticket.findUnique({
+        where: {
+          id: input.ticketId,
+          // Make sure the user is a member of the team
+          team: {
+            members: {
+              some: {
+                user_id: ctx.user.id,
+              },
+            },
+          },
+        },
+      })
+
+      if (!ticket) {
+        throw new TRPCError({ code: 'NOT_FOUND', message: 'Ticket not found' })
+      }
+
+      if (!ticket.snoozed_until) {
+        throw new TRPCError({ code: 'BAD_REQUEST', message: 'Ticket is not snoozed' })
+      }
+
+      await ctx.prisma.ticket.update({
+        where: { id: input.ticketId },
+        data: {
+          snoozed_until: null,
+        },
+      })
+
+      return {
+        success: true,
+      }
     }),
 })

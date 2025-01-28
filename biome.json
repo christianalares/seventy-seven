@@ -2,10 +2,10 @@
   "$schema": "https://biomejs.dev/schemas/1.6.2/schema.json",
   "organizeImports": {
     "enabled": true,
-    "ignore": [".next/**/*", "types/**/*", "dist/**/*"]
+    "ignore": [".next/**/*", "types/**/*", "dist/**/*", ".trigger"]
   },
   "linter": {
-    "ignore": [".next/**/*", "types/**/*", "dist/**/*"],
+    "ignore": [".next/**/*", "types/**/*", "dist/**/*", ".trigger"],
     "enabled": true,
     "rules": {
       "recommended": true,
@@ -30,7 +30,7 @@
     }
   },
   "formatter": {
-    "ignore": [".next/**/*", "types/**/*", "dist/**/*"],
+    "ignore": [".next/**/*", "types/**/*", "dist/**/*", ".trigger"],
     "enabled": true,
     "formatWithErrors": false,
     "indentStyle": "space",

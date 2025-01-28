@@ -4,6 +4,8 @@
   "private": true,
   "scripts": {
     "dev": "next dev --port 3000",
+    "trigger:dev": "trigger dev",
+    "trigger:deploy": "trigger deploy",
     "build": "next build",
     "start": "next start",
     "lint": "biome check .",
@@ -67,6 +69,7 @@
     "autoprefixer": "^10.4.19",
     "postcss": "^8.4.38",
     "tailwindcss": "^3.4.3",
+    "trigger.dev": "^3.3.12",
     "typescript": "^5.4.5"
   },
   "trigger.dev": {

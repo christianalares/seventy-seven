@@ -6,6 +6,8 @@ import { z } from 'zod'
 
 const resend = createResendClient()
 
+export type UnsnoozeTicketTask = typeof unsnoozeTicketTask
+
 export const unsnoozeTicketTask = schemaTask({
   id: 'unsnooze-ticket',
   schema: z.object({

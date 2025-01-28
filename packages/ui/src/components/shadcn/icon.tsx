@@ -2,6 +2,7 @@ import { cn } from '../../utils'
 
 import {
   AlarmClock,
+  AlarmClockOff,
   Calendar,
   Check,
   CheckCircle,
@@ -165,6 +166,7 @@ const icons = {
   checkCircle2: CheckCircle2,
   send: Send,
   alarmClock: AlarmClock,
+  alarmClockOff: AlarmClockOff,
   scrollText: ScrollText,
   trash: Trash2,
   externalLink: ExternalLink,

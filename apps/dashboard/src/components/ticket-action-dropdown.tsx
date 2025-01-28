@@ -22,6 +22,18 @@ type Props = {
 export const TicketActionDropdown = ({ ticket }: Props) => {
   const trpcUtils = trpc.useUtils()
 
+  const cancelSnoozeMutation = trpc.tickets.cancelSnooze.useMutation({
+    onSuccess: () => {
+      trpcUtils.tickets.findMany.invalidate()
+      trpcUtils.tickets.findById.invalidate()
+
+      toast.success('Ticket snooze was cancelled')
+    },
+    onError: (error) => {
+      toast.error(error.message)
+    },
+  })
+
   const toggleStarMutation = trpc.tickets.toggleStar.useMutation({
     onSuccess: (updatedTicket) => {
       trpcUtils.tickets.findMany.invalidate()
@@ -86,20 +98,27 @@ export const TicketActionDropdown = ({ ticket }: Props) => {
         <DropdownMenuItem
           className="gap-2"
           onSelect={() => {
-            // if (ticket.snoozed_until) {
-            //   toast.error('Not yet implemented')
-            //   return
-            // }
-
             pushModal('snoozeTicketModal', {
               ticketId: ticket.id,
             })
           }}
         >
           <Icon name="alarmClock" className="size-4 text-orange-500" />
-          {/* {ticket.snoozed_until ? 'Unsnooze' : 'Snooze'} */}
-          Snooze
+          {ticket.snoozed_until ? 'Re-snooze' : 'Snooze'}
         </DropdownMenuItem>
+
+        {!!ticket.snoozed_until && (
+          <DropdownMenuItem
+            disabled={cancelSnoozeMutation.isPending}
+            className="gap-2"
+            onSelect={() => {
+              cancelSnoozeMutation.mutate({ ticketId: ticket.id })
+            }}
+          >
+            <Icon name="alarmClockOff" className="size-4 text-orange-500" />
+            Cancel snooze
+          </DropdownMenuItem>
+        )}
 
         <DropdownMenuItem
           disabled={toggleStarMutation.isPending}
