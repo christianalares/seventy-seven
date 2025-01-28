@@ -1,7 +1,8 @@
+import type { GenerateTicketSummaryTask } from '@/trigger/generate-ticket-summary'
 import { parseIncomingMessageWithAI } from '@/utils/parseIncomingMessageWithAI'
 import { stripMarkupfromMessage } from '@/utils/stripMarkupfromMessage'
 import { Prisma, prisma } from '@seventy-seven/orm/prisma'
-import { revalidatePath } from 'next/cache'
+import { tasks } from '@trigger.dev/sdk/v3'
 import { headers } from 'next/headers'
 import { NextResponse } from 'next/server'
 import { z } from 'zod'
@@ -77,7 +78,7 @@ export async function POST(req: Request) {
   const parsedMessage = await parseIncomingMessageWithAI(strippedMessage)
 
   try {
-    await prisma.ticket.update({
+    const updatedTicket = await prisma.ticket.update({
       where: {
         short_id: foundTicket.short_id,
       },
@@ -99,7 +100,9 @@ export async function POST(req: Request) {
       },
     })
 
-    revalidatePath('/inbox')
+    await tasks.trigger<GenerateTicketSummaryTask>('generate-ticket-summary', {
+      ticketId: updatedTicket.id,
+    })
 
     return NextResponse.json({ success: true }, { status: 201 })
   } catch (err) {
