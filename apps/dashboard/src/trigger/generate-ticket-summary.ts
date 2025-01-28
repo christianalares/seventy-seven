@@ -52,7 +52,6 @@ export const generateTicketSummaryTask = schemaTask({
       .join('\n')
 
     const model = openai('gpt-4o-mini')
-    // const model = openai('gpt-3.5-turbo')
 
     const { text: summary } = await generateText({
       model,
